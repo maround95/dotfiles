@@ -21,7 +21,7 @@ set softtabstop=2
 set expandtab
 
 " Don't insert auto comments on newline
-autocmd BufNewFile,BufRead * setlocal formatoptions-=cro
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 "Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
 "If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
