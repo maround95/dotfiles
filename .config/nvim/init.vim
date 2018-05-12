@@ -1,0 +1,1 @@
+/media/d/Linux/vimrc/vimrc
