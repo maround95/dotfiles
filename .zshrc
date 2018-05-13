@@ -7,6 +7,7 @@ path+=("${HOME}/.local/bin")
 ### Aliases ###
 # no need to expand $HOME, the shell will do it for us
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias rm='rm -I'
 
 ZSH_THEME="robbyrussell"
 
