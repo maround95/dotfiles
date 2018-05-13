@@ -2,7 +2,7 @@
 export ZSH=$HOME/.oh-my-zsh
 
 # can add to path like so
-path+=("${HOME}/.local/bin")
+#path+=("${HOME}/.local/bin")
 
 ### Aliases ###
 # no need to expand $HOME, the shell will do it for us
