@@ -14,10 +14,10 @@ colorscheme onedark
 " Blink cursor on error instead of beeping (thank god for this)
 set visualbell
 
-" Tabs expanded into 2 spaces.
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
+" Tabs expanded into 4 spaces.
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
 set expandtab
 
 " Don't insert auto comments on newline
