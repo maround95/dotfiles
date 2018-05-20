@@ -1,18 +1,31 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Empty guicursor because of resizing issues with nvim
 set guicursor=
 
-" Don't try to be vi compatible
-set nocompatible
+" Enable filetype plugins
+filetype plugin on
+filetype indent on
 
-" For plugins to load correctly
-filetype plugin indent on
+" Blink cursor on error instead of beeping (thank god for this)
+set visualbell
 
+" :W sudo saves the file
+command W w !sudo tee % > /dev/null/
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Colors and Formatting
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable syntax highlighting
 syntax on 
 colorscheme onedark
 
-" Blink cursor on error instead of beeping (thank god for this)
-set visualbell
+if (empty($TMUX))
+  if (has("termguicolors"))
+    set termguicolors
+  endif
+endif
 
 " Tabs expanded into 4 spaces.
 set tabstop=4
@@ -20,15 +33,46 @@ set shiftwidth=4
 set softtabstop=4
 set expandtab
 
-" Don't insert auto comments on newline
-autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+"Show invisibles
+set list
+set listchars=tab:▸\ ,eol:¬
 
-"Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
-"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
-"(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
-if (empty($TMUX))
-  if (has("termguicolors"))
-    set termguicolors
-  endif
+" Autocommands
+if has("autocmd")
+    " Don't insert auto comments on newline
+    autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 endif
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Key remappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" shift-space to escape
+" needs terminal to send right escape sequence (\E[32;2u)
+noremap <S-Space> <Esc>
+inoremap <S-Space> <Esc>
+vnoremap <S-Space> <Esc>
+
+" Disable Arrow keys
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+inoremap <Left> <Nop>
+inoremap <Right> <Nop>
+inoremap <Up> <Nop>
+inoremap <Down> <Nop>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => vim-plug
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if empty(glob('~/.config/nvim/autoload/plug.vim'))
+  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin('~/.config/nvim/plugged')
+    Plug 'kelwin/vim-smali'
+    Plug 'neovimhaskell/haskell-vim'
+call plug#end()

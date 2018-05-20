@@ -19,6 +19,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Vi Mode
 bindkey -v
+bindkey "\E[32;2u" vi-cmd-mode
 
 # Autocompletion only one enter
 bindkey -M menuselect '^M' .accept-line
