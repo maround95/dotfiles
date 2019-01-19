@@ -4,6 +4,9 @@
 " Empty guicursor because of resizing issues with nvim
 set guicursor=
 
+" Enable mouse scrolling (and visual select)
+set mouse=a
+
 " Enable filetype plugins
 filetype plugin on
 filetype indent on
@@ -11,8 +14,8 @@ filetype indent on
 " Blink cursor on error instead of beeping (thank god for this)
 set visualbell
 
-" :W sudo saves the file
-command W w !sudo tee % > /dev/null/
+" :w!! sudo saves the file
+cmap w!! w suda://%
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Formatting
@@ -62,6 +65,8 @@ inoremap <Right> <Nop>
 inoremap <Up> <Nop>
 inoremap <Down> <Nop>
 
+" Backspace to clear search highlighting
+nnoremap <silent> <Backspace> :nohl<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vim-plug
@@ -74,5 +79,6 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
     Plug 'kelwin/vim-smali'
-    Plug 'neovimhaskell/haskell-vim'
+    Plug 'godlygeek/tabular'
+    Plug 'lambdalisue/suda.vim'
 call plug#end()

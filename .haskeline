@@ -1,0 +1,3 @@
+editMode: Vi
+bind: ctrl-left escape
+keyseq: "\ESC[32;2u" ctrl-left
