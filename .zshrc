@@ -3,12 +3,16 @@ export ZSH=$HOME/.oh-my-zsh
 
 # can add to path like so
 path+=("${HOME}/.local/bin")
+path+=("/media/d/Development/Android/Tools/path_tools_linux")
+path+=("/media/d/Development/Android/Tools/path_tools_linux")
+path+=("/opt/android-sdk/build-tools/28.0.3")
 
 ### Aliases ###
 # no need to expand $HOME, the shell will do it for us
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 alias rm='rm -I'
 alias ghci='stack ghci'
+alias info='info --vi-keys'
 
 ZSH_THEME="robbyrussell"
 
