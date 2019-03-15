@@ -49,9 +49,9 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " shift-space to escape
 " needs terminal to send the right escape sequence (\E[32;2u)
-noremap <S-Space> <Esc>
-inoremap <S-Space> <Esc>
-vnoremap <S-Space> <Esc>
+"noremap <S-Space> <Esc>
+"inoremap <S-Space> <Esc>
+"vnoremap <S-Space> <Esc>
 
 " Disable Arrow keys
 " noremap <Left> <Nop>
@@ -103,8 +103,4 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'godlygeek/tabular'
     Plug 'lambdalisue/suda.vim'
     Plug 'scrooloose/nerdtree'
-    Plug 'autozimu/LanguageClient-neovim', {
-     \ 'branch': 'next',
-     \ 'do': 'bash install.sh',
-     \ }
 call plug#end()
