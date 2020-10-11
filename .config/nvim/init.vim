@@ -7,6 +7,12 @@ set guicursor=
 " Enable mouse scrolling (and visual select)
 set mouse=a
 
+" Status Line always shown
+set laststatus=2
+
+" Show at least one line above/below cursor when scrolling
+set scrolloff=1
+
 " Enable filetype plugins
 filetype plugin on
 filetype indent on
@@ -47,46 +53,11 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Key remappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" shift-space to escape
-" needs terminal to send the right escape sequence (\E[32;2u)
-"noremap <S-Space> <Esc>
-"inoremap <S-Space> <Esc>
-"vnoremap <S-Space> <Esc>
-
-" Disable Arrow keys
-" noremap <Left> <Nop>
-" noremap <Right> <Nop>
-" noremap <Up> <Nop>
-" noremap <Down> <Nop>
-" inoremap <Left> <Nop>
-" inoremap <Right> <Nop>
-" inoremap <Up> <Nop>
-" inoremap <Down> <Nop>
-
 " Backspace to clear search highlighting
 nnoremap <silent> <Backspace> :nohl<CR>
 
 " Nerd tree toggle
 map <C-n> :NERDTreeToggle<CR>
-
-"" a basic set up for LanguageClient-Neovim
-"" << LSP >> {{{
-"let g:LanguageClient_autoStart = 0
-"nnoremap <leader>lcs :LanguageClientStart<CR>
-"" if you want it to turn on automatically
-"" let g:LanguageClient_autoStart = 1
-"
-"let g:LanguageClient_serverCommands = {
-"    \ 'python': ['pyls'],
-"    \ 'rust': ['rustup', 'run', 'nightly-2019-02-08', 'rls'],
-"    \ 'javascript': ['javascript-typescript-stdio'],
-"    \ 'go': ['go-langserver'] }
-"
-"noremap <silent> H :call LanguageClient_textDocument_hover()<CR>
-"noremap <silent> Z :call LanguageClient_textDocument_definition()<CR>
-"noremap <silent> R :call LanguageClient_textDocument_rename()<CR>
-"noremap <silent> S :call LanugageClient_textDocument_documentSymbol()<CR>
-"" }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vim-plug
@@ -100,7 +71,6 @@ endif
 call plug#begin('~/.config/nvim/plugged')
     Plug 'kelwin/vim-smali'
     Plug 'gburca/vim-logcat'
-    Plug 'godlygeek/tabular'
     Plug 'lambdalisue/suda.vim'
     Plug 'scrooloose/nerdtree'
 call plug#end()

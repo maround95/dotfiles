@@ -1,41 +1,35 @@
 ; needs xdotool to work
-(define actionperformed 0)
+(define actionperformed #f)
 
 (define (first-binding)
-"First binding"
-;; Front Shoulder Button
-(xbindkey-function '("b:9") b9-second-binding)
-)
+  ;; G502 DPI Up button
+  (xbindkey-function '("b:12") second-binding))
 
 
 (define (reset-first-binding)
-"reset first binding"
-(ungrab-all-keys)
-(remove-all-keys)
-;; Set Action Performed state back to 0
-(set! actionperformed 0)
+  (ungrab-all-keys)
+  (remove-all-keys)
+  (set! actionperformed #f)
 
-(first-binding)
-(grab-all-keys))
+  (first-binding)
+  (grab-all-keys))
 
 
-(define (b9-second-binding)
-"Front Shoulder Button Extra Functions"
-(ungrab-all-keys)
-(remove-all-keys)
+(define (second-binding)
+  (ungrab-all-keys)
+  (remove-all-keys)
 
-;; Scroll Up
-(xbindkey-function '("b:3")
-                (lambda ()
-;; Emulate Ctrl+Alt+Up (Workspace Up)
-                (run-command "qdbus org.kde.kglobalaccel /component/kwin invokeShortcut 'Switch One Desktop to the Right'")
-		(set! actionperformed 1)
-))
+  ;; DPI Up button + Right Click
+  (xbindkey-function '("b:3")
+                     (lambda ()
+                       (run-command "qdbus org.kde.kglobalaccel /component/kwin invokeShortcut 'Switch One Desktop to the Right'")
+                       (set! actionperformed #t)))
 
-(xbindkey-function '(release "b:9") (lambda ()
-;; Perform Action if Button 8 is pressed and released by itself
-(if (= actionperformed 0) (run-command "xdotool key --clearmodifiers XF86Forward"))
-(reset-first-binding)))
-(grab-all-keys))
+  (xbindkey-function '(release "b:12") 
+                     (lambda ()
+                       ;; Perform Action if Button is pressed and released by itself
+                       ;(if (not actionperformed) (run-command "xdotool click --clearmodifiers 9"))
+                       (reset-first-binding)))
+  (grab-all-keys))
 
 (first-binding)
