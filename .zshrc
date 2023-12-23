@@ -5,20 +5,15 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# can add to path like so
-path+=("/media/d/Development/Android/Tools/path_tools_linux")
 path+=("$HOME/.local/bin")
 path+=("$HOME/.cargo/bin")
-XDG_DATA_DIRS="/var/lib/flatpak/exports/share/applications:~/.local/share/flatpak/exports/share/applications:$XDG_DATA_DIRS"
-
-
 
 ### Aliases ###
-# no need to expand $HOME, the shell will do it for us
-alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 alias rm='rm -I'
 alias info='info --vi-keys'
-alias python='ipython'
+alias top='htop'
+alias ll='exa -lah'
+alias v='nvim'
 
 # Vi Mode
 bindkey -v
