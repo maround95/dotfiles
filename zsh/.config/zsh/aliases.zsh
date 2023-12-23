@@ -1,0 +1,5 @@
+alias rm='rm -I'
+alias info='info --vi-keys'
+alias top='htop'
+alias ll='exa -lah'
+alias v='nvim'

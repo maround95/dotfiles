@@ -1,0 +1,8 @@
+zmodule maround95/powerlevel10k
+zmodule zsh-users/zsh-completions --fpath src
+zmodule completion
+zmodule zsh-users/zsh-syntax-highlighting
+zmodule zsh-users/zsh-autosuggestions
+zmodule unixorn/fzf-zsh-plugin
+zmodule Aloxaf/fzf-tab
+zmodule agkozak/zsh-z
