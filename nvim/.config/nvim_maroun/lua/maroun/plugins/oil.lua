@@ -1,0 +1,31 @@
+return {
+  'stevearc/oil.nvim',
+  dependencies = { "nvim-tree/nvim-web-devicons" },
+  lazy = false,
+  keys = {
+    { "<leader>e", function() require('oil').toggle_float() end, mode = "n", desc = "Floating File explorer" },
+    { "<leader>E", "<cmd>Oil<cr>", mode = "n", desc = "File explorer" },
+  },
+  opts = {
+    keymaps = {
+      ["g?"] = "actions.show_help",
+      ["<CR>"] = "actions.select",
+      ["l"] = "actions.select",
+      ["S"] = "actions.select_vsplit",
+      ["<C-s>"] = "actions.select_split",
+      ["<C-t>"] = "actions.select_tab",
+      ["<C-p>"] = "actions.preview",
+      ["q"] = "actions.close",
+      ["<C-l>"] = "actions.refresh",
+      ["-"] = "actions.parent",
+      ["h"] = "actions.parent",
+      ["_"] = "actions.open_cwd",
+      ["`"] = "actions.cd",
+      ["~"] = "actions.tcd",
+      ["gx"] = "actions.open_external",
+      ["g."] = "actions.toggle_hidden",
+      ["g\\"] = "actions.toggle_trash",
+    },
+    use_default_keymaps = false,
+  },
+}

@@ -1,6 +1,7 @@
 function _source_if_exists() { [[ -s $1 ]] && source "$1"; }
 
 export EDITOR='/usr/bin/nvim'
+export NVIM_APPNAME='nvim_maroun'
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
