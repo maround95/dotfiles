@@ -1,4 +1,4 @@
-zmodule maround95/powerlevel10k
+zmodule maround95/powerlevel10k --branch gcloud-startup
 zmodule zsh-users/zsh-completions --fpath src
 zmodule completion
 zmodule zsh-users/zsh-syntax-highlighting

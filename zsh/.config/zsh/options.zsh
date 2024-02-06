@@ -3,7 +3,6 @@ autoload -U colors && colors
 
 # Bindings
 bindkey -v # Vi-mode
-bindkey "^R" history-incremental-search-backward # Control-R to search history
 bindkey "^N" autosuggest-accept
 
 # Visual mode in zsh -> edit long commands in nvim
