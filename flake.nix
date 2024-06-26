@@ -1,0 +1,76 @@
+{
+  description = "NixOS configuration";
+
+  inputs = {
+
+    nixpkgs.url = "github:nixos/nixpkgs/release-24.05";
+    #nixpkgs.url = "git+file:///home/maroun/nixpkgs";
+
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    #hardware.url = "git+file:///home/maroun/nixos-hardware";
+    hardware.url = "github:nixos/nixos-hardware/master";
+
+    home-manager = {
+      url = "github:nix-community/home-manager/release-24.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+  };
+
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, disko, lanzaboote, ... }:
+  let
+    inherit (self) outputs;
+    inherit (nixpkgs) lib;
+    configLib = import ./lib { inherit lib; };
+    specialArgs = { inherit configLib inputs outputs; };
+  in
+  {
+
+    overlays = import ./overlays { inherit inputs; };
+
+    homeConfigurations."maroun@generic-x86_64" = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      extraSpecialArgs = specialArgs;
+      modules = [ ./home.nix ];
+    };
+
+    homeConfigurations."maroun@generic-aarch64" = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages.aarch64-linux;
+      extraSpecialArgs = specialArgs;
+      modules = [ ./home.nix ];
+    };
+
+    nixosConfigurations."l5p" = lib.nixosSystem {
+      inherit specialArgs;
+      modules = [
+        home-manager.nixosModules.home-manager {
+          home-manager.extraSpecialArgs = specialArgs;
+        }
+        inputs.hardware.nixosModules.lenovo-legion-16ach6h
+        ./hosts/l5p
+      ];
+    };
+
+    nixosConfigurations."mika" = lib.nixosSystem {
+      inherit specialArgs;
+      modules = [
+        home-manager.nixosModules.home-manager {
+          home-manager.extraSpecialArgs = specialArgs;
+        }
+        ./hosts/mika
+      ];
+    };
+
+  };
+}
