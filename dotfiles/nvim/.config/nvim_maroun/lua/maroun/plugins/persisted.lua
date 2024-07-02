@@ -1,6 +1,6 @@
 return {
-  "maround95/persisted.nvim",
-  branch = "workaround_134_exit",
+  "andrevmatos/persisted.nvim",
+  --branch = "workaround_134_exit",
   opts = {
     save_dir = vim.fn.expand(vim.fn.stdpath("data") .. "/sessions/"), -- directory where session files are saved
     silent = false, -- silent nvim message when sourcing session file

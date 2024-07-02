@@ -12,53 +12,38 @@ return {
       local treesitter = require("nvim-treesitter.configs")
 
       -- configure treesitter
-      treesitter.setup({ -- enable syntax highlighting
-        highlight = {
-          enable = true,
-        },
-        -- enable indentation
+      treesitter.setup({
+        sync_install = false,
+        ignore_install = {},
+        auto_install = true,
+        highlight = { enable = true, },
         indent = { enable = true },
-        -- enable autotagging (w/ nvim-ts-autotag plugin)
-        autotag = {
-          enable = true,
-        },
-        -- ensure these language parsers are installed
+        autotag = { enable = true, },
         ensure_installed = {
-          "json",
-          "yaml",
-          "javascript",
-          "typescript",
-          "tsx",
-          "html",
-          "css",
-          "markdown",
-          "markdown_inline",
-          "bash",
-          "lua",
           "vim",
-          "dockerfile",
-          "haskell",
-          "java",
-          "kotlin",
-          "smali",
-          "perl",
-          "rust",
-          "terraform",
-          "gitignore",
+          "vimdoc",
+          "lua",
+          "bash",
         },
---        incremental_selection = {
---          enable = true,
---          keymaps = {
---            init_selection = "<C-space>",
---            node_incremental = "<C-space>",
---            scope_incremental = false,
---            node_decremental = "<bs>",
---          },
---        },
+        incremental_selection = {
+          enable = true,
+          keymaps = {
+            init_selection = "<C-space>",
+            node_incremental = "<C-space>",
+            scope_incremental = false,
+            node_decremental = "<bs>",
+          },
+        },
+        textobjects = {
+          move = {
+            enable = true,
+            goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
+            goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
+            goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
+            goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer" },
+          },
+        },
       })
-
-      -- enable nvim-ts-context-commentstring plugin for commenting tsx and jsx
-      require('ts_context_commentstring').setup {}
     end,
   },
 }

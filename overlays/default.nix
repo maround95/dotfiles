@@ -20,4 +20,7 @@
       config.allowUnfree = true;
     };
   };
+
+  # rust-overlay - See https://github.com/oxalica/rust-overlay
+  rust-overlay = inputs.rust-overlay.overlays.default;
 }

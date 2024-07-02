@@ -65,6 +65,10 @@
     python3
     gnumake
     gcc
+    ripgrep
+    rust-bin.stable.latest.complete
+    unzip
+    kitty
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

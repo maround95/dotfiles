@@ -5,9 +5,19 @@ return {
     vim.o.timeout = true
     vim.o.timeoutlen = 500
   end,
-  opts = {
-    -- your configuration comes here
-    -- or leave it empty to use the default settings
-    -- refer to the configuration section below
-  },
+  config = function()
+    local wk = require("which-key");
+
+    wk.register({
+      ["<leader>c"] = { name = "+Code" },
+      ["<leader>f"] = { name = "+Find" },
+      ["<leader>g"] = { name = "+Git" },
+      ["<leader>h"] = { name = "+Git hunks" },
+      ["<leader>s"] = { name = "+Splits" },
+      ["<leader>t"] = { name = "+Toggle" },
+      ["<leader>u"] = { name = "+Undotree" },
+      ["<leader>w"] = { name = "+Session" },
+      ["<leader>x"] = { name = "+Diagnostics" },
+    });
+  end
 }
