@@ -12,6 +12,7 @@ opt.scrolloff = 3 -- Context lines
 opt.shiftwidth = 2    -- 2 spaces for indent width
 opt.signcolumn = "yes"  -- show sign column so that text doesn't shift
 opt.smartcase = true  -- if you include mixed case in your search, assumes you want case-sensitive
+opt.smartindent = true
 opt.splitbelow = true -- split horizontal window to the bottom
 opt.splitright = true -- split vertical window to the right
 opt.tabstop = 2       -- 2 spaces for tabs

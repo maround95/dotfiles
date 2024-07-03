@@ -34,48 +34,50 @@
   };
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, disko, lanzaboote, ... }:
-  let
-    inherit (self) outputs;
-    inherit (nixpkgs) lib;
-    configLib = import ./lib { inherit lib; };
-    specialArgs = { inherit configLib inputs outputs; };
-  in
-  {
+    let
+      inherit (self) outputs;
+      inherit (nixpkgs) lib;
+      configLib = import ./lib { inherit lib; };
+      specialArgs = { inherit configLib inputs outputs; };
+    in
+    {
 
-    overlays = import ./overlays { inherit inputs; };
+      overlays = import ./overlays { inherit inputs; };
 
-    homeConfigurations."maroun@generic-x86_64" = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      extraSpecialArgs = specialArgs;
-      modules = [ ./home.nix ];
+      homeConfigurations."maroun@generic-x86_64" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        extraSpecialArgs = specialArgs;
+        modules = [ ./home.nix ];
+      };
+
+      homeConfigurations."maroun@generic-aarch64" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.aarch64-linux;
+        extraSpecialArgs = specialArgs;
+        modules = [ ./home.nix ];
+      };
+
+      nixosConfigurations."l5p" = lib.nixosSystem {
+        inherit specialArgs;
+        modules = [
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.extraSpecialArgs = specialArgs;
+          }
+          inputs.hardware.nixosModules.lenovo-legion-16ach6h
+          ./hosts/l5p
+        ];
+      };
+
+      nixosConfigurations."mika" = lib.nixosSystem {
+        inherit specialArgs;
+        modules = [
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.extraSpecialArgs = specialArgs;
+          }
+          ./hosts/mika
+        ];
+      };
+
     };
-
-    homeConfigurations."maroun@generic-aarch64" = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.aarch64-linux;
-      extraSpecialArgs = specialArgs;
-      modules = [ ./home.nix ];
-    };
-
-    nixosConfigurations."l5p" = lib.nixosSystem {
-      inherit specialArgs;
-      modules = [
-        home-manager.nixosModules.home-manager {
-          home-manager.extraSpecialArgs = specialArgs;
-        }
-        inputs.hardware.nixosModules.lenovo-legion-16ach6h
-        ./hosts/l5p
-      ];
-    };
-
-    nixosConfigurations."mika" = lib.nixosSystem {
-      inherit specialArgs;
-      modules = [
-        home-manager.nixosModules.home-manager {
-          home-manager.extraSpecialArgs = specialArgs;
-        }
-        ./hosts/mika
-      ];
-    };
-
-  };
 }

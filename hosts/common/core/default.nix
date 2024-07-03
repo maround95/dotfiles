@@ -1,4 +1,8 @@
 { inputs, outputs, configLib, ... }: {
+  imports = [
+    ./zsh.nix
+  ];
+
   home-manager.extraSpecialArgs = { inherit inputs outputs; };
 
   nixpkgs = {

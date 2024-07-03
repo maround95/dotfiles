@@ -20,6 +20,7 @@ return {
     lspconfig.clangd.setup({})
     lspconfig.pyright.setup({})
     lspconfig.ruff_lsp.setup({})
+    lspconfig.nil_ls.setup({})
 
     vim.api.nvim_create_autocmd("LspAttach", {
       callback = function()

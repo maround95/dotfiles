@@ -3,6 +3,8 @@
 
   imports = [
     ./nvim_maroun.nix
+    ./starship.nix
+    ./zsh.nix
   ];
 
   options = {
@@ -23,6 +25,7 @@
       stateVersion = lib.mkDefault "24.05";
       sessionPath = [
         "$HOME/.local/bin"
+        "$HOME/.cargo/bin"
       ];
       sessionVariables = {
         FLAKE = "$HOME/.dotfiles";
@@ -35,6 +38,7 @@
       htop
       jq
       rar
+      fzf
     ];
 
     nixpkgs = {

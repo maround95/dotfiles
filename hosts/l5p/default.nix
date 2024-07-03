@@ -8,10 +8,10 @@
 
     (../common/disks/standard_luks_btrfs.nix)
     {
-       _module.args = {
-         disk = "/dev/nvme1n1";
-         withSwap = false;
-       };
+      _module.args = {
+        disk = "/dev/nvme1n1";
+        withSwap = false;
+      };
     }
   ]
   ++ (map configLib.relativeToRoot [ "hosts/common/core" ]);
@@ -43,9 +43,21 @@
   };
 
   # Plasma
-  services.displayManager.sddm.enable = true;
+  # services.displayManager.sddm.enable = true;
+  # services.displayManager.sddm.wayland.enable = true;
+
+  services.greetd = {
+    enable = true;
+    restart = true;
+
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --asterisks --time --time-format '%I:%M %p | %a • %h | %F' --cmd startplasma-wayland";
+        user = "maroun";
+      };
+    };
+  };
   services.desktopManager.plasma6.enable = true;
-  services.displayManager.sddm.wayland.enable = true;
 
   networking.hostName = "l5p"; # Define your hostname.
 

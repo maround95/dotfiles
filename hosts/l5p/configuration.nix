@@ -45,14 +45,14 @@
     isNormalUser = true;
     description = "maroun";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
+    shell = pkgs.zsh;
   };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate = (_: true);
 
-  fonts.packages = with pkgs; [ pkgs.fira-code-nerdfont];
+  fonts.packages = [ pkgs.fira-code-nerdfont];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
