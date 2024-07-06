@@ -1,9 +1,12 @@
-{ config, lib, pkgs, inputs, outputs, ... }:
+{ config, lib, pkgs, outputs, ... }:
 {
 
   imports = [
+    ./desktops/hyprland.nix
     ./nvim_maroun.nix
     ./starship.nix
+    ./yazi.nix
+    ./zoxide.nix
     ./zsh.nix
   ];
 
@@ -28,9 +31,10 @@
         "$HOME/.cargo/bin"
       ];
       sessionVariables = {
-        FLAKE = "$HOME/.dotfiles";
+        FLAKE = "${config.dotfiles}";
         SHELL = "zsh";
         EDITOR = "nvim";
+        NVIM_APPNAME = "nvim_maroun";
       };
     };
 
@@ -38,7 +42,7 @@
       htop
       jq
       rar
-      fzf
+      dunst
     ];
 
     nixpkgs = {
@@ -60,6 +64,7 @@
 
     programs = {
       home-manager.enable = true;
+      fzf.enable = true;
     };
   };
 

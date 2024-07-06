@@ -29,7 +29,7 @@ in
     shellAliases = {
       ll = "ls -l";
       ".." = "cd ..";
-      nixs = "sudo nixos-rebuild switch --flake $HOME/.dotfiles";
+      nixs = "sudo nixos-rebuild switch --flake $FLAKE";
       rm = "rm -I";
       info = "info --vi-keys";
       v = "nvim";
@@ -81,6 +81,15 @@ in
           sha256 = "o8hgnTl84nI7jMVfA5jEcDXkMFFlnxKbRva+l/Fx4jI=";
         };
       }
+      # {
+      #   name = "fzf-zsh-plugin";
+      #   src = pkgs.fetchFromGitHub {
+      #     owner = "unixorn";
+      #     repo = "fzf-zsh-plugin";
+      #     rev = "70da0fcd6f8bfde29bac957cfe96f5ff0b3c11d1";
+      #     sha256 = "caSV6TBsLR3ifWOetSB13QwihyKYieI9HNJJKIV8yaY=";
+      #   };
+      # }
     ];
   };
 

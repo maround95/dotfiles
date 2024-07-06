@@ -1,4 +1,4 @@
-{ pkgs, configLib, inputs, ... }: {
+{ pkgs, lib, configLib, inputs, ... }: {
   imports = [
     inputs.disko.nixosModules.disko
     inputs.lanzaboote.nixosModules.lanzaboote
@@ -16,7 +16,29 @@
   ]
   ++ (map configLib.relativeToRoot [ "hosts/common/core" ]);
 
-  #programs.hyprland.enable = true;
+  programs.hyprland = {
+    enable = true;
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    xwayland.enable = true;
+  };
+
+  services.tlp.enable = lib.mkForce false;
+
+  # xdg.portal = {
+  #   enable = true;
+  #   xdgOpenUsePortal = true;
+  #   config.common = {
+  #     default = [ "gtk" "hyprland" ];
+  #     "org.freedesktop.impl.portal.ScreenCast" = [ "hyprland" ];
+  #     "org.freedesktop.impl.portal.Screenshot" = [ "hyprland" ];
+  #   };
+  #   extraPortals = [
+  #     pkgs.xdg-desktop-portal-hyprland
+  #     pkgs.xdg-desktop-portal-gtk
+  #   ];
+  # };
+
+
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   hardware.bluetooth.powerOnBoot = true;
 
@@ -52,16 +74,16 @@
 
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --asterisks --time --time-format '%I:%M %p | %a • %h | %F' --cmd startplasma-wayland";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --asterisks --time --time-format '%I:%M %p | %a • %h | %F' --cmd Hyprland";
         user = "maroun";
       };
     };
   };
-  services.desktopManager.plasma6.enable = true;
+  # services.desktopManager.plasma6.enable = true;
 
   networking.hostName = "l5p"; # Define your hostname.
 
-  home-manager.users.maroun = import ../../home/maroun/l5p.nix;
+  home-manager.users.maroun = configLib.relativeToRoot "home/maroun/l5p.nix";
 
   programs.nix-ld.enable = true;
   system.stateVersion = "24.05";

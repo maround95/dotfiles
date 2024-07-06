@@ -2,7 +2,9 @@
 {
 
   imports = [
-    common/core
+    ./common/core
+
+    ./common/optional/wezterm.nix
   ];
 
 }

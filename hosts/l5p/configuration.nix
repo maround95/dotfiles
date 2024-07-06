@@ -13,17 +13,8 @@
   boot.lanzaboote.enable = true;
   boot.lanzaboote.pkiBundle = "/etc/secureboot";
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot = {
-    kernelPatches = [ {
-      name = "edid-loader-fix-config";
-      patch = null;
-      extraConfig = ''
-        FW_LOADER y
-      '';
-    } ];	
-  };
 
-  nix.settings.experimental-features = [ "nix-command" "flakes"];
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -52,12 +43,12 @@
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate = (_: true);
 
-  fonts.packages = [ pkgs.fira-code-nerdfont];
+  fonts.packages = [ pkgs.fira-code-nerdfont ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    neovim
     git
     tmux
     sbctl
@@ -68,7 +59,6 @@
     ripgrep
     rust-bin.stable.latest.complete
     unzip
-    kitty
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

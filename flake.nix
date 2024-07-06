@@ -30,10 +30,12 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
+    
+    wezterm.url = "github:wez/wezterm?dir=nix";
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, disko, lanzaboote, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, hyprland, ... }:
     let
       inherit (self) outputs;
       inherit (nixpkgs) lib;
@@ -47,13 +49,7 @@
       homeConfigurations."maroun@generic-x86_64" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         extraSpecialArgs = specialArgs;
-        modules = [ ./home.nix ];
-      };
-
-      homeConfigurations."maroun@generic-aarch64" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.aarch64-linux;
-        extraSpecialArgs = specialArgs;
-        modules = [ ./home.nix ];
+        modules = [ ./home/maroun/common/core ];
       };
 
       nixosConfigurations."l5p" = lib.nixosSystem {
@@ -63,19 +59,7 @@
           {
             home-manager.extraSpecialArgs = specialArgs;
           }
-          inputs.hardware.nixosModules.lenovo-legion-16ach6h
           ./hosts/l5p
-        ];
-      };
-
-      nixosConfigurations."mika" = lib.nixosSystem {
-        inherit specialArgs;
-        modules = [
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.extraSpecialArgs = specialArgs;
-          }
-          ./hosts/mika
         ];
       };
 
