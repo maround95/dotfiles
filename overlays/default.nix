@@ -1,5 +1,5 @@
 # This file defines overlays
-{inputs, ...}: {
+{ inputs, ... }: {
   # This one brings our custom packages from the 'pkgs' directory
   additions = final: _prev: import ../pkgs { pkgs = final; };
 
@@ -10,6 +10,11 @@
     # example = prev.example.overrideAttrs (oldAttrs: rec {
     # ...
     # });
+    hyprland-display-leak-fix = prev.hyprland.overrideAttrs (old: {
+      # patches = (old.patches or []) ++ [ ./wlroots.patch ];
+      dontStrip = true;
+      patches = (old.patches or []) ++ [ ./hyprland-display-leak-fix.patch ./hyprland_xwayland_terminate.patch ];
+    });
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
@@ -23,4 +28,7 @@
 
   # rust-overlay - See https://github.com/oxalica/rust-overlay
   rust-overlay = inputs.rust-overlay.overlays.default;
+
+  # hyprland
+  hyprland = inputs.hyprland.overlays.default;
 }

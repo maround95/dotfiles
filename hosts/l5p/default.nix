@@ -18,26 +18,13 @@
 
   programs.hyprland = {
     enable = true;
-    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    package = inputs.hyprland.packages.x86_64-linux.hyprland-debug;
     xwayland.enable = true;
   };
+  services.desktopManager.plasma6.enable = true;
+  programs.sway.enable = true;
 
   services.tlp.enable = lib.mkForce false;
-
-  # xdg.portal = {
-  #   enable = true;
-  #   xdgOpenUsePortal = true;
-  #   config.common = {
-  #     default = [ "gtk" "hyprland" ];
-  #     "org.freedesktop.impl.portal.ScreenCast" = [ "hyprland" ];
-  #     "org.freedesktop.impl.portal.Screenshot" = [ "hyprland" ];
-  #   };
-  #   extraPortals = [
-  #     pkgs.xdg-desktop-portal-hyprland
-  #     pkgs.xdg-desktop-portal-gtk
-  #   ];
-  # };
-
 
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   hardware.bluetooth.powerOnBoot = true;
@@ -79,7 +66,6 @@
       };
     };
   };
-  # services.desktopManager.plasma6.enable = true;
 
   networking.hostName = "l5p"; # Define your hostname.
 

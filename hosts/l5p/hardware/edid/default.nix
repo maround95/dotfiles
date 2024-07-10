@@ -2,13 +2,13 @@
 
 let
   # This file was obtained from the display while "DDG" mode was enabled.
-  chip_edid = pkgs.runCommandNoCC "chip_edid" { } ''
+  chip_edid = pkgs.runCommandNoCC "chip_edid" { compressFirmware = false; } ''
     mkdir -p $out/lib/firmware/edid
     cp ${./16ach6h.bin} $out/lib/firmware/edid/16ach6h.bin
   '';
 in
 {
-  # remove once this is back in nixpkgs linux builds
+  # remove once this the firmware loader is back in nixpkgs linux builds
   boot = {
     kernelPatches = [{
       name = "edid-loader-fix-config";

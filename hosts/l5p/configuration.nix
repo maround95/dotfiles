@@ -59,6 +59,7 @@
     ripgrep
     rust-bin.stable.latest.complete
     unzip
+    gdb
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

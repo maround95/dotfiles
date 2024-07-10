@@ -1,9 +1,11 @@
-{ lib, inputs, ... }:
+{ pkgs, lib, inputs, osConfig, ... }:
 {
   imports = [
     inputs.hyprland.homeManagerModules.default
     ./wayland.nix
   ];
+
+  wayland.windowManager.hyprland.package = osConfig.programs.hyprland.package;
 
   wayland.windowManager.hyprland.enable = true;
   wayland.windowManager.hyprland.xwayland.enable = true;
@@ -20,11 +22,17 @@
   {
     "$mod" = "SUPER";
     input = {
+      natural_scroll = true;
       kb_options = "caps:swapescape";
     };
+    # env = [
+    #   "__EGL_VENDOR_LIBRARY_FILENAMES,/run/opengl-driver/share/glvnd/egl_vendor.d/50_mesa.json"
+    # ];
     bind = [
-      "$mod, Return, exec, wezterm"
+      "$mod, Return, exec, kitty"
+      "$mod, W, exec, wezterm"
       "$mod, F, exec, firefox"
+      "$mod, Q, killactive"
       
        # move between windows
        "$mod, h, movefocus, l"
@@ -37,6 +45,8 @@
        "$mod SHIFT, j, movewindow, d"
        "$mod SHIFT, k, movewindow, u"
        "$mod SHIFT, l, movewindow, r"
+
+       "ALT, Return, fullscreen, 0"
     ] ++ workspaceBinds;
   };
 }

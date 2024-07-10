@@ -1,0 +1,44 @@
+From 7cc31a04baf39d3c0339141ad8476d050ea303c8 Mon Sep 17 00:00:00 2001
+From: Maroun Deeb <maround95@gmail.com>
+Date: Sat, 6 Jul 2024 21:04:48 +0300
+Subject: [PATCH] Revert "egl: Don't assume display is owned when
+ KHR_display_reference is unsupported"
+
+This reverts commit ce615a44c06ed10ab51b9c5a630acb43ef014efb.
+---
+ subprojects/wlroots-hyprland/render/egl.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
+
+diff --git a/subprojects/wlroots-hyprland/render/egl.c b/subprojects/wlroots-hyprland/render/egl.c
+index 19868ca8..21cdc3e1 100644
+--- a/subprojects/wlroots-hyprland/render/egl.c
++++ b/subprojects/wlroots-hyprland/render/egl.c
+@@ -387,9 +387,7 @@ static bool egl_init(struct wlr_egl *egl, EGLenum platform,
+ 	}
+ 
+ 	if (!egl_init_display(egl, display)) {
+-		if (egl->exts.KHR_display_reference) {
+-			eglTerminate(display);
+-		}
++		eglTerminate(display);
+ 		return false;
+ 	}
+ 
+@@ -614,12 +612,9 @@ void wlr_egl_destroy(struct wlr_egl *egl) {
+ 	wlr_drm_format_set_finish(&egl->dmabuf_texture_formats);
+ 
+ 	eglMakeCurrent(egl->display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
+-	eglDestroyContext(egl->display, egl->context);
+-
+-	if (egl->exts.KHR_display_reference) {
+-		eglTerminate(egl->display);
+-	}
+ 
++	eglDestroyContext(egl->display, egl->context);
++	eglTerminate(egl->display);
+ 	eglReleaseThread();
+ 
+ 	if (egl->gbm_device) {
+-- 
+2.44.1
+

@@ -43,6 +43,8 @@
       jq
       rar
       dunst
+      kitty
+      gdb
     ];
 
     nixpkgs = {
