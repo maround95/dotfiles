@@ -28,7 +28,4 @@
 
   # rust-overlay - See https://github.com/oxalica/rust-overlay
   rust-overlay = inputs.rust-overlay.overlays.default;
-
-  # hyprland
-  hyprland = inputs.hyprland.overlays.default;
 }

@@ -69,6 +69,12 @@
 
   networking.hostName = "l5p"; # Define your hostname.
 
+  home-manager = {
+    # Explanation: https://nix-community.github.io/home-manager/index.xhtml#sec-install-nixos-module
+    useUserPackages = true;
+    useGlobalPkgs = true;
+  };
+
   home-manager.users.maroun = configLib.relativeToRoot "home/maroun/l5p.nix";
 
   programs.nix-ld.enable = true;

@@ -1,5 +1,5 @@
 local mason_lspconfig_opts = {
-  automatic_installation = { exclude = { "rust_analyzer" } },
+  automatic_installation = false,
 };
 
 return {
