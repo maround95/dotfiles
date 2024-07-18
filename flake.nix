@@ -34,6 +34,8 @@
     
     wezterm.url = "github:wez/wezterm?dir=nix";
 
+    # GOOD!:
+    #hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1&rev=ce17961aad6f9164e5d026d19efd42b07b123bff";
     # hyprland.url = "git+file:///home/maroun/git/Hyprland?submodules=1";
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
   };

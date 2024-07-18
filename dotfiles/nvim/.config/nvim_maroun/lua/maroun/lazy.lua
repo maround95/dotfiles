@@ -12,7 +12,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup(
-{ { import = "maroun.plugins" }, { import = "maroun.plugins.lsp" } },
+{ { import = "maroun.plugins" }, { import = "maroun.plugins.dap" }, { import = "maroun.plugins.lsp" } },
 {
   checker = {
     enabled = true,

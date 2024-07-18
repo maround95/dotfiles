@@ -14,6 +14,7 @@ return {
     telescope.setup({
       defaults = {
         path_display = { "truncate" },
+        layout_strategy = "vertical",
         mappings = {
           i = {
             ["<C-k>"] = actions.move_selection_previous, -- move to prev result

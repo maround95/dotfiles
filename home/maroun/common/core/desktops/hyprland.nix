@@ -23,7 +23,7 @@
     "$mod" = "SUPER";
     input = {
       natural_scroll = true;
-      kb_options = "caps:swapescape";
+      # kb_options = "caps:swapescape";
     };
     # env = [
     #   "__EGL_VENDOR_LIBRARY_FILENAMES,/run/opengl-driver/share/glvnd/egl_vendor.d/50_mesa.json"

@@ -5,6 +5,16 @@
 { config, lib, pkgs, ... }:
 
 {
+  services.xserver.xkb = {
+    layout = "us,ara";
+    options = "grp:win_space_toggle,caps:escape";
+  };
+
+  console.earlySetup = true;
+  console.useXkbConfig = true;
+  services.xserver.exportConfiguration = true;
+
+  boot.initrd.systemd.enable = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = lib.mkForce false;
