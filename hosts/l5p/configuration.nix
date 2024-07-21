@@ -6,13 +6,10 @@
 
 {
   services.xserver.xkb = {
-    layout = "us,ara";
-    options = "grp:win_space_toggle,caps:escape";
+    layout = "us";
   };
 
-  console.earlySetup = true;
-  console.useXkbConfig = true;
-  services.xserver.exportConfiguration = true;
+  # services.xserver.exportConfiguration = true;
 
   boot.initrd.systemd.enable = true;
 
@@ -45,7 +42,7 @@
   users.users.maroun = {
     isNormalUser = true;
     description = "maroun";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "uinput" ];
     shell = pkgs.zsh;
   };
 

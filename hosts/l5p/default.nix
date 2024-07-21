@@ -13,8 +13,10 @@
         withSwap = false;
       };
     }
-  ]
-  ++ (map configLib.relativeToRoot [ "hosts/common/core" ]);
+  ] ++ (map configLib.relativeToRoot [ 
+    "hosts/common/core"
+    "hosts/common/optional/keybinds"
+  ]);
 
   programs.hyprland = {
     enable = true;
