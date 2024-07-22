@@ -1,4 +1,4 @@
-{ config, lib, pkgs, outputs, ... }:
+{ config, lib, pkgs, ... }:
 {
 
   imports = [
@@ -25,7 +25,7 @@
     home = {
       username = lib.mkDefault "maroun";
       homeDirectory = lib.mkDefault "/home/${config.home.username}";
-      stateVersion = lib.mkDefault "24.05";
+      stateVersion = lib.mkDefault "24.11";
       sessionPath = [
         "$HOME/.local/bin"
         "$HOME/.cargo/bin"
@@ -41,9 +41,7 @@
     home.packages = with pkgs; [
       htop
       jq
-      rar
       dunst
-      kitty
       gdb
     ];
 

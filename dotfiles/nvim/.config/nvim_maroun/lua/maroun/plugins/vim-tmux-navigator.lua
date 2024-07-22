@@ -1,6 +1,7 @@
 -- Navigate nvim and tmux windows/panels with vim bindings
 return {
   'christoomey/vim-tmux-navigator',
+  cond = vim.env.TMUX ~= nil,
   cmd = {
     "TmuxNavigateLeft",
     "TmuxNavigateDown",

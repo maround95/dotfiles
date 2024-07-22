@@ -28,7 +28,6 @@ in
 
     shellAliases = {
       ll = "ls -l";
-      ".." = "cd ..";
       nixs = "sudo nixos-rebuild switch --flake $FLAKE";
       rm = "rm -I";
       info = "info --vi-keys";

@@ -80,5 +80,5 @@
   home-manager.users.maroun = configLib.relativeToRoot "home/maroun/l5p.nix";
 
   programs.nix-ld.enable = true;
-  system.stateVersion = "24.05";
+  system.stateVersion = "24.11";
 }

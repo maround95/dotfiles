@@ -1,11 +1,11 @@
-{ pkgs, lib, inputs, osConfig, ... }:
+self@{ pkgs, lib, inputs, ... }:
 {
   imports = [
     inputs.hyprland.homeManagerModules.default
     ./wayland.nix
   ];
 
-  wayland.windowManager.hyprland.package = osConfig.programs.hyprland.package;
+  wayland.windowManager.hyprland.package = self.osConfig.programs.hyprland.package or pkgs.hyprland;
 
   wayland.windowManager.hyprland.enable = true;
   wayland.windowManager.hyprland.xwayland.enable = true;

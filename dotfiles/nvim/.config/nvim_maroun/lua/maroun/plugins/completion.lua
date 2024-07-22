@@ -58,7 +58,7 @@ return {
     }
 
     return {
-      preselect = cmp.PreselectMode.None;
+      preselect = cmp.PreselectMode.None,
       completion = {
         completeopt = "menu,menuone,noinsert,noselect",
       },
@@ -93,7 +93,9 @@ return {
           select = true,
         }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
         ["<Tab>"] = cmp.mapping(function(fallback)
-          if luasnip.expandable() then
+          if cmp.visible() then
+            cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+          elseif luasnip.expandable() then
             luasnip.expand()
           elseif luasnip.expand_or_jumpable() then
             luasnip.expand_or_jump()
@@ -102,7 +104,9 @@ return {
           end
         end, { "i", "s" }),
         ["<S-Tab>"] = cmp.mapping(function(fallback)
-          if vim.snippet.active({ direction = -1 }) then
+          if cmp.visible() then
+            cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+          elseif vim.snippet.active({ direction = -1 }) then
             vim.schedule(function() vim.snippet.jump(-1) end)
           elseif luasnip.jumpable(-1) then
             luasnip.jump(-1)
@@ -128,7 +132,7 @@ return {
       sources = {
         { name = "nvim_lsp" },
         { name = "luasnip", max_item_count = 10 },
-        { name = "buffer", max_item_count = 5, keyword_length = 3 },
+        { name = "buffer",  max_item_count = 5, keyword_length = 3 },
         { name = "emoji" },
         { name = "path" },
       },

@@ -3,17 +3,14 @@
 
   inputs = {
 
-    nixpkgs.url = "github:nixos/nixpkgs/release-24.05";
-    #nixpkgs.url = "git+file:///home/maroun/nixpkgs";
-    # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    #hardware.url = "git+file:///home/maroun/nixos-hardware";
     hardware.url = "github:nixos/nixos-hardware/master";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -34,9 +31,6 @@
     
     wezterm.url = "github:wez/wezterm?dir=nix";
 
-    # GOOD!:
-    #hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1&rev=ce17961aad6f9164e5d026d19efd42b07b123bff";
-    # hyprland.url = "git+file:///home/maroun/git/Hyprland?submodules=1";
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
   };
 
@@ -54,7 +48,7 @@
       homeConfigurations."maroun@generic-x86_64" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         extraSpecialArgs = specialArgs;
-        modules = [ ./home/maroun/common/core ];
+        modules = [ ./home/maroun/common/core ./home/maroun/common/optional/zellij.nix ];
       };
 
       nixosConfigurations."l5p" = lib.nixosSystem {
@@ -64,7 +58,6 @@
           {
             home-manager.extraSpecialArgs = specialArgs;
           }
-          # inputs.hardware.nixosModules.lenovo-legion-16ach6h
           ./hosts/l5p
         ];
       };
