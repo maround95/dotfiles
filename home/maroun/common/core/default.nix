@@ -38,12 +38,23 @@
       };
     };
 
+    fonts.fontconfig.enable = true;
+
     home.packages = with pkgs; [
       htop
       jq
       dunst
       gdb
+      (nerdfonts.override { fonts = [ "FiraCode" ]; })
     ];
+
+    home.file.".inputrc".text = ''
+      set editing-mode vi
+    '';
+
+    home.file.".haskeline".text = ''
+      editMode: Vi
+    '';
 
     # TODO: Probably needed for home-manager configuration on non-NixOS
     # nixpkgs = {
@@ -61,6 +72,13 @@
         experimental-features = [ "nix-command" "flakes" "repl-flake" ];
         warn-dirty = false;
       };
+    };
+
+    programs.direnv = {
+      enable = true;
+      enableBashIntegration = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
     };
 
     programs = {

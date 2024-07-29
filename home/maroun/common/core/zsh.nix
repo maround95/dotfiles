@@ -62,6 +62,9 @@ in
 
       unsetopt BASH_AUTO_LIST
 
+      # 10ms for key sequences i.e disabled. Bugs me with vi-mode
+      KEYTIMEOUT=1
+
       ${selectBracketedQuoted}
 
       setopt incappendhistory

@@ -4,7 +4,7 @@ let
     name = "hyprland";
     src = /home/maroun/git/Hyprland/outputs/out;
     phases = [ "installPhase" ];
-        passthru.providedSessions = ["hyprland"];
+    passthru.providedSessions = [ "hyprland" ];
     installPhase = ''
       cp -r $src $out
     '';

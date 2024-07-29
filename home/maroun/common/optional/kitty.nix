@@ -1,4 +1,4 @@
-self@{ pkgs, lib, inputs, ... }:
+self@{ lib, ... }:
 let
   # Zellij tmux mode os binding
   zjBinding = self.osConfig.my.keybinds.bindings.zellij or null;
@@ -6,10 +6,15 @@ let
   zjUnicodeBind = toString zjBinding.unicodeString;
 in
 {
+
   programs.kitty = {
     enable = true;
-
+    theme = "Catppuccin-Macchiato";
     settings = {
+      font_family = "FiraCode Nerd Font";
+      font_size = 12;
+      resize_in_steps = true;
+
       scrollback_lines = 10000;
       enable_audio_bell = false;
       update_check_interval = 0;
@@ -20,4 +25,5 @@ in
       ${zjXKBSymHex} = "send_text all ${zjUnicodeBind}";
     };
   };
+
 }

@@ -23,8 +23,7 @@
   boot.kernelParams = [ "nvidia-drm.fbdev=1" ];
 
   # acpi_call kernel module
-  boot.kernelModules = [ "acpi_call" ];
-  boot.extraModulePackages = [ config.boot.kernelPackages.acpi_call ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
 
   hardware = {
     amdgpu.initrd.enable = false;

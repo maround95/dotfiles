@@ -62,8 +62,9 @@ in {
   # Use custom console keymap.
   config.console = {
     earlySetup = true;
-    packages = [ consoleKeymap.package ];
-    keyMap = consoleKeymap.keymapName;
+    # packages = [ consoleKeymap.package ];
+    # keyMap = consoleKeymap.keymapName;
+    useXkbConfig = true;
   };
 
 }

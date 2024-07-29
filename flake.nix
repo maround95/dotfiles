@@ -28,27 +28,37 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    
+
     wezterm.url = "github:wez/wezterm?dir=nix";
 
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, hyprland, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, ... }:
     let
       inherit (self) outputs;
       inherit (nixpkgs) lib;
+
+      system = "x86_64-linux";
       configLib = import ./lib { inherit lib; };
       specialArgs = { inherit configLib inputs outputs; };
+      pkgs = nixpkgs.legacyPackages.${system};
     in
     {
 
       overlays = import ./overlays { inherit inputs; };
 
       homeConfigurations."maroun@generic-x86_64" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        inherit pkgs;
         extraSpecialArgs = specialArgs;
-        modules = [ ./home/maroun/common/core ./home/maroun/common/optional/zellij.nix ];
+        modules = [ ./home/maroun/common/core ./home/maroun/common/optional/zellij ];
+      };
+
+      devShells.${system}.default = pkgs.mkShell {
+        buildInputs = with pkgs; [
+          nixd
+          nixfmt-rfc-style
+        ];
       };
 
       nixosConfigurations."l5p" = lib.nixosSystem {
