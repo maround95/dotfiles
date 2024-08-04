@@ -20,14 +20,13 @@ return {
     -- Protected call in case we don't have which-key
     local status, wk = pcall(require, "which-key")
     if status then
-      wk.register({
-        ["<leader>1"] = "which_key_ignore",
-        ["<leader>2"] = "which_key_ignore",
-        ["<leader>3"] = "which_key_ignore",
-        ["<leader>4"] = "which_key_ignore",
-        ["<leader>5"] = "which_key_ignore",
+      wk.add({
+        { "<leader>1", hidden = true },
+        { "<leader>2", hidden = true },
+        { "<leader>3", hidden = true },
+        { "<leader>4", hidden = true },
+        { "<leader>5", hidden = true },
       })
     end
-
   end
 }

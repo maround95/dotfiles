@@ -3,9 +3,11 @@
 
   inputs = {
 
+    ### nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
+    # nixpkgs.url = "github:nixos/nixpkgs/release-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    ###
 
     hardware.url = "github:nixos/nixos-hardware/master";
 
@@ -31,7 +33,9 @@
 
     wezterm.url = "github:wez/wezterm?dir=nix";
 
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    hyprland = {
+      url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    };
   };
 
   outputs = inputs@{ self, nixpkgs, home-manager, ... }:
@@ -57,7 +61,9 @@
       devShells.${system}.default = pkgs.mkShell {
         buildInputs = with pkgs; [
           nixd
+          nil
           nixfmt-rfc-style
+          lua-language-server
         ];
       };
 

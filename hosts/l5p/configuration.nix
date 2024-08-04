@@ -64,7 +64,7 @@
     gnumake
     gcc
     ripgrep
-    rust-bin.stable.latest.complete
+    # rust-bin.stable.latest.complete
     unzip
     gdb
   ];

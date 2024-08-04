@@ -17,19 +17,21 @@
     });
 
     # This should have a fix for neovim cursor flickering in zellij
-    zellij-5f64b = prev.zellij.overrideAttrs (old: rec {
-      version = "5f64b";
+    zellij-unstable = prev.zellij.overrideAttrs (old: rec {
+      version = "0.41.0";
+      pname = "zellij";
+
+
       src = prev.fetchFromGitHub {
         owner = "zellij-org";
         repo = "zellij";
-        rev = "5f64bf03fd93da790caa249f7f58145d806b52a8";
-        sha256 = "E0YANAoKg4Oy/Av1SOyG8NG95aWGZOzh55sLIvV5O2M=";
+        rev = "47caeb66a6c5b8b229c1227ce823defcdccf31b8";
+        sha256 = "fkyi5iIZEZXPq6a4qn3xS88qgecN3gZLLv00PoTVDlA=";
       };
 
       cargoDeps = old.cargoDeps.overrideAttrs (prev.lib.const {
-        name = "zellij-0.41.0-vendor.tar.gz";
         inherit src;
-        outputHash = "sha256-0O+9Om4JA4YQW+gkoQW3t1ZaTSv3N5Tv/xP2ri3Sc2Q=";
+        outputHash = "sha256-M9wQy0nO6ro09laJXMP0N6R6B2vxNVCStyh2CovGUHA=";
       });
     });
   };

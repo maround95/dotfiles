@@ -15,19 +15,22 @@ self@{ pkgs, lib, inputs, ... }:
     # workspaces
     # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
     workspaceBinds = builtins.concatLists (map (x: [
-        "$mod, ${toString x}, workspace, ${toString (x)}"
-        "$mod SHIFT, ${toString x}, movetoworkspace, ${toString (x)}"
+        "$mod, ${toString x}, workspace, ${toString x}"
+        "$mod SHIFT, ${toString x}, movetoworkspace, ${toString x}"
       ]) (lib.range 1 9));
   in
   {
+    # exec-once = [
+    # ]
     "$mod" = "SUPER";
     input = {
       natural_scroll = true;
       # kb_options = "caps:swapescape";
     };
-    # env = [
-    #   "__EGL_VENDOR_LIBRARY_FILENAMES,/run/opengl-driver/share/glvnd/egl_vendor.d/50_mesa.json"
-    # ];
+    env = [
+      # "__EGL_VENDOR_LIBRARY_FILENAMES,/run/opengl-driver/share/glvnd/egl_vendor.d/50_mesa.json"
+      "WLR_NO_HARDWARE_CURSORS,1"
+    ];
     bind = [
       "$mod, Return, exec, kitty"
       "$mod, W, exec, wezterm"

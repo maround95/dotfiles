@@ -20,10 +20,10 @@
   # Paraphrased from Arch Wiki:
   # With >=v545 the fbdev parameter tells the NVIDIA driver to provide its own framebuffer device
   # instead of efifb/vesafb, which do not work with simpledrm (enabled on nix).
-  boot.kernelParams = [ "nvidia-drm.fbdev=1" ];
+  # boot.kernelParams = [ "nvidia-drm.fbdev=1" ];
 
   # acpi_call kernel module
-  boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call lenovo-legion-module ];
 
   hardware = {
     amdgpu.initrd.enable = false;

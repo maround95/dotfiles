@@ -21,6 +21,14 @@
   };
 
   config = {
+    gtk.enable = true;
+    home.pointerCursor = {
+      gtk.enable = true;
+      x11.enable = true;
+      name = "WhiteSur";
+      package = pkgs.whitesur-cursors;
+      size = 24;
+    };
 
     home = {
       username = lib.mkDefault "maroun";

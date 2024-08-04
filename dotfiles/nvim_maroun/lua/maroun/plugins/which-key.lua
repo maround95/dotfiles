@@ -3,21 +3,21 @@ return {
   event = "VeryLazy",
   init = function()
     vim.o.timeout = true
-    vim.o.timeoutlen = 500
+    vim.o.timeoutlen = 1500
   end,
   config = function()
     local wk = require("which-key");
 
-    wk.register({
-      ["<leader>c"] = { name = "+Code" },
-      ["<leader>f"] = { name = "+Find" },
-      ["<leader>g"] = { name = "+Git" },
-      ["<leader>h"] = { name = "+Git hunks" },
-      ["<leader>s"] = { name = "+Splits" },
-      ["<leader>t"] = { name = "+Toggle" },
-      ["<leader>u"] = { name = "+Undotree" },
-      ["<leader>w"] = { name = "+Session" },
-      ["<leader>x"] = { name = "+Diagnostics" },
+    wk.add({
+      { "<leader>c", group = "Code" },
+      { "<leader>f", group = "Find" },
+      { "<leader>g", group = "Git" },
+      { "<leader>h", group = "Git hunks" },
+      { "<leader>s", group = "Splits" },
+      { "<leader>t", group = "Toggle" },
+      { "<leader>u", group = "Undotree" },
+      { "<leader>w", group = "Session" },
+      { "<leader>x", group = "Diagnostics" },
     });
   end
 }

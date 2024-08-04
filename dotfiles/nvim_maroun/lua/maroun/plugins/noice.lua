@@ -2,6 +2,7 @@ return {
   {
     "folke/noice.nvim",
     event = "VeryLazy",
+    -- enabled = false,
     opts = {
       lsp = {
         -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
@@ -19,15 +20,19 @@ return {
         inc_rename = false, -- enables an input dialog for inc-rename.nvim
         lsp_doc_border = false, -- add a border to hover docs and signature help
       },
-    },
-    keys = {
-      { "<leader><Backspace>", "<cmd>NoiceDismiss<CR>", mode = "n", desc = "Dismiss notifications" },
-    },
-  },
-  {
-    "rcarriga/nvim-notify",
-    opts = {
-      timeout = 3000,
+      notify = {
+        -- Notifications are too intrusive
+        enabled = false,
+      },
+      cmdline = {
+        enabled = true,
+      },
     },
   },
+  -- {
+  --   "rcarriga/nvim-notify",
+  --   opts = {
+  --     timeout = 3000,
+  --   },
+  -- },
 }

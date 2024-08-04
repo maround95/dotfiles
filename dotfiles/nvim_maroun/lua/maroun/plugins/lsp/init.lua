@@ -38,7 +38,7 @@ return {
         vim.keymap.set("n", "gd", builtin.lsp_definitions, { buffer = 0, desc = "LSP: Go to definition" })
         vim.keymap.set("n", "gr", builtin.lsp_references, { buffer = 0, desc = "LSP: Show references" })
         vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = 0, desc = "LSP: Go to declaration" })
-        vim.keymap.set("n", "gT", vim.lsp.buf.type_definition, { buffer = 0, desc = "LSP: Go to type definition" })
+        -- vim.keymap.set("n", "gT", vim.lsp.buf.type_definition, { buffer = 0, desc = "LSP: Go to type definition" })
         vim.keymap.set("n", "<C-K>", vim.lsp.buf.hover, { buffer = 0, desc = "LSP: Hover" })
 
         vim.keymap.set("n", "<space>cr", vim.lsp.buf.rename, { buffer = 0, desc = "LSP: Rename symbol" })

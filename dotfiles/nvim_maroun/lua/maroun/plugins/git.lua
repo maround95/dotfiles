@@ -13,7 +13,14 @@ return {
     keys = {
       { "<leader>gg", "<cmd>Neogit<CR>", mode = "n", desc = "Neogit" },
     },
-    opts = {}
+    opts = {
+      mappings = {
+        finder = {
+          ["<c-k>"] = "Previous",
+          ["<c-j>"] = "Next",
+        }
+      }
+    }
   },
   {
     "ThePrimeagen/git-worktree.nvim",
