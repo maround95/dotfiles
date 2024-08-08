@@ -1,15 +1,6 @@
 { config, lib, pkgs, ... }:
 {
 
-  imports = [
-    ./desktops/hyprland.nix
-    ./nvim_maroun.nix
-    ./starship.nix
-    ./yazi.nix
-    ./zoxide.nix
-    ./zsh.nix
-  ];
-
   options = {
     dotfiles = lib.mkOption {
       type = lib.types.path;
