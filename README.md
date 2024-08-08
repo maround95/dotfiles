@@ -4,8 +4,8 @@
 bash <(curl -L https://nixos.org/nix/install) --no-daemon
 
 # Nix shell with tools
-nix-shell
+nix develop
 
-# Home manager first generation
-home-manager switch --flake .#flakeName
+# Home manager build derivation
+home-manager switch --flake .#configName
 ```
