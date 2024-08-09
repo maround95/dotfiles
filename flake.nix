@@ -6,13 +6,23 @@
     ### nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     # nixpkgs.url = "github:nixos/nixpkgs/release-24.05";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     ###
+
+    snowfall-lib = {
+      url = "github:snowfallorg/lib";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     hardware.url = "github:nixos/nixos-hardware/master";
 
     home-manager = {
       url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -31,6 +41,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Snowfall Flake
+    snowfallorg-flake = {
+      url = "github:snowfallorg/flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     wezterm.url = "github:wez/wezterm?dir=nix";
 
     hyprland = {
@@ -38,45 +54,49 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, ... }:
-    let
-      inherit (self) outputs;
-      inherit (nixpkgs) lib;
+  outputs =
+    inputs:
+    inputs.snowfall-lib.mkFlake {
+      inherit inputs;
+      src = ./.;
 
-      system = "x86_64-linux";
-      configLib = import ./lib { inherit lib; };
-      specialArgs = { inherit configLib inputs outputs; };
-      pkgs = nixpkgs.legacyPackages.${system};
-    in
-    {
+      snowfall.namespace = "lk95";
 
-      overlays = import ./overlays { inherit inputs; };
-
-      homeConfigurations."maroun@generic-x86_64" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        extraSpecialArgs = specialArgs;
-        modules = [ ./home/maroun/common/core ./home/maroun/common/optional/zellij ];
+      channels-config = {
+        allowUnfree = true;
       };
 
-      devShells.${system}.default = pkgs.mkShell {
-        buildInputs = with pkgs; [
-          nixd
-          nil
-          nixfmt-rfc-style
-          lua-language-server
-        ];
-      };
-
-      nixosConfigurations."l5p" = lib.nixosSystem {
-        inherit specialArgs;
-        modules = [
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.extraSpecialArgs = specialArgs;
-          }
-          ./hosts/l5p
-        ];
-      };
-
+      overlays = with inputs; [ snowfallorg-flake.overlays."package/flake" ];
     };
+
+  # outputs = inputs@{ self, nixpkgs, home-manager, ... }:
+  #   let
+  #     inherit (self) outputs;
+  #     inherit (nixpkgs) lib;
+  #
+  #     system = "x86_64-linux";
+  #     configLib = import ./lib { inherit lib; };
+  #     specialArgs = { inherit configLib inputs outputs; };
+  #     pkgs = nixpkgs.legacyPackages.${system};
+  #   in
+  #   {
+  #
+  #     homeConfigurations."maroun@generic-x86_64" = home-manager.lib.homeManagerConfiguration {
+  #       inherit pkgs;
+  #       extraSpecialArgs = specialArgs;
+  #       modules = [ ./home/maroun/common/core ./home/maroun/common/optional/zellij ];
+  #     };
+  #
+  #     nixosConfigurations."l5p" = lib.nixosSystem {
+  #       inherit specialArgs;
+  #       modules = [
+  #         home-manager.nixosModules.home-manager
+  #         {
+  #           home-manager.extraSpecialArgs = specialArgs;
+  #         }
+  #         ./hosts/l5p
+  #       ];
+  #     };
+  #
+  #   };
 }
