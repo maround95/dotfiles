@@ -30,6 +30,10 @@ in
 
       nix = enabled;
 
+      security = {
+        polkit = enabled;
+      };
+
       services = {
         kanata = enabled;
         ntp = enabled;

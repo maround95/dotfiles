@@ -12,6 +12,8 @@ return {
     },
     keys = {
       { "<leader>gg", "<cmd>Neogit<CR>", mode = "n", desc = "Neogit" },
+      { "<leader>gd", "<cmd>DiffviewOpen<CR>", mode = "n", desc = "Open Diffview" },
+      { "<leader>gh", "<cmd>DiffviewFileHistory %<CR>", mode = "n", desc = "Open Diffview current file history" },
     },
     opts = {
       mappings = {
@@ -20,7 +22,22 @@ return {
           ["<c-j>"] = "Next",
         }
       }
-    }
+    },
+    config = function(_, opts)
+      require('neogit').setup(opts)
+
+      require('diffview').setup({
+      })
+
+      -- Diffview exit with q, workaround because using the keymaps option is buggy.
+      -- vim.api.nvim_create_autocmd('User', {
+      --   pattern = 'DiffviewViewOpened',
+      --   group = vim.api.nvim_create_augroup('DiffviewQuit', { clear = true }),
+      --   callback = function()
+      --     vim.api.nvim_buf_set_keymap(0, 'n', 'q', '<Cmd>DiffviewClose<CR>', { noremap = true, silent = true })
+      --   end,
+      -- })
+    end
   },
   {
     "ThePrimeagen/git-worktree.nvim",
@@ -58,8 +75,10 @@ return {
         -- Actions
         map('n', '<leader>hs', gs.stage_hunk, { desc = 'Stage hunk' })
         map('n', '<leader>hr', gs.reset_hunk, { desc = 'Reset hunk' })
-        map('v', '<leader>hs', function() gs.stage_hunk { vim.fn.line('.'), vim.fn.line('v') } end, { desc = 'Stage hunk' })
-        map('v', '<leader>hr', function() gs.reset_hunk { vim.fn.line('.'), vim.fn.line('v') } end, { desc = 'Reset hunk' })
+        map('v', '<leader>hs', function() gs.stage_hunk { vim.fn.line('.'), vim.fn.line('v') } end,
+          { desc = 'Stage hunk' })
+        map('v', '<leader>hr', function() gs.reset_hunk { vim.fn.line('.'), vim.fn.line('v') } end,
+          { desc = 'Reset hunk' })
         map('n', '<leader>hS', gs.stage_buffer, { desc = 'Stage buffer' })
         map('n', '<leader>hu', gs.undo_stage_hunk, { desc = 'Undo stage hunk' })
         map('n', '<leader>hR', gs.reset_buffer, { desc = 'Git Reset Buffer' })

@@ -31,6 +31,7 @@ in
         };
 
         hyprland = enabled;
+        sway = enabled;
       };
 
     };

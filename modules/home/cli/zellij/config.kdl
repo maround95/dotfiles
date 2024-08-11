@@ -21,10 +21,16 @@ keybinds clear-defaults=true {
   }
   tmux {
     bind "Esc" { SwitchToMode "Normal"; }
+    bind "Up" { NewPane "Up"; SwitchToMode "Normal"; }
+    bind "Down" { NewPane "Down"; SwitchToMode "Normal"; }
+    bind "Left" { NewPane "Left"; SwitchToMode "Normal"; }
+    bind "Right" { NewPane "Right"; SwitchToMode "Normal"; }
+
     bind "e" { TogglePaneEmbedOrFloating; SwitchToMode "Normal"; }
     bind "f" { ToggleFloatingPanes; SwitchToMode "Normal"; }
     bind "h" { GoToPreviousTab; SwitchToMode "Normal"; }
     bind "l" { GoToNextTab; SwitchToMode "Normal"; }
+    bind "n" { NewPane; SwitchToMode "Normal"; }
     bind "v" { SwitchToMode "Scroll"; }
     bind "z" { ToggleFocusFullscreen; SwitchToMode "Normal"; }
 

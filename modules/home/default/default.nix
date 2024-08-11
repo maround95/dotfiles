@@ -22,8 +22,6 @@
     };
 
     home = {
-      username = lib.mkDefault "maroun";
-      homeDirectory = lib.mkDefault "/home/${config.home.username}";
       stateVersion = lib.mkDefault "24.11";
       sessionPath = [
         "$HOME/.local/bin"
@@ -39,32 +37,6 @@
 
     fonts.fontconfig.enable = true;
 
-    home.packages = with pkgs; [
-      htop
-      jq
-      dunst
-      gdb
-      (nerdfonts.override { fonts = [ "FiraCode" ]; })
-    ];
-
-    home.file.".inputrc".text = ''
-      set editing-mode vi
-    '';
-
-    home.file.".haskeline".text = ''
-      editMode: Vi
-    '';
-
-    # TODO: Probably needed for home-manager configuration on non-NixOS
-    # nixpkgs = {
-    #   overlays = builtins.attrValues outputs.overlays;
-    #   config = {
-    #     allowUnfree = true;
-    #     # Workaround for https://github.com/nix-community/home-manager/issues/2942
-    #     allowUnfreePredicate = (_: true);
-    #   };
-    # };
-
     nix = {
       package = lib.mkDefault pkgs.nix;
       settings = {
@@ -73,17 +45,11 @@
       };
     };
 
-    programs.direnv = {
-      enable = true;
-      enableBashIntegration = true;
-      enableZshIntegration = true;
-      nix-direnv.enable = true;
-    };
-
     programs = {
       home-manager.enable = true;
       fzf.enable = true;
     };
+
   };
 
 }

@@ -1,10 +1,10 @@
 return {
   { "windwp/nvim-autopairs", event = "InsertEnter", config = true },
-  { "abecodes/tabout.nvim", event = "InsertEnter", config = true },
+  { "abecodes/tabout.nvim",  event = "InsertEnter", config = true },
   {
     "hrsh7th/nvim-cmp",
     version = false, -- last release is way too old
-    event = { "BufReadPre", "BufNewFile" },
+    event = { "VeryLazy" },
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
@@ -95,7 +95,7 @@ return {
         Misc = " ",
       }
 
-      return {
+      cmp.setup({
         preselect = cmp.PreselectMode.None,
         completion = {
           completeopt = "menu,menuone,noinsert",
@@ -146,6 +146,7 @@ return {
           end, { "i", "s" }),
         }),
         formatting = {
+          expandable_indicator = true,
           fields = { "kind", "abbr", "menu" }, --order they will be displayed => Icon | Abbreviation | Menu
           format = function(entry, vim_item)
             vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
@@ -182,6 +183,59 @@ return {
         --     hl_group = "CmpGhostText",
         --   },
         -- },
-      }
+      });
+
+      -- `/` cmdline setup.
+      cmp.setup.cmdline('/', {
+        preselect = cmp.PreselectMode.None,
+        completion = {
+          completeopt = "menu,menuone,noselect,noinsert",
+        },
+        mapping = cmp.mapping.preset.cmdline({
+          ['<C-j>'] = {
+            c = function()
+              cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+            end,
+          },
+          ['<C-k>'] = {
+            c = function()
+              cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+            end,
+          },
+        }),
+        sources = {
+          { name = 'buffer' }
+        }
+      })
+
+      -- `:` cmdline setup.
+      cmp.setup.cmdline(':', {
+        preselect = cmp.PreselectMode.None,
+        completion = {
+          completeopt = "menu,menuone,noselect,noinsert",
+        },
+        mapping = cmp.mapping.preset.cmdline({
+          ['<C-j>'] = {
+            c = function()
+              cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+            end,
+          },
+          ['<C-k>'] = {
+            c = function()
+              cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+            end,
+          },
+        }),
+        sources = cmp.config.sources({
+          { name = 'path' }
+        }, {
+          {
+            name = 'cmdline',
+            option = {
+              ignore_cmds = { 'Man', '!' }
+            }
+          }
+        })
+      })
     end,
   } }

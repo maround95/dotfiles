@@ -21,6 +21,7 @@ in
       services = {
         docker = enabled;
         libvirt = enabled;
+        ollama = enabled;
       };
 
       tools = {

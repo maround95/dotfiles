@@ -19,11 +19,14 @@ in
     ${namespace}.user.extraGroups = [ "networkmanager" ];
 
     networking = {
+      wireless.iwd.enable = true;
+
       hosts = {
         "127.0.0.1" = [ "local.test" ];
       };
 
       networkmanager = {
+        wifi.backend = "iwd";
         enable = true;
         dhcp = "internal";
       };

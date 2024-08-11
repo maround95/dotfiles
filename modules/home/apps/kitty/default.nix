@@ -1,10 +1,4 @@
 self@{ lib, ... }:
-let
-  # Zellij tmux mode os binding
-  zjBinding = self.osConfig.my.keybinds.bindings.zellij or null;
-  zjXKBSymHex = toString zjBinding.xkbSymHex;
-  zjUnicodeBind = toString zjBinding.unicodeString;
-in
 {
 
   programs.kitty = {
@@ -21,9 +15,6 @@ in
       cursor_blink_interval = 0; # Disable blinking cursor
     };
 
-    keybindings = { } // lib.optionalAttrs (zjBinding != null) {
-      ${zjXKBSymHex} = "send_text all ${zjUnicodeBind}";
-    };
   };
 
 }

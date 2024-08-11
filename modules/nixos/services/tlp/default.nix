@@ -37,7 +37,7 @@ in
   config = mkIf cfg.enable {
     services.tlp = {
       enable = true;
-      settings = {} // cfg.extraSettings;
+      settings = { } // cfg.extraSettings;
     };
   };
 }
