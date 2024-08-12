@@ -15,7 +15,12 @@ with lib.${namespace};
 
   ${namespace} = {
     archetypes.laptop = enabled;
-    services.ollama = enabled;
+
+    services = {
+      ollama = enabled;
+      sshd = enabled;
+    };
+
   };
 
   ## From generated hardware-configuration.nix

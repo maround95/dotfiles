@@ -28,7 +28,7 @@ in
 
     shellAliases = {
       ll = "ls -l";
-      nixs = "sudo nixos-rebuild switch --flake $FLAKE";
+      nixs = "sudo nixos-rebuild switch --flake $FLAKE?submodules=1";
       rm = "rm -I";
       info = "info --vi-keys";
       v = "nvim";

@@ -22,7 +22,15 @@ with lib.${namespace};
       ./disko_config.nix
     ];
 
-  ${namespace}.archetypes.desktop = enabled;
+
+  ${namespace} = {
+    archetypes.desktop = enabled;
+
+    services = {
+      sshd = enabled;
+    };
+
+  };
 
   ## From generated hardware-configuration.nix
   boot.initrd.availableKernelModules = [
