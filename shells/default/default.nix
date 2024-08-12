@@ -5,6 +5,7 @@ mkShell {
 
   buildInputs = [
     home-manager
+    sops
 
     nixd
     nil

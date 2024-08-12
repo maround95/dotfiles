@@ -17,7 +17,7 @@ in
   config = mkIf cfg.enable {
     security.sudo = {
       enable = true;
-      wheelNeedsPassword = true;
+      wheelNeedsPassword = false;
     };
   };
 }

@@ -1,5 +1,4 @@
 {
-  options,
   config,
   lib,
   namespace,
@@ -32,6 +31,10 @@ in
 
         hyprland = enabled;
         sway = enabled;
+      };
+
+      services = {
+        flatpak = enabled;
       };
 
     };

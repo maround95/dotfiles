@@ -52,6 +52,11 @@
     hyprland = {
       url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     };
+
+    sops-nix = {
+      url = "github:mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -68,35 +73,4 @@
 
       overlays = with inputs; [ snowfallorg-flake.overlays."package/flake" ];
     };
-
-  # outputs = inputs@{ self, nixpkgs, home-manager, ... }:
-  #   let
-  #     inherit (self) outputs;
-  #     inherit (nixpkgs) lib;
-  #
-  #     system = "x86_64-linux";
-  #     configLib = import ./lib { inherit lib; };
-  #     specialArgs = { inherit configLib inputs outputs; };
-  #     pkgs = nixpkgs.legacyPackages.${system};
-  #   in
-  #   {
-  #
-  #     homeConfigurations."maroun@generic-x86_64" = home-manager.lib.homeManagerConfiguration {
-  #       inherit pkgs;
-  #       extraSpecialArgs = specialArgs;
-  #       modules = [ ./home/maroun/common/core ./home/maroun/common/optional/zellij ];
-  #     };
-  #
-  #     nixosConfigurations."l5p" = lib.nixosSystem {
-  #       inherit specialArgs;
-  #       modules = [
-  #         home-manager.nixosModules.home-manager
-  #         {
-  #           home-manager.extraSpecialArgs = specialArgs;
-  #         }
-  #         ./hosts/l5p
-  #       ];
-  #     };
-  #
-  #   };
 }

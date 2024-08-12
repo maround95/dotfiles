@@ -33,6 +33,7 @@ in
 
       security = {
         polkit = enabled;
+        sops = enabled;
         sudo = enabled;
       };
 
