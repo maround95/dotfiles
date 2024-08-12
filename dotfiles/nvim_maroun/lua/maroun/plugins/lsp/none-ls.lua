@@ -10,7 +10,7 @@ return {
         -- null_ls.builtins.formatting.stylua
 
         -- Nix
-        null_ls.builtins.formatting.nixfmt
+        -- null_ls.builtins.formatting.nixfmt
 
       },
     })

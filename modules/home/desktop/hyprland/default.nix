@@ -1,5 +1,4 @@
 self@{
-  options,
   config,
   lib,
   pkgs,
@@ -40,16 +39,14 @@ in
         );
       in
       {
-        # exec-once = [
-        # ]
+        exec-once = [ "${getExe pkgs.polkit-kde-agent}" ];
         "$mod" = "SUPER";
         input = {
-          natural_scroll = true;
+          touchpad = {
+            natural_scroll = true;
+          };
         };
-        env = [
-          # "__EGL_VENDOR_LIBRARY_FILENAMES,/run/opengl-driver/share/glvnd/egl_vendor.d/50_mesa.json"
-          "WLR_NO_HARDWARE_CURSORS,1"
-        ];
+        env = [ "WLR_NO_HARDWARE_CURSORS,1" ];
         bind = [
           "$mod, Return, exec, kitty"
           "$mod, W, exec, wezterm"
@@ -71,6 +68,23 @@ in
           "ALT, Return, fullscreen, 0"
         ] ++ workspaceBinds;
       };
+
+    systemd = {
+      user.services.polkit-kde-authentication-agent-1 = {
+        description = "polkit-kde-authentication-agent-1";
+        wantedBy = [ "graphical-session.target" ];
+        wants = [ "graphical-session.target" ];
+        after = [ "graphical-session.target" ];
+        serviceConfig = {
+          Type = "simple";
+          ExecStart = "${pkgs.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1";
+          Restart = "on-failure";
+          RestartSec = 1;
+          TimeoutStopSec = 10;
+        };
+      };
+    };
+
   };
 
 }

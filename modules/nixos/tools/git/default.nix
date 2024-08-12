@@ -1,5 +1,4 @@
 {
-  options,
   config,
   pkgs,
   lib,
@@ -17,6 +16,7 @@ in
     enable = mkBoolOpt false "Whether or not to install and configure git.";
     userName = mkOpt types.str user.fullName "The name to configure git with.";
   };
+
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [ git ];
 

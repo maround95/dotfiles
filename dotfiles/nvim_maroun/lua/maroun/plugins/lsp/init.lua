@@ -28,7 +28,35 @@ return {
       -- },
     })
     lspconfig.clangd.setup({})
-    lspconfig.nixd.setup({})
+
+    lspconfig.nixd.setup({
+      cmd = { "nixd" },
+      settings = {
+        nixd = {
+          nixpkgs = {
+            expr = "import <nixpkgs> { }",
+          },
+          formatting = {
+            command = { "nixfmt" },
+          },
+          options = {
+            nixos = {
+              expr = '(builtins.getFlake ("git+file://" + toString ./.)).nixosConfigurations.ares.options',
+            },
+            home_manager = {
+              expr = '(builtins.getFlake ("git+file://" + toString ./.)).homeConfigurations.maroun@ares.options',
+            },
+          },
+          diagnostic = {
+            suppress = {
+              "sema-extra-with",
+              "sema-escaping-with",
+              "var-bind-to-this",
+            }
+          },
+        },
+      },
+    })
 
     vim.api.nvim_create_autocmd("LspAttach", {
       callback = function()

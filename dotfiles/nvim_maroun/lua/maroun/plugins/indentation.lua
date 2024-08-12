@@ -1,15 +1,21 @@
 return {
-  "Darazaki/indent-o-matic",
-  opts = {
-    -- The values indicated here are the defaults
-
-    -- Number of lines without indentation before giving up (use -1 for infinite)
-    max_lines = 2048,
-
-    -- Space indentations that should be detected
-    standard_widths = { 2, 4, 8 },
-
-    -- Skip multi-line comments and strings (more accurate detection but less performant)
-    skip_multiline = true,
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    event = { "BufAdd", "BufReadPost", "BufNewFile" },
+    main = "ibl",
+    config = true,
+    opts = {
+      indent = { char = "╎" },
+      scope = { enabled = false },
+    },
+  },
+  {
+    "Darazaki/indent-o-matic",
+    cmd = "IndentOMatic",
+    event = { "BufAdd", "BufReadPost", "BufNewFile" },
+    opts = {},
+    config = function(_, opts)
+      require("indent-o-matic").setup(opts)
+    end
   }
 }

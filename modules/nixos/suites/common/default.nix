@@ -25,6 +25,7 @@ in
 
       hardware = {
         audio = enabled;
+        bluetooth = enabled;
         networking = enabled;
       };
 
