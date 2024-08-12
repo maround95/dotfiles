@@ -21,6 +21,27 @@ in
   };
 
   config = mkIf cfg.enable {
+
+    systemd = {
+      user.services.polkit-kde-authentication-agent-1 = {
+        Unit = {
+          Description = "polkit-kde-authentication-agent-1";
+        };
+        Install = {
+          WantedBy = [ "default.target" ];
+          Wants = [ "graphical-session.target" ];
+          After = [ "graphical-session.target" ];
+        };
+        Service = {
+          Type = "simple";
+          ExecStart = "${pkgs.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1";
+          Restart = "on-failure";
+          RestartSec = 1;
+          TimeoutStopSec = 10;
+        };
+      };
+    };
+
     wayland.windowManager.hyprland.enable = true;
     wayland.windowManager.hyprland.package = package;
 
@@ -39,7 +60,6 @@ in
         );
       in
       {
-        exec-once = [ "${getExe pkgs.polkit-kde-agent}" ];
         "$mod" = "SUPER";
         input = {
           touchpad = {
@@ -68,22 +88,6 @@ in
           "ALT, Return, fullscreen, 0"
         ] ++ workspaceBinds;
       };
-
-    systemd = {
-      user.services.polkit-kde-authentication-agent-1 = {
-        description = "polkit-kde-authentication-agent-1";
-        wantedBy = [ "graphical-session.target" ];
-        wants = [ "graphical-session.target" ];
-        after = [ "graphical-session.target" ];
-        serviceConfig = {
-          Type = "simple";
-          ExecStart = "${pkgs.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1";
-          Restart = "on-failure";
-          RestartSec = 1;
-          TimeoutStopSec = 10;
-        };
-      };
-    };
 
   };
 
