@@ -13,7 +13,10 @@ with lib.${namespace};
     ./l5p-16ach6h
   ];
 
-  ${namespace}.archetypes.laptop = enabled;
+  ${namespace} = {
+    archetypes.laptop = enabled;
+    services.ollama = enabled;
+  };
 
   ## From generated hardware-configuration.nix
   boot.initrd.availableKernelModules = [
