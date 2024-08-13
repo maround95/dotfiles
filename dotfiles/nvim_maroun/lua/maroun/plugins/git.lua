@@ -11,8 +11,8 @@ return {
       "nvim-telescope/telescope.nvim", -- optional
     },
     keys = {
-      { "<leader>gg", "<cmd>Neogit<CR>", mode = "n", desc = "Neogit" },
-      { "<leader>gd", "<cmd>DiffviewOpen<CR>", mode = "n", desc = "Open Diffview" },
+      { "<leader>gg", "<cmd>Neogit<CR>",                mode = "n", desc = "Neogit" },
+      { "<leader>gd", "<cmd>DiffviewOpen<CR>",          mode = "n", desc = "Open Diffview" },
       { "<leader>gh", "<cmd>DiffviewFileHistory %<CR>", mode = "n", desc = "Open Diffview current file history" },
     },
     opts = {
@@ -40,11 +40,15 @@ return {
     end
   },
   {
-    "ThePrimeagen/git-worktree.nvim",
+    'polarmutex/git-worktree.nvim',
+    version = '^2',
     keys = {
-      { "<leader>gws", function() require('telescope').extensions.git_worktree.git_worktrees() end, mode = "n", desc = "Git worktrees" },
+      { "<leader>gww", function() require('telescope').extensions.git_worktree.git_worktree() end, mode = "n", desc = "Git worktrees" },
     },
-    opts = {}
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function (_, opts)
+      require('telescope').load_extension('git_worktree')
+    end
   },
   {
     "lewis6991/gitsigns.nvim",
