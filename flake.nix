@@ -57,6 +57,8 @@
       url = "github:mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
   };
 
   outputs =
@@ -70,6 +72,11 @@
       channels-config = {
         allowUnfree = true;
       };
+
+      # Add modules to all NixOS systems.
+      systems.modules.nixos = with inputs; [
+        chaotic.nixosModules.default
+      ];
 
       overlays = with inputs; [ snowfallorg-flake.overlays."package/flake" ];
     };
