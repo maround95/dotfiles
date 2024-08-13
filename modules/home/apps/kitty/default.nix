@@ -1,4 +1,4 @@
-self@{ lib, ... }:
+{ ... }:
 {
 
   programs.kitty = {
@@ -13,6 +13,8 @@ self@{ lib, ... }:
       enable_audio_bell = false;
       update_check_interval = 0;
       cursor_blink_interval = 0; # Disable blinking cursor
+
+      disable_ligatures = "cursor";
     };
 
   };
