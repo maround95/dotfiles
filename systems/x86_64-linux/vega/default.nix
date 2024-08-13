@@ -2,6 +2,7 @@
   inputs,
   namespace,
   lib,
+  pkgs,
   ...
 }:
 with lib.${namespace};
@@ -21,7 +22,6 @@ with lib.${namespace};
 
       ./disko_config.nix
     ];
-
 
   ${namespace} = {
     archetypes.desktop = enabled;
@@ -47,6 +47,10 @@ with lib.${namespace};
     enableRedistributableFirmware = true;
     cpu.amd.updateMicrocode = true;
   };
+
+  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_cachyos;
+  chaotic.scx.enable = true; # by default uses scx_rustland scheduler
+  chaotic.scx.scheduler = "scx_bpfland";
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

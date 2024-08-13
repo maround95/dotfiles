@@ -13,11 +13,12 @@
 
   config = {
     gtk.enable = true;
+
     home.pointerCursor = {
       gtk.enable = true;
       x11.enable = true;
-      name = "WhiteSur";
-      package = pkgs.whitesur-cursors;
+      name = "Bibata-Modern-Ice";
+      package = pkgs.bibata-cursors;
       size = 24;
     };
 
@@ -32,6 +33,7 @@
         SHELL = "zsh";
         EDITOR = "nvim";
         NVIM_APPNAME = "nvim_maroun";
+        XCURSOR_SIZE = "${toString config.home.pointerCursor.size}";
       };
     };
 

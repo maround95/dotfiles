@@ -66,9 +66,10 @@ in
             natural_scroll = true;
           };
         };
-        env = [ "WLR_NO_HARDWARE_CURSORS,1" ];
+        env = [ ];
         bind = [
           "$mod, Return, exec, kitty"
+          "$mod, a, exec, wofi -S dmenu"
           "$mod, W, exec, wezterm"
           "$mod, F, exec, firefox"
           "$mod, Q, killactive"
