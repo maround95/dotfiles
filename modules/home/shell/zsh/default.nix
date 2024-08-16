@@ -75,15 +75,15 @@ in
 
     plugins = [
 
-      # {
-      #   name = "fzf-tab";
-      #   src = pkgs.fetchFromGitHub {
-      #     owner = "Aloxaf";
-      #     repo = "fzf-tab";
-      #     rev = "14e16f0d36ae9938e28b2f6efdb7344cd527a1a6";
-      #     sha256 = "o8hgnTl84nI7jMVfA5jEcDXkMFFlnxKbRva+l/Fx4jI=";
-      #   };
-      # }
+      {
+        name = "fzf-tab";
+        src = pkgs.fetchFromGitHub {
+          owner = "Aloxaf";
+          repo = "fzf-tab";
+          rev = "14e16f0d36ae9938e28b2f6efdb7344cd527a1a6";
+          sha256 = "o8hgnTl84nI7jMVfA5jEcDXkMFFlnxKbRva+l/Fx4jI=";
+        };
+      }
 
       # {
       #   name = "fzf-zsh-plugin";

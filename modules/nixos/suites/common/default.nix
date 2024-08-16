@@ -56,6 +56,7 @@ in
 
       tools = {
         misc = enabled;
+        nix-ld = enabled;
       };
 
     };
