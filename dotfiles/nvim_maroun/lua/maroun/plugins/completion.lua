@@ -17,6 +17,7 @@ return {
       "L3MON4D3/LuaSnip",
       "abecodes/tabout.nvim",
       "windwp/nvim-autopairs",
+      "rcarriga/cmp-dap",
     },
     opts = function()
       local cmp = require("cmp")
@@ -97,6 +98,9 @@ return {
 
       cmp.setup({
         preselect = cmp.PreselectMode.None,
+        enabled = function()
+          return vim.api.nvim_get_option_value("buftype", { buf = 0 }) ~= "prompt" or require("cmp_dap").is_dap_buffer()
+        end,
         completion = {
           completeopt = "menu,menuone,noinsert",
         },
@@ -210,9 +214,10 @@ return {
 
       -- `:` cmdline setup.
       cmp.setup.cmdline(':', {
-        preselect = cmp.PreselectMode.None,
+        preselect = cmp.PreselectMode.Item,
         completion = {
-          completeopt = "menu,menuone,noselect,noinsert",
+          completeopt = "menu,menuone",
+          -- completeopt = "menu,menuone,noselect,noinsert",
         },
         mapping = cmp.mapping.preset.cmdline({
           ['<C-j>'] = {
@@ -225,6 +230,8 @@ return {
               cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
             end,
           },
+          -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          ['<C-n>'] = { c = cmp.mapping.confirm({ select = true }) },
         }),
         sources = cmp.config.sources({
           { name = 'path' }
@@ -236,6 +243,28 @@ return {
             }
           }
         })
+      })
+
+      require("cmp").setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+        preselect = cmp.PreselectMode.None,
+        completion = {
+          completeopt = "menu,menuone,noselect,noinsert",
+        },
+        -- mapping = cmp.mapping.preset.cmdline({
+        --   ['<C-j>'] = {
+        --     c = function()
+        --       cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+        --     end,
+        --   },
+        --   ['<C-k>'] = {
+        --     c = function()
+        --       cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+        --     end,
+        --   },
+        -- }),
+        sources = {
+          { name = "dap" },
+        },
       })
     end,
   } }
