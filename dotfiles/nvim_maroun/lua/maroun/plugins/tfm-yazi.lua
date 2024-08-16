@@ -38,10 +38,7 @@ return {
   keys = {
     -- Make sure to change these keybindings to your preference,
     -- and remove the ones you won't use
-    {
-      "<leader>e",
-      ":Tfm<CR>",
-      desc = "TFM: File explorer",
-    }
+    { "<leader>e", ":Tfm<CR>", desc = "TFM: File explorer", },
+    { "<leader>E", function() require('tfm').open(vim.fn.getcwd()) end, desc = "TFM: File explorer in CWD", }
   },
 }
