@@ -22,6 +22,7 @@ in
       warn-dirty = false;
       log-lines = 50;
       auto-optimise-store = true;
+      trusted-users = [ "root" "@wheel" ];
     };
   };
 }

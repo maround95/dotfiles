@@ -32,4 +32,7 @@ opt.undofile = true -- persistent undo file
 opt.undodir = vim.fn.stdpath('data') .. "/undodir/"
 opt.undolevels = 10000
 
+-- Disables editor config (.editorconfig)
+vim.g.editorconfig = false;
+
 vim.cmd([[autocmd FileType * set formatoptions-=ro]]) -- Disable comments on next line

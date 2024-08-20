@@ -29,6 +29,8 @@ return {
     })
     lspconfig.clangd.setup({})
 
+    lspconfig.neocmake.setup({})
+
     lspconfig.nixd.setup({
       cmd = { "nixd" },
       settings = {
