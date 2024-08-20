@@ -13,8 +13,13 @@ with lib.${namespace};
     ./l5p-16ach6h
   ];
 
+
   ${namespace} = {
     archetypes.laptop = enabled;
+
+    programs = {
+      steam = enabled;
+    };
 
     services = {
       ollama = enabled;

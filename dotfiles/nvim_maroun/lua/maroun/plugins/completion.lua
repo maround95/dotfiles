@@ -165,9 +165,9 @@ return {
           end,
         },
         sources = {
-          { name = "nvim_lsp" },
-          { name = "luasnip", max_item_count = 10 },
-          { name = "buffer",  max_item_count = 5, keyword_length = 3 },
+          { name = "nvim_lsp", max_item_count = 5 },
+          { name = "luasnip",  max_item_count = 2 },
+          { name = "buffer",   max_item_count = 2, keyword_length = 3 },
           { name = "emoji" },
           { name = "path" },
         },

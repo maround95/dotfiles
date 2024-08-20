@@ -13,7 +13,7 @@ return {
 
     telescope.setup({
       defaults = {
-        path_display = { "truncate" },
+        path_display = { "smart" },
         layout_strategy = "vertical",
         mappings = {
           i = {
