@@ -72,15 +72,17 @@ return {
         request = 'launch',
         custom = true,
         processCreateCommands = {
-          "platform process attach --name Hyprland",
         },
         initCommands = {
           "platform select remote-linux",
           "platform connect connect://ares:1234",
           "settings set target.inherit-env false",
+          "platform process attach --name Hyprland",
         },
         args = {},
       },
     }
+
+    dap.configurations.c = dap.configurations.cpp
   end
 }
