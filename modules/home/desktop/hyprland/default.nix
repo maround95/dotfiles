@@ -67,6 +67,7 @@ in
           };
         };
         env = [ ];
+        windowrulev2 = [ "float, class:^(Anydesk)$,title:^(anydesk)$" ];
         bind = [
           "$mod, Return, exec, kitty"
           "$mod, a, exec, wofi -S dmenu"

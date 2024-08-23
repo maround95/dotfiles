@@ -19,6 +19,7 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       wl-clipboard
+      wayland-utils # wayland-info
     ];
 
     environment.sessionVariables = {

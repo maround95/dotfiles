@@ -18,6 +18,7 @@ return {
       "abecodes/tabout.nvim",
       "windwp/nvim-autopairs",
       "rcarriga/cmp-dap",
+      "tzachar/cmp-ai"
     },
     opts = function()
       local cmp = require("cmp")
@@ -96,6 +97,8 @@ return {
         Misc = " ",
       }
 
+      local cmp_ai = require("cmp_ai.config");
+
       cmp.setup({
         preselect = cmp.PreselectMode.None,
         enabled = function()
@@ -125,6 +128,8 @@ return {
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+          -- ["<C-x>"] = cmp.mapping(
+          -- cmp.mapping.complete({ config = { sources = cmp.config.sources({ { name = 'cmp_ai' } }) } }), { "i", "c" }),
           ["<C-e>"] = cmp.mapping({
             i = cmp.mapping.abort(),
             c = cmp.mapping.close(),
@@ -165,6 +170,7 @@ return {
           end,
         },
         sources = {
+          -- { name = "cmp_ai", },
           { name = "nvim_lsp", max_item_count = 5 },
           { name = "luasnip",  max_item_count = 2 },
           { name = "buffer",   max_item_count = 2, keyword_length = 3 },
@@ -182,11 +188,11 @@ return {
         --   fetching_timeout = 200,
         -- },
         -- Ghost Text
-        -- experimental = {
-        --   ghost_text = {
-        --     hl_group = "CmpGhostText",
-        --   },
-        -- },
+        experimental = {
+          ghost_text = {
+            hl_group = "CmpGhostText",
+          },
+        },
       });
 
       -- `/` cmdline setup.
@@ -266,5 +272,28 @@ return {
           { name = "dap" },
         },
       })
+
+      -- cmp_ai:setup({
+      --   max_lines = 100,
+      --   provider = 'Ollama',
+      --   notify = false,
+      --   notify_callback = function(msg)
+      --     vim.notify(msg)
+      --   end,
+      --   run_on_every_keystroke = false,
+      --   ignored_file_types = {
+      --     -- default is not to ignore
+      --     -- uncomment to ignore in lua:
+      --     -- lua = true
+      --   },
+      --   provider_options = {
+      --     base_url = 'http://ares:11434/api/generate',
+      --     -- model = 'llama3.1:8b',
+      --     -- model = 'codellama',
+      --     options = {
+      --       temperature = 0.2,
+      --     },
+      --   }
+      -- })
     end,
   } }
