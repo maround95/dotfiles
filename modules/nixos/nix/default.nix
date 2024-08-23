@@ -1,5 +1,6 @@
 {
   options,
+  pkgs,
   config,
   lib,
   namespace,
@@ -17,12 +18,24 @@ in
 
   config = mkIf cfg.enable {
     nix.settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       http-connections = 50;
       warn-dirty = false;
       log-lines = 50;
       auto-optimise-store = true;
-      trusted-users = [ "root" "@wheel" ];
+      trusted-users = [
+        "root"
+        "@wheel"
+      ];
     };
+
+    environment.systemPackages = with pkgs; [
+      nix-index
+      nix-output-monitor
+    ];
+
   };
 }
