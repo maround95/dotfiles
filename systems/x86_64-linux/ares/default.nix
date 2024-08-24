@@ -18,7 +18,7 @@ with lib.${namespace};
   ${namespace} = {
     archetypes.laptop = enabled;
 
-    programs = {
+    apps = {
       steam = enabled;
     };
 
@@ -48,9 +48,9 @@ with lib.${namespace};
     cpu.amd.updateMicrocode = true;
   };
 
-  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_cachyos;
-  chaotic.scx.enable = true; # by default uses scx_rustland scheduler
-  chaotic.scx.scheduler = "scx_bpfland";
+  #boot.kernelPackages = lib.mkForce pkgs.linuxPackages_cachyos;
+  #chaotic.scx.enable = true; # by default uses scx_rustland scheduler
+  #chaotic.scx.scheduler = "scx_bpfland";
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
