@@ -128,8 +128,8 @@ return {
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
-          -- ["<C-x>"] = cmp.mapping(
-          -- cmp.mapping.complete({ config = { sources = cmp.config.sources({ { name = 'cmp_ai' } }) } }), { "i", "c" }),
+          ["<C-x>"] = cmp.mapping(
+          cmp.mapping.complete({ config = { sources = cmp.config.sources({ { name = 'cmp_ai' } }) } }), { "i", "c" }),
           ["<C-e>"] = cmp.mapping({
             i = cmp.mapping.abort(),
             c = cmp.mapping.close(),
@@ -274,26 +274,29 @@ return {
       })
 
       -- cmp_ai:setup({
-      --   max_lines = 100,
+      --   max_lines = 1000,
       --   provider = 'Ollama',
       --   notify = false,
       --   notify_callback = function(msg)
       --     vim.notify(msg)
       --   end,
-      --   run_on_every_keystroke = false,
+      --   run_on_every_keystroke = true,
       --   ignored_file_types = {
       --     -- default is not to ignore
       --     -- uncomment to ignore in lua:
       --     -- lua = true
       --   },
       --   provider_options = {
-      --     base_url = 'http://ares:11434/api/generate',
+      --     -- base_url = 'http://ares:11434/api/generate',
       --     -- model = 'llama3.1:8b',
       --     -- model = 'codellama',
       --     options = {
       --       temperature = 0.2,
+      --       num_predict = 100,
+      --       num_thread = 14,
       --     },
       --   }
       -- })
+
     end,
   } }
