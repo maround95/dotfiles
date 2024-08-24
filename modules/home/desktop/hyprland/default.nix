@@ -66,6 +66,9 @@ in
             natural_scroll = true;
           };
         };
+        xwayland = {
+          force_zero_scaling = true;
+        };
         env = [ ];
         windowrulev2 = [ "float, class:^(Anydesk)$,title:^(anydesk)$" ];
         bind = [
