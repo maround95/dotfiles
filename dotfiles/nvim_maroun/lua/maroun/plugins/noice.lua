@@ -34,7 +34,7 @@ return {
       notify = {
         -- Notifications are too intrusive
         enabled = true,
-        view = 'messages',
+        view = 'notify',
       },
       -- cmdline = {
       --   enabled = true,

@@ -10,6 +10,9 @@ keymap.set("n", "<Backspace>", "<cmd>nohl<CR>", opt)
 keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
+-- Folds
+-- keymap.set("n", "za", "zazj")
+
 -- System clipboard
 keymap.set({"n", "v"}, "<leader>p", [["+p]])
 keymap.set({"n", "v"}, "<leader>y", [["+y]])
@@ -22,8 +25,8 @@ keymap.set("n", "<m-k>", "<c-w>k")
 keymap.set("n", "<m-l>", "<c-w>l")
 
 -- Diff Operations
-keymap.set("n", "<leader>dg", "<cmd>diffget<CR>")
-keymap.set("n", "<leader>dp", "<cmd>diffput<CR>")
+keymap.set("n", "<leader>dg", "<cmd>diffget<CR>]c")
+keymap.set("n", "<leader>dp", "<cmd>diffput<CR>]c")
 
 -- Buffers
 opt.desc = "Next buffer"

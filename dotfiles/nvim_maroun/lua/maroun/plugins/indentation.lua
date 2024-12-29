@@ -28,12 +28,13 @@ return {
       },
       on_tab_options = { -- A table of vim options when tabs are detected
         ["expandtab"] = false,
+        ["shiftwidth"] = 4,
       },
       on_space_options = {    -- A table of vim options when spaces are detected
         ["expandtab"] = true,
         ["tabstop"] = "detected", -- If the option value is 'detected', The value is set to the automatically detected indent size.
         ["softtabstop"] = "detected",
-        ["shiftwidth"] = "detected",
+        ["shiftwidth"] = 4,
       },
     },
     config = function(_, opts)

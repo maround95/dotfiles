@@ -21,6 +21,7 @@ in
       apps = {
         brave = enabled;
         firefox = enabled;
+        librewolf = enabled;
       };
 
       desktop = {
