@@ -33,6 +33,7 @@ in
       libnotify
       lshw
       lsof
+      parallel # GNU parallel
       pciutils
       ripgrep
       rsync

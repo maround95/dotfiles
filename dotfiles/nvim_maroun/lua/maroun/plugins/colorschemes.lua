@@ -13,6 +13,9 @@ return {
 
       -- Comments are too bright. https://catppuccin.com/palette
       vim.api.nvim_set_hl(0, "Comment", { fg = "#494d64" })
+
+      -- Folds highlight is too distracting.
+      vim.api.nvim_set_hl(0, "Folded", { fg = "#24273a" })
     end
   },
   {
