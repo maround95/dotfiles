@@ -3,7 +3,7 @@ return {
   dependencies = {
     "rcarriga/nvim-dap-ui",
     "nvim-neotest/nvim-nio",
-    'sakhnik/nvim-gdb',
+    "przepompownia/nvim-dap-tab",
   },
   config = function()
     local dap = require("dap")
@@ -11,15 +11,16 @@ return {
 
     dapui.setup()
     -- require('dap.ext.vscode').load_launchjs()
+    -- require("dap-tab").setup()
 
     local opts = {}
     opts.desc = "Toggle DAP UI"
-    vim.keymap.set('n', '<leader>du', function () dapui.toggle() end, opts)
+    vim.keymap.set('n', '<leader>du', function() dapui.toggle() end, opts)
 
     dap.adapters.gdb = {
       type = "executable",
       command = "gdb",
-      args = { "-i", "dap" },
+      args = { "-i", "dap", "-init-eval-command", "set sysroot /" },
     }
 
     dap.adapters['lldb-dap'] = {
@@ -48,7 +49,8 @@ return {
         name = "Attach to process",
         type = 'gdb', -- Adjust this to match your adapter name (`dap.adapters.<name>`)
         request = 'attach',
-        pid = require('dap.utils').pick_process,
+        target = 'ares:12345',
+        -- pid = require('dap.utils').pick_process,
         args = {},
       },
       {

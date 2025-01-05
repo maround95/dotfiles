@@ -36,6 +36,7 @@ in
       lsof
       multipath-tools
       nmap
+      parallel # GNU parallel
       pciutils
       ripgrep
       rsync

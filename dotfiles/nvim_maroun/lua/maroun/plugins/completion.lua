@@ -129,7 +129,7 @@ return {
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
           ["<C-x>"] = cmp.mapping(
-          cmp.mapping.complete({ config = { sources = cmp.config.sources({ { name = 'cmp_ai' } }) } }), { "i", "c" }),
+            cmp.mapping.complete({ config = { sources = cmp.config.sources({ { name = 'cmp_ai' } }) } }), { "i", "c" }),
           ["<C-e>"] = cmp.mapping({
             i = cmp.mapping.abort(),
             c = cmp.mapping.close(),
@@ -214,7 +214,7 @@ return {
           },
         }),
         sources = {
-          { name = 'buffer' }
+          { name = 'buffer', max_item_count = 2 }
         }
       })
 
@@ -297,6 +297,5 @@ return {
       --     },
       --   }
       -- })
-
     end,
   } }
