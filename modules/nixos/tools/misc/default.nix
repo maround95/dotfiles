@@ -27,12 +27,15 @@ in
       fzf
       glances
       glibc
+      htop
       hwinfo
       jq
       killall
       libnotify
       lshw
       lsof
+      multipath-tools
+      nmap
       pciutils
       ripgrep
       rsync

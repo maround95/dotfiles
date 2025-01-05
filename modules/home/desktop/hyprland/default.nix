@@ -73,7 +73,7 @@ in
         windowrulev2 = [ "float, class:^(Anydesk)$,title:^(anydesk)$" ];
         bind = [
           "$mod, Return, exec, kitty"
-          "$mod, a, exec, wofi -S dmenu"
+          "$mod, a, exec, wofi -S drun"
           "$mod, W, exec, wezterm"
           "$mod, F, exec, firefox"
           "$mod, Q, killactive"
