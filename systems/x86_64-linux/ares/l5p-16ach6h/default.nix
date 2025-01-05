@@ -42,7 +42,7 @@
     nvidia = {
       open = true; # Use nvidia-open
 
-      # package = config.boot.kernelPackages.nvidiaPackages.beta;
+      package = config.boot.kernelPackages.nvidiaPackages.beta;
       modesetting.enable = lib.mkDefault true;
       powerManagement.enable = lib.mkDefault true;
 
