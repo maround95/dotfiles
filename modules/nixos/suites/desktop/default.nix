@@ -30,10 +30,10 @@ in
         };
 
         hyprland = enabled;
-        sway = enabled;
       };
 
       services = {
+        kdeconnect = enabled;
         flatpak = enabled;
       };
 

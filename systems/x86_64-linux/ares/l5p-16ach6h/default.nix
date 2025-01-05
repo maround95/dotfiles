@@ -1,19 +1,27 @@
-{ lib, config, inputs, ... }:
 {
-  imports = with inputs.hardware.nixosModules; [
-    common-cpu-amd
-    common-cpu-amd-pstate
-    common-cpu-amd-zenpower
+  lib,
+  config,
+  inputs,
+  ...
+}:
+{
+  imports =
+    with inputs.hardware.nixosModules;
+    [
+      common-cpu-amd
+      common-cpu-amd-pstate
+      common-cpu-amd-zenpower
 
-    common-gpu-amd
-    common-gpu-nvidia-nonprime # prime configuration in hybrid
+      common-gpu-amd
+      common-gpu-nvidia-nonprime # prime configuration in hybrid
 
-    common-pc-laptop
-    common-pc-laptop-ssd
-  ] ++ [
-    ./hybrid.nix
-    ./edid
-  ];
+      common-pc-laptop
+      common-pc-laptop-ssd
+    ]
+    ++ [
+      ./hybrid.nix
+      ./edid
+    ];
 
   system.nixos.tags = lib.mkIf (config.specialisation != { }) [ "Hybrid" ];
 
@@ -23,12 +31,17 @@
   # boot.kernelParams = [ "nvidia-drm.fbdev=1" ];
 
   # acpi_call kernel module
-  boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call lenovo-legion-module ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    acpi_call
+    # lenovo-legion-module
+  ];
 
   hardware = {
     amdgpu.initrd.enable = false;
 
     nvidia = {
+      open = true; # Use nvidia-open
+
       # package = config.boot.kernelPackages.nvidiaPackages.beta;
       modesetting.enable = lib.mkDefault true;
       powerManagement.enable = lib.mkDefault true;

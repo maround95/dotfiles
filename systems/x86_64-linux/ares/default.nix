@@ -22,6 +22,11 @@ with lib.${namespace};
       steam = enabled;
     };
 
+    desktops = {
+      plasma = enabled;
+      sway = enabled;
+    };
+
     services = {
       ollama = enabled;
       sshd = enabled;
