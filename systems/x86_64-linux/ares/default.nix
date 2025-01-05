@@ -22,7 +22,7 @@ with lib.${namespace};
       steam = enabled;
     };
 
-    desktops = {
+    desktop = {
       plasma = enabled;
       sway = enabled;
     };
