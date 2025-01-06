@@ -9,6 +9,7 @@
     "nouveau.config=NvGspRm=1"
     "nouveau.modeset=1"
     "nouveau.atomic=1"
+    "nouveau.runpm=0" # https://gitlab.freedesktop.org/drm/nouveau/-/issues/346
   ];
 
   boot.blacklistedKernelModules = [ "nouveau" "nvidia" "nvidia_drm" "nvidia_modeset" ];
