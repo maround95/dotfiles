@@ -58,7 +58,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    matugen = {
+      url = "git+file:///home/maroun/git/matugen/";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    matugen-templates = {
+      url = "github:InioX/matugen-themes";
+      flake = false;
+    };
+
+    # chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
   };
 
   outputs =
@@ -75,7 +85,7 @@
 
       # Add modules to all NixOS systems.
       systems.modules.nixos = with inputs; [
-        chaotic.nixosModules.default
+        # chaotic.nixosModules.default
       ];
 
       overlays = with inputs; [ snowfallorg-flake.overlays."package/flake" ];

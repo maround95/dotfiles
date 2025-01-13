@@ -3,6 +3,7 @@
   namespace,
   lib,
   pkgs,
+  config,
   ...
 }:
 with lib.${namespace};
@@ -44,13 +45,19 @@ with lib.${namespace};
   ##
 
   hardware = {
+
+    nvidia = {
+      open = false;
+      package = config.boot.kernelPackages.nvidiaPackages.beta;
+    };
+
     enableRedistributableFirmware = true;
     cpu.amd.updateMicrocode = true;
   };
 
-  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_cachyos;
-  chaotic.scx.enable = true; # by default uses scx_rustland scheduler
-  chaotic.scx.scheduler = "scx_bpfland";
+  # boot.kernelPackages = lib.mkForce pkgs.linuxPackages_cachyos;
+  # chaotic.scx.enable = true; # by default uses scx_rustland scheduler
+  # chaotic.scx.scheduler = "scx_bpfland";
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

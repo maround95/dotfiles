@@ -12,16 +12,6 @@
   };
 
   config = {
-    gtk.enable = true;
-
-    home.pointerCursor = {
-      gtk.enable = true;
-      x11.enable = true;
-      name = "Bibata-Modern-Ice";
-      package = pkgs.bibata-cursors;
-      size = 24;
-    };
-
     home = {
       stateVersion = lib.mkDefault "24.11";
       sessionPath = [
@@ -33,11 +23,8 @@
         SHELL = "zsh";
         EDITOR = "nvim";
         NVIM_APPNAME = "nvim_maroun";
-        XCURSOR_SIZE = "${toString config.home.pointerCursor.size}";
       };
     };
-
-    fonts.fontconfig.enable = true;
 
     nix = {
       package = lib.mkDefault pkgs.nix;
