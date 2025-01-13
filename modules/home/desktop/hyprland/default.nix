@@ -22,6 +22,23 @@ in
 
   config = mkIf cfg.enable {
 
+    home.packages = with pkgs; [
+      hyprpicker
+      hypridle
+      wl-gammactl
+      wl-clipboard
+      wf-recorder
+      grimblast
+      pavucontrol
+      brightnessctl
+      swww
+      gsettings-desktop-schemas
+      material-icons
+      corefonts
+      grim
+      slurp
+    ];
+
     systemd = {
       user.services.polkit-kde-authentication-agent-1 = {
         Unit = {

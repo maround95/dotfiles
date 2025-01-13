@@ -3,7 +3,6 @@
 
   programs.kitty = {
     enable = true;
-    themeFile = "Catppuccin-Macchiato";
     settings = {
       font_family = "FiraCode Nerd Font";
       font_size = 12;
