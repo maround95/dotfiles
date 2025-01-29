@@ -13,7 +13,8 @@ opt.tabstop = 2       -- 2 spaces for tabs
 
 -- UI
 opt.laststatus = 3 -- Global statusbar
-opt.listchars = { tab = "▸ ", eol = "↵" }
+-- opt.listchars = { tab = "▸ ", eol = "↵" }
+opt.listchars = { tab = "▸ " }
 opt.list = true -- Invisible characters
 opt.number = true         -- shows absolute line number on cursor line (when relative number is on)
 opt.relativenumber = true -- show relative line numbers

@@ -7,19 +7,19 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.desktop.sway;
+  cfg = config.custom.desktop.sway;
   dePriority = mkOverride 3;
 in
 {
-  options.${namespace}.desktop.sway = with types; {
+  options.custom.desktop.sway = with types; {
     enable = mkBoolOpt false "Enable Sway.";
   };
 
   config = mkIf cfg.enable {
 
-    ${namespace}.desktop = {
+    custom.desktop = {
       extras.wayland = enabled;
 
       display-manager = {

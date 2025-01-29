@@ -6,12 +6,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.system.boot.systemd-boot;
+  cfg = config.custom.system.boot.systemd-boot;
 in
 {
-  options.${namespace}.system.boot.systemd-boot = with types; {
+  options.custom.system.boot.systemd-boot = with types; {
     enable = mkBoolOpt false "Whether to enable systemd-boot.";
   };
 

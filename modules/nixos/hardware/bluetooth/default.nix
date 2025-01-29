@@ -5,12 +5,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.hardware.bluetooth;
+  cfg = config.custom.hardware.bluetooth;
 in
 {
-  options.${namespace}.hardware.bluetooth = with types; {
+  options.custom.hardware.bluetooth = with types; {
     enable = mkBoolOpt false "Whether to enable bluetooth.";
   };
 

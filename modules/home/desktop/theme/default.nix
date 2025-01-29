@@ -2,11 +2,10 @@
   config,
   lib,
   pkgs,
+  namespace,
   ...
 }:
 {
-  imports = [ ./matugen.nix ];
-
   home.packages = with pkgs; [
     adw-gtk3
     morewaita-icon-theme

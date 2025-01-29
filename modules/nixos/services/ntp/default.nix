@@ -5,12 +5,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.services.ntp;
+  cfg = config.custom.services.ntp;
 in
 {
-  options.${namespace}.services.ntp = with types; {
+  options.custom.services.ntp = with types; {
     enable = mkBoolOpt false "Enable NTP support.";
   };
 

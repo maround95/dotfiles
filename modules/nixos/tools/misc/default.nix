@@ -1,23 +1,22 @@
 {
-  options,
   config,
   lib,
   pkgs,
-  namespace,
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.tools.misc;
+  cfg = config.custom.tools.misc;
 in
 {
-  options.${namespace}.tools.misc = with types; {
+  options.custom.tools.misc = with types; {
     enable = mkBoolOpt false "Whether or not to enable common utilities.";
   };
 
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
+      aria2
       bash
       bat
       clac

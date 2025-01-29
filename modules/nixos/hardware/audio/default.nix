@@ -6,12 +6,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.hardware.audio;
+  cfg = config.custom.hardware.audio;
 in
 {
-  options.${namespace}.hardware.audio = with types; {
+  options.custom.hardware.audio = with types; {
     enable = mkBoolOpt false "Whether to enable audio.";
   };
 

@@ -5,12 +5,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.security.sudo;
+  cfg = config.custom.security.sudo;
 in
 {
-  options.${namespace}.security.sudo = with types; {
+  options.custom.security.sudo = with types; {
     enable = mkBoolOpt false "Enable sudo.";
   };
 

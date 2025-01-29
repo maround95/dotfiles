@@ -19,6 +19,6 @@ return {
     },
   },
   config = function()
-    vim.g.transparent_enbled = 1
+    vim.g.transparent_enabled = 1
   end,
 }

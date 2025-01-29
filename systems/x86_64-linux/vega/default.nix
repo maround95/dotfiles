@@ -1,12 +1,10 @@
 {
   inputs,
-  namespace,
   lib,
-  pkgs,
   config,
   ...
 }:
-with lib.${namespace};
+with lib.custom;
 {
   imports =
     with inputs.hardware.nixosModules;
@@ -24,14 +22,20 @@ with lib.${namespace};
       ./disko_config.nix
     ];
 
-  ${namespace} = {
+  custom = {
     archetypes.desktop = enabled;
+
+    desktop = {
+      plasma = enabled;
+    };
 
     services = {
       sshd = enabled;
     };
 
   };
+
+  # networking.firewall.enable = lib.mkForce false;
 
   ## From generated hardware-configuration.nix
   boot.initrd.availableKernelModules = [
@@ -48,7 +52,7 @@ with lib.${namespace};
 
     nvidia = {
       open = false;
-      package = config.boot.kernelPackages.nvidiaPackages.beta;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
     };
 
     enableRedistributableFirmware = true;

@@ -5,17 +5,17 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.suites.development;
+  cfg = config.custom.suites.development;
 in
 {
-  options.${namespace}.suites.development = with types; {
+  options.custom.suites.development = with types; {
     enable = mkBoolOpt false "Whether or not to enable common development configuration.";
   };
 
   config = mkIf cfg.enable {
-    ${namespace} = {
+    custom = {
 
       services = {
         docker = enabled;

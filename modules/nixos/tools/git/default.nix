@@ -6,13 +6,13 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.tools.git;
-  user = config.${namespace}.user;
+  cfg = config.custom.tools.git;
+  user = config.custom.user;
 in
 {
-  options.${namespace}.tools.git = with types; {
+  options.custom.tools.git = with types; {
     enable = mkBoolOpt false "Whether or not to install and configure git.";
     userName = mkOpt types.str user.fullName "The name to configure git with.";
   };
@@ -20,7 +20,7 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [ git ];
 
-    ${namespace}.home.extraOptions = {
+    custom.home.extraOptions = {
       programs.git = {
         enable = true;
         userName = mkForce cfg.userName;

@@ -5,12 +5,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.services.kdeconnect;
+  cfg = config.custom.services.kdeconnect;
 in
 {
-  options.${namespace}.services.kdeconnect = with types; {
+  options.custom.services.kdeconnect = with types; {
     enable = mkBoolOpt false "Enable KDE connect.";
   };
 

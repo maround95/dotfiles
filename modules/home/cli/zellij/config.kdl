@@ -203,6 +203,8 @@ keybinds clear-defaults=true {
   //}
 }
 
+theme "wallust"
+
 plugins {
   tab-bar location="zellij:tab-bar"
   status-bar location="zellij:status-bar"

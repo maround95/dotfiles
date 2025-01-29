@@ -6,12 +6,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.system.env;
+  cfg = config.custom.system.env;
 in
 {
-  options.${namespace}.system.env =
+  options.custom.system.env =
     with types;
     mkOption {
       type = attrsOf (oneOf [

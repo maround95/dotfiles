@@ -7,12 +7,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.desktop.extras.wayland;
+  cfg = config.custom.desktop.extras.wayland;
 in
 {
-  options.${namespace}.desktop.extras.wayland = with types; {
+  options.custom.desktop.extras.wayland = with types; {
     enable = mkBoolOpt false "Enable Wayland Extras.";
   };
 
