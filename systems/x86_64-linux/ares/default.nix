@@ -5,7 +5,7 @@
   pkgs,
   ...
 }:
-with lib.${namespace};
+with lib.custom;
 {
   imports = [
     inputs.disko.nixosModules.disko
@@ -15,7 +15,7 @@ with lib.${namespace};
   ];
 
 
-  ${namespace} = {
+  custom = {
     archetypes.laptop = enabled;
 
     apps = {

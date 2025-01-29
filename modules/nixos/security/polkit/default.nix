@@ -6,12 +6,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.security.polkit;
+  cfg = config.custom.security.polkit;
 in
 {
-  options.${namespace}.security.polkit = with types; {
+  options.custom.security.polkit = with types; {
     enable = mkBoolOpt false "Enable Polkit.";
   };
 

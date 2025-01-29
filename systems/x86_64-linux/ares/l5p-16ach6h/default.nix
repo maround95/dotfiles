@@ -30,10 +30,9 @@
   # instead of efifb/vesafb, which do not work with simpledrm (enabled on nix).
   # boot.kernelParams = [ "nvidia-drm.fbdev=1" ];
 
-  # acpi_call kernel module
   boot.extraModulePackages = with config.boot.kernelPackages; [
-    acpi_call
-    # lenovo-legion-module
+    acpi_call # acpi_call kernel module
+    lenovo-legion-module
   ];
 
   hardware = {

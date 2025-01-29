@@ -6,12 +6,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.services.tlp;
+  cfg = config.custom.services.tlp;
 in
 {
-  options.${namespace}.services.tlp = with types; {
+  options.custom.services.tlp = with types; {
     enable = mkBoolOpt false "Whether to enable tlp.";
     extraSettings = mkOption {
       type =

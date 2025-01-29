@@ -5,23 +5,22 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.suites.desktop;
+  cfg = config.custom.suites.desktop;
 in
 {
-  options.${namespace}.suites.desktop = with types; {
+  options.custom.suites.desktop = with types; {
     enable = mkBoolOpt false "Whether or not to enable common desktop configuration.";
   };
 
   config = mkIf cfg.enable {
 
-    ${namespace} = {
+    custom = {
 
       apps = {
         brave = enabled;
-        firefox = enabled;
-        librewolf = enabled;
+        # firefox = enabled;
       };
 
       desktop = {

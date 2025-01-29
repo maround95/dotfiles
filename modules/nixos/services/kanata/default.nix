@@ -5,17 +5,17 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.services.kanata;
+  cfg = config.custom.services.kanata;
 in
 {
-  options.${namespace}.services.kanata = with types; {
+  options.custom.services.kanata = with types; {
     enable = mkBoolOpt false "Enable kanata service.";
   };
 
   config = mkIf cfg.enable {
-    ${namespace}.user.extraGroups = [ "uinput" ];
+    custom.user.extraGroups = [ "uinput" ];
     services.kanata = {
       enable = true;
 

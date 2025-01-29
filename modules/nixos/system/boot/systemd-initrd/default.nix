@@ -6,12 +6,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.system.boot.systemd-initrd;
+  cfg = config.custom.system.boot.systemd-initrd;
 in
 {
-  options.${namespace}.system.boot.systemd-initrd = with types; {
+  options.custom.system.boot.systemd-initrd = with types; {
     enable = mkBoolOpt false "Whether to enable systemd in the initramfs.";
   };
 

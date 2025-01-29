@@ -7,14 +7,14 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.desktop.display-manager.greetd;
-  defaultSessionCmd = config.${namespace}.desktop.display-manager.defaultSessionCmd;
-  userName = config.${namespace}.user.name;
+  cfg = config.custom.desktop.display-manager.greetd;
+  defaultSessionCmd = config.custom.desktop.display-manager.defaultSessionCmd;
+  userName = config.custom.user.name;
 in
 {
-  options.${namespace}.desktop.display-manager.greetd = with types; {
+  options.custom.desktop.display-manager.greetd = with types; {
     enable = mkBoolOpt false "Enable greetd as the display manager.";
     autoLogin = mkBoolOpt false "Enable greetd autologin.";
   };

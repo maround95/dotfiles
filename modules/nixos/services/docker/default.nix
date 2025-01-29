@@ -6,12 +6,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.services.docker;
+  cfg = config.custom.services.docker;
 in
 {
-  options.${namespace}.services.docker = with types; {
+  options.custom.services.docker = with types; {
     enable = mkBoolOpt false "Enable Docker.";
   };
 

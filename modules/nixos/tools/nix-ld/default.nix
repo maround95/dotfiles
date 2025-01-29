@@ -6,12 +6,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.tools.nix-ld;
+  cfg = config.custom.tools.nix-ld;
 in
 {
-  options.${namespace}.tools.nix-ld = with types; {
+  options.custom.tools.nix-ld = with types; {
     enable = mkBoolOpt false "Whether or not to enable nix-ld.";
   };
 

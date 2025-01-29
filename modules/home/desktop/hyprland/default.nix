@@ -7,40 +7,37 @@ self@{
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.desktop.hyprland;
+  cfg = config.custom.desktop.hyprland;
   package = self.osConfig.programs.hyprland.package or pkgs.hyprland;
 in
 {
   imports = [ inputs.hyprland.homeManagerModules.default ];
 
-  options.${namespace}.desktop.hyprland = with types; {
+  options.custom.desktop.hyprland = with types; {
     enable = mkBoolOpt false "Enable Hyprland.";
     enableXWayland = mkBoolOpt true "Enable Hyprland XWayland support.";
   };
 
   config = mkIf cfg.enable {
 
-    systemd = {
-      user.services.polkit-kde-authentication-agent-1 = {
-        Unit = {
-          Description = "polkit-kde-authentication-agent-1";
-        };
-        Install = {
-          WantedBy = [ "default.target" ];
-          Wants = [ "graphical-session.target" ];
-          After = [ "graphical-session.target" ];
-        };
-        Service = {
-          Type = "simple";
-          ExecStart = "${pkgs.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1";
-          Restart = "on-failure";
-          RestartSec = 1;
-          TimeoutStopSec = 10;
-        };
-      };
-    };
+    home.packages = with pkgs; [
+      hyprpicker
+      hypridle
+      wl-gammactl
+      wl-clipboard
+      wf-recorder
+      grimblast
+      pavucontrol
+      brightnessctl
+      swww
+      gsettings-desktop-schemas
+      material-icons
+      corefonts
+      grim
+      slurp
+    ];
 
     wayland.windowManager.hyprland.enable = true;
     wayland.windowManager.hyprland.package = package;
@@ -69,8 +66,24 @@ in
         xwayland = {
           force_zero_scaling = true;
         };
+        cursor = {
+          inactive_timeout = 5;
+        };
         env = [ ];
         windowrulev2 = [ "float, class:^(Anydesk)$,title:^(anydesk)$" ];
+        decoration = {
+          rounding = 10;
+          inactive_opacity = 0.8;
+
+          blur = {
+            enabled = true;
+            size = 10;
+            passes = 4;
+            ignore_opacity = true;
+            popups = true;
+            new_optimizations = true;
+          };
+        };
         bind = [
           "$mod, Return, exec, kitty"
           "$mod, a, exec, wofi -S drun"
@@ -92,6 +105,10 @@ in
 
           "ALT, Return, fullscreen, 0"
         ] ++ workspaceBinds;
+        bindm = [
+          "$mod, mouse:272, movewindow"
+          "$mod, mouse:273, resizewindow"
+        ];
       };
 
   };

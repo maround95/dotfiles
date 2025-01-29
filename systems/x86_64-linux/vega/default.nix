@@ -1,11 +1,10 @@
 {
   inputs,
-  namespace,
   lib,
-  pkgs,
+  config,
   ...
 }:
-with lib.${namespace};
+with lib.custom;
 {
   imports =
     with inputs.hardware.nixosModules;
@@ -23,14 +22,20 @@ with lib.${namespace};
       ./disko_config.nix
     ];
 
-  ${namespace} = {
+  custom = {
     archetypes.desktop = enabled;
+
+    desktop = {
+      plasma = enabled;
+    };
 
     services = {
       sshd = enabled;
     };
 
   };
+
+  # networking.firewall.enable = lib.mkForce false;
 
   ## From generated hardware-configuration.nix
   boot.initrd.availableKernelModules = [
@@ -44,13 +49,19 @@ with lib.${namespace};
   ##
 
   hardware = {
+
+    nvidia = {
+      open = false;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
+    };
+
     enableRedistributableFirmware = true;
     cpu.amd.updateMicrocode = true;
   };
 
-  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_cachyos;
-  chaotic.scx.enable = true; # by default uses scx_rustland scheduler
-  chaotic.scx.scheduler = "scx_bpfland";
+  # boot.kernelPackages = lib.mkForce pkgs.linuxPackages_cachyos;
+  # chaotic.scx.enable = true; # by default uses scx_rustland scheduler
+  # chaotic.scx.scheduler = "scx_bpfland";
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

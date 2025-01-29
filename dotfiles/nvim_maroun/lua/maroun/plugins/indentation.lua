@@ -5,7 +5,7 @@ return {
     main = "ibl",
     config = true,
     opts = {
-      indent = { char = "╎" },
+      indent = { highlight = { "Comment" }, char = "╎" },
       scope = { enabled = false },
     },
   },

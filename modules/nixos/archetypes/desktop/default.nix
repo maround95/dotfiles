@@ -6,17 +6,17 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.archetypes.desktop;
+  cfg = config.custom.archetypes.desktop;
 in
 {
-  options.${namespace}.archetypes.desktop = with types; {
+  options.custom.archetypes.desktop = with types; {
     enable = mkBoolOpt false "Whether or not to enable the desktop archetype.";
   };
 
   config = mkIf cfg.enable {
-    ${namespace} = {
+    custom = {
 
       suites = {
         common = enabled;

@@ -51,6 +51,7 @@
 
     hyprland = {
       url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     sops-nix = {
@@ -58,7 +59,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    firefox-csshacks = {
+      url = "github:MrOtherGuy/firefox-csshacks";
+      flake = false;
+    };
+
+    # chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
   };
 
   outputs =
@@ -67,7 +78,7 @@
       inherit inputs;
       src = ./.;
 
-      snowfall.namespace = "lk95";
+      snowfall.namespace = "custom";
 
       channels-config = {
         allowUnfree = true;
@@ -75,7 +86,7 @@
 
       # Add modules to all NixOS systems.
       systems.modules.nixos = with inputs; [
-        chaotic.nixosModules.default
+        # chaotic.nixosModules.default
       ];
 
       overlays = with inputs; [ snowfallorg-flake.overlays."package/flake" ];

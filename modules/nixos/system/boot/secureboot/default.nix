@@ -8,14 +8,14 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.system.boot.secureboot;
+  cfg = config.custom.system.boot.secureboot;
 in
 {
   imports = [ inputs.lanzaboote.nixosModules.lanzaboote ];
 
-  options.${namespace}.system.boot.secureboot = with types; {
+  options.custom.system.boot.secureboot = with types; {
     enable = mkBoolOpt false "Whether to enable secureboot management and signing.";
   };
 

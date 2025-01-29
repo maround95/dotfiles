@@ -7,12 +7,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.system.latest-kernel;
+  cfg = config.custom.system.latest-kernel;
 in
 {
-  options.${namespace}.system.latest-kernel = with types; {
+  options.custom.system.latest-kernel = with types; {
     enable = mkBoolOpt false "Whether to use the latest kernel.";
   };
 

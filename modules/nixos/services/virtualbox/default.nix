@@ -7,17 +7,17 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.services.virtualbox;
+  cfg = config.custom.services.virtualbox;
 in
 {
-  options.${namespace}.services.virtualbox = with types; {
+  options.custom.services.virtualbox = with types; {
     enable = mkBoolOpt false "Whether to enable virtualization via virtualbox.";
   };
 
   config = mkIf cfg.enable {
-    ${namespace}.user.extraGroups = [ "vboxusers" ];
+    custom.user.extraGroups = [ "vboxusers" ];
 
     virtualisation.virtualbox.host.enable = true;
     # virtualisation.virtualbox.host.enableExtensionPack = true; ## Frequent recompilations?

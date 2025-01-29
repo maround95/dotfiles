@@ -7,17 +7,19 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.services.libvirt;
+  cfg = config.custom.services.libvirt;
 in
 {
-  options.${namespace}.services.libvirt = with types; {
+  options.custom.services.libvirt = with types; {
     enable = mkBoolOpt false "Whether to enable virtualization via libvirt.";
     aarch64-ovmf = mkBoolOpt false "Whether to add aarch64 ovmf firmware.";
   };
 
   config = mkIf cfg.enable {
+    custom.user.extraGroups = [ "libvirtd" ];
+
     virtualisation.libvirtd = {
       enable = true;
       qemu.ovmf.packages = [

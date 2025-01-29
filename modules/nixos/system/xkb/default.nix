@@ -6,12 +6,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.system.xkb;
+  cfg = config.custom.system.xkb;
 in
 {
-  options.${namespace}.system.xkb = with types; {
+  options.custom.system.xkb = with types; {
     enable = mkBoolOpt false "Whether to manage xkb configuration.";
   };
 

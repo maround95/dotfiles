@@ -5,12 +5,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.services.flatpak;
+  cfg = config.custom.services.flatpak;
 in
 {
-  options.${namespace}.services.flatpak = with types; {
+  options.custom.services.flatpak = with types; {
     enable = mkBoolOpt false "Enable flatpak service.";
   };
 

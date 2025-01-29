@@ -6,17 +6,17 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.hardware.networking;
+  cfg = config.custom.hardware.networking;
 in
 {
-  options.${namespace}.hardware.networking = with types; {
+  options.custom.hardware.networking = with types; {
     enable = mkBoolOpt false "Whether to enable networking.";
   };
 
   config = mkIf cfg.enable {
-    ${namespace}.user.extraGroups = [ "networkmanager" ];
+    custom.user.extraGroups = [ "networkmanager" ];
 
     networking = {
       wireless.iwd.enable = true;
