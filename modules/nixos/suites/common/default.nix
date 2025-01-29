@@ -6,18 +6,18 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.suites.common;
+  cfg = config.custom.suites.common;
 in
 {
-  options.${namespace}.suites.common = with types; {
+  options.custom.suites.common = with types; {
     enable = mkBoolOpt false "Whether or not to enable common configuration.";
   };
 
   config = mkIf cfg.enable {
 
-    ${namespace} = {
+    custom = {
 
       cli-apps = {
         flake = enabled;

@@ -7,12 +7,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.nix;
+  cfg = config.custom.nix;
 in
 {
-  options.${namespace}.nix = with types; {
+  options.custom.nix = with types; {
     enable = mkBoolOpt false "Whether to manage nix configuration.";
   };
 

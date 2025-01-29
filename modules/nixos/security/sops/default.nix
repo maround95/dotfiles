@@ -6,15 +6,15 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.security.sops;
-  secretsPath = "${lib.${namespace}.rootPathStr}/secrets";
+  cfg = config.custom.security.sops;
+  secretsPath = "${lib.custom.rootPathStr}/secrets";
 in
 {
   imports = [ inputs.sops-nix.nixosModules.default ];
 
-  options.${namespace}.security.sops = with types; {
+  options.custom.security.sops = with types; {
     enable = mkBoolOpt false "Enable sops-nix.";
   };
 

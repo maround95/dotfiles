@@ -12,6 +12,7 @@
       enable_audio_bell = false;
       update_check_interval = 0;
       cursor_blink_interval = 0; # Disable blinking cursor
+      cursor_trail = 1;
 
       disable_ligatures = "cursor";
     };

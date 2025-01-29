@@ -2,16 +2,12 @@
   options,
   config,
   lib,
-  namespace,
   ...
 }:
 with lib;
-with lib.${namespace};
-let
-  cfg = config.${namespace}.home;
-in
+with lib.custom;
 {
-  options.${namespace}.home = with types; {
+  options.custom.home = with types; {
     file = mkOpt attrs { } (mdDoc "A set of files to be managed by home-manager's `home.file`.");
     configFile = mkOpt attrs { } (
       mdDoc "A set of files to be managed by home-manager's `xdg.configFile`."
@@ -20,15 +16,14 @@ in
   };
 
   config = {
-    ${namespace}.home.extraOptions = {
+    custom.home.extraOptions = {
       home.stateVersion = config.system.stateVersion;
-      home.file = mkAliasDefinitions options.${namespace}.home.file;
+      home.file = mkAliasDefinitions options.custom.home.file;
       xdg.enable = true;
-      xdg.configFile = mkAliasDefinitions options.${namespace}.home.configFile;
+      xdg.configFile = mkAliasDefinitions options.custom.home.configFile;
     };
 
-    snowfallorg.users.${config.${namespace}.user.name}.home.config =
-      config.${namespace}.home.extraOptions;
+    snowfallorg.users.${config.custom.user.name}.home.config = config.custom.home.extraOptions;
 
     home-manager = {
       # Explanation: https://nix-community.github.io/home-manager/index.xhtml#sec-install-nixos-module

@@ -6,12 +6,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.system.time;
+  cfg = config.custom.system.time;
 in
 {
-  options.${namespace}.system.time = with types; {
+  options.custom.system.time = with types; {
     enable = mkBoolOpt false "Whether to manage timezone configuration.";
     timezone = mkOpt str "Asia/Jerusalem" "Timezone to set for system";
   };

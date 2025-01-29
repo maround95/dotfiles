@@ -6,12 +6,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.apps.steam;
+  cfg = config.custom.apps.steam;
 in
 {
-  options.${namespace}.apps.steam = with types; {
+  options.custom.apps.steam = with types; {
     enable = mkBoolOpt false "Whether or not to enable Steam.";
   };
 

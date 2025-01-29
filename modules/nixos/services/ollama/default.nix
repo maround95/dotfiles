@@ -6,12 +6,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.services.ollama;
+  cfg = config.custom.services.ollama;
 in
 {
-  options.${namespace}.services.ollama = with types; {
+  options.custom.services.ollama = with types; {
     enable = mkBoolOpt false "Whether to enable ollama.";
   };
 

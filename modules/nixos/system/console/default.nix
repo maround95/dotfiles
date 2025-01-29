@@ -5,12 +5,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.system.console;
+  cfg = config.custom.system.console;
 in
 {
-  options.${namespace}.system.console = with types; {
+  options.custom.system.console = with types; {
     enable = mkBoolOpt false "Whether to configure console settings.";
   };
 

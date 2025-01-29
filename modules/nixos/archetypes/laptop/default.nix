@@ -6,12 +6,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.archetypes.laptop;
+  cfg = config.custom.archetypes.laptop;
 in
 {
-  options.${namespace}.archetypes.laptop = with types; {
+  options.custom.archetypes.laptop = with types; {
     enable = mkBoolOpt false "Whether or not to enable the laptop archetype.";
   };
 
@@ -20,7 +20,7 @@ in
 
     services.tlp.enable = mkForce false;
 
-    ${namespace} = {
+    custom = {
 
       suites = {
         common = enabled;

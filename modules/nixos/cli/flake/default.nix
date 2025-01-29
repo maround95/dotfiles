@@ -7,12 +7,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.cli-apps.flake;
+  cfg = config.custom.cli-apps.flake;
 in
 {
-  options.${namespace}.cli-apps.flake = with types; {
+  options.custom.cli-apps.flake = with types; {
     enable = mkBoolOpt false "Whether or not to enable flake cli app.";
   };
 

@@ -7,19 +7,19 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.desktop.plasma;
+  cfg = config.custom.desktop.plasma;
   dePriority = mkOverride 2;
 in
 {
-  options.${namespace}.desktop.plasma = with types; {
+  options.custom.desktop.plasma = with types; {
     enable = mkBoolOpt false "Enable Plasma 6 DE.";
   };
 
   config = mkIf cfg.enable {
 
-    ${namespace}.desktop = {
+    custom.desktop = {
       extras.wayland = enabled;
 
       display-manager = {

@@ -7,12 +7,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.user;
+  cfg = config.custom.user;
 in
 {
-  options.${namespace}.user = with types; {
+  options.custom.user = with types; {
     name = mkOpt str "maroun" "The name to use for the user account.";
     fullName = mkOpt str "Maroun Deeb" "The full name of the user.";
     initialPassword =

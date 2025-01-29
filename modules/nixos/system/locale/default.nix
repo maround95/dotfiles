@@ -6,12 +6,12 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.system.locale;
+  cfg = config.custom.system.locale;
 in
 {
-  options.${namespace}.system.locale = with types; {
+  options.custom.system.locale = with types; {
     enable = mkBoolOpt false "Whether to manage locale settings.";
     defaultLocale = mkOpt str "en_US.UTF-8" "Default system locale";
   };

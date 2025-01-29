@@ -1,8 +1,8 @@
-self@{ pkgs, inputs, ... }:
+{ inputs, system, ... }:
 {
   programs.wezterm = {
     enable = false;
-    package = inputs.wezterm.packages.${pkgs.system}.default;
+    package = inputs.wezterm.packages.${system}.default;
     enableZshIntegration = true;
     enableBashIntegration = true;
     extraConfig = ''

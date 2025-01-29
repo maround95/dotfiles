@@ -51,6 +51,7 @@
 
     hyprland = {
       url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     sops-nix = {
@@ -58,13 +59,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    matugen = {
-      url = "git+file:///home/maroun/git/matugen/";
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    matugen-templates = {
-      url = "github:InioX/matugen-themes";
+    firefox-csshacks = {
+      url = "github:MrOtherGuy/firefox-csshacks";
       flake = false;
     };
 
@@ -77,7 +78,7 @@
       inherit inputs;
       src = ./.;
 
-      snowfall.namespace = "lk95";
+      snowfall.namespace = "custom";
 
       channels-config = {
         allowUnfree = true;

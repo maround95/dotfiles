@@ -7,17 +7,17 @@
   ...
 }:
 with lib;
-with lib.${namespace};
+with lib.custom;
 let
-  cfg = config.${namespace}.apps.brave;
+  cfg = config.custom.apps.brave;
 in
 {
-  options.${namespace}.apps.brave = with types; {
+  options.custom.apps.brave = with types; {
     enable = mkBoolOpt false "Whether or not to enable Brave.";
   };
 
   config = mkIf cfg.enable {
-    ${namespace}.home.extraOptions.programs.brave = {
+    custom.home.extraOptions.programs.brave = {
       enable = true;
       package = pkgs.brave;
       extensions = [
