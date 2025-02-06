@@ -35,6 +35,7 @@ in
       lsof
       multipath-tools
       nmap
+      ntfs3g
       parallel # GNU parallel
       pciutils
       ripgrep
