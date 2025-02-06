@@ -9,7 +9,7 @@ with lib;
 with lib.custom;
 let
   cfg = config.custom.desktop.hyprland;
-  package = inputs.hyprland.packages.${system}.hyprland-debug;
+  package = inputs.hyprland.packages.${system}.hyprland;
   dePriority = mkOverride 1;
 in
 {

@@ -52,7 +52,7 @@ with lib.custom;
 
     nvidia = {
       open = false;
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      package = config.boot.kernelPackages.nvidiaPackages.beta;
     };
 
     enableRedistributableFirmware = true;
