@@ -1,10 +1,8 @@
 {
   inputs,
-  options,
   config,
   pkgs,
   lib,
-  namespace,
   ...
 }:
 with lib;
@@ -20,9 +18,10 @@ in
   };
 
   config = mkIf cfg.enable {
-    boot.lanzaboote.enable = true;
     boot.loader.systemd-boot.enable = mkForce false;
+    boot.lanzaboote.enable = true;
     boot.lanzaboote.pkiBundle = "/etc/secureboot";
+    boot.lanzaboote.settings = config.custom.system.boot.systemd-boot.settings;
 
     environment.systemPackages = with pkgs; [ sbctl ];
   };
