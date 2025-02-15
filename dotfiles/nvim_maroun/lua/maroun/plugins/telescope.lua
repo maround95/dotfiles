@@ -14,7 +14,7 @@ return {
 
     telescope.setup({
       defaults = {
-        path_display = { shorten = { len = 4, exclude = { -1 } } },
+        -- path_display = { shorten = { len = 4, exclude = { -1 } } },
         layout_strategy = "vertical",
         mappings = {
           i = {
