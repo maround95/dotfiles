@@ -32,7 +32,7 @@
 
   boot.extraModulePackages = with config.boot.kernelPackages; [
     acpi_call # acpi_call kernel module
-    lenovo-legion-module
+    # lenovo-legion-module
   ];
 
   hardware = {
