@@ -7,7 +7,7 @@
   xdg.portal.enable = true;
   xdg.portal.config.common.default = "*";
   xdg.portal.extraPortals = with pkgs; [
-    xdg-desktop-portal-kde
+    kdePackages.xdg-desktop-portal-kde
     xdg-desktop-portal-gtk
   ];
 

@@ -7,7 +7,7 @@
     zellij = {
       enable = true;
       enableBashIntegration = false;
-      enableZshIntegration = false;
+      enableZshIntegration = true;
     };
   };
 

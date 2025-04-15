@@ -32,6 +32,8 @@ with lib.custom;
       sshd = enabled;
     };
 
+    system.time.timezone = "Europe/Berlin";
+
   };
 
   networking.firewall.enable = lib.mkForce false;

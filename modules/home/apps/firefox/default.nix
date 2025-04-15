@@ -32,7 +32,7 @@ in
 
       policies = {
         SearchEngines = {
-          Default = "DuckDuckGo";
+          Default = "ddg";
         };
       };
 
@@ -46,7 +46,7 @@ in
           (builtins.readFile "${betterfox}/Peskyfox.js")
         ];
 
-        extensions = with firefox-addons; [
+        extensions.packages = with firefox-addons; [
           old-reddit-redirect
           ublock-origin
           vimium-c
@@ -73,7 +73,8 @@ in
 
             #alltabs-button,
             #identity-box,
-            #urlbar-background ,
+            #urlbar-background,
+            #titlebar-buttonbox-container,
             .titlebar-spacer
             {
               display: none !important;
@@ -195,20 +196,20 @@ in
         };
         search = {
           force = true;
-          default = "DuckDuckGo";
-          privateDefault = "DuckDuckGo";
+          default = "ddg";
+          privateDefault = "ddg";
           order = [
-            "DuckDuckGo"
-            "Google"
+            "ddg"
+            "google"
           ];
           engines = {
-            "Bing".metaData.hidden = true;
-            "Ebay".metaData.hidden = true;
-            "Amazon.com".metaData.hidden = true;
-            "Google".metaData.alias = "@g";
-            "Wikipedia".metaData.alias = "@wk";
-            "YouTube" = {
-              iconUpdateURL = "https://youtube.com/favicon.ico";
+            "bing".metaData.hidden = true;
+            "ebay".metaData.hidden = true;
+            "amazondotcom-us".metaData.hidden = true;
+            "google".metaData.alias = "@g";
+            "wikipedia".metaData.alias = "@wk";
+            "youtube" = {
+              icon = "https://youtube.com/favicon.ico";
               updateInterval = 24 * 60 * 60 * 1000;
               definedAliases = [ "@yt" ];
               urls = [
@@ -265,7 +266,7 @@ in
             };
 
             "GitHub" = {
-              iconUpdateURL = "https://github.com/favicon.ico";
+              icon = "https://github.com/favicon.ico";
               updateInterval = 24 * 60 * 60 * 1000;
               definedAliases = [ "@gh" ];
 

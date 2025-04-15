@@ -22,7 +22,6 @@
         FLAKE = "${config.dotfiles}";
         SHELL = "zsh";
         EDITOR = "nvim";
-        NVIM_APPNAME = "nvim_maroun";
       };
     };
 

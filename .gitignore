@@ -1,4 +1,3 @@
-.zcompdump*
-.zcompcache
 .direnv
 result
+secrets

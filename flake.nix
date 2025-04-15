@@ -36,8 +36,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay";
+    fenix = {
+      url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -67,6 +67,11 @@
     firefox-csshacks = {
       url = "github:MrOtherGuy/firefox-csshacks";
       flake = false;
+    };
+
+    nvim-maroun = {
+      url = "github:maround95/nvim-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";

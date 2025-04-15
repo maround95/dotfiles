@@ -18,6 +18,7 @@ in
 
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
+      wdisplays
       wl-clipboard
       wayland-utils # wayland-info
     ];
