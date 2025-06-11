@@ -7,8 +7,7 @@
   ...
 }:
 with lib;
-with lib.custom;
-let
+with lib.custom; let
   cfg = config.custom.apps.firefox;
   firefox-addons = inputs.firefox-addons.packages.${system};
 
@@ -18,8 +17,7 @@ let
     rev = "133.0";
     hash = "sha256-Uu/a5t74GGvMIJP5tptqbiFiA+x2hw98irPdl8ynGoE=";
   };
-in
-{
+in {
   options.custom.apps.firefox = with types; {
     enable = mkBoolOpt true "Whether or not to enable Firefox.";
   };
@@ -211,7 +209,7 @@ in
             "youtube" = {
               icon = "https://youtube.com/favicon.ico";
               updateInterval = 24 * 60 * 60 * 1000;
-              definedAliases = [ "@yt" ];
+              definedAliases = ["@yt"];
               urls = [
                 {
                   template = "https://www.youtube.com/results";
@@ -227,7 +225,7 @@ in
 
             "Nix Packages" = {
               icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-              definedAliases = [ "@np" ];
+              definedAliases = ["@np"];
               urls = [
                 {
                   template = "https://search.nixos.org/packages";
@@ -247,7 +245,7 @@ in
 
             "NixOS Options" = {
               icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-              definedAliases = [ "@no" ];
+              definedAliases = ["@no"];
               urls = [
                 {
                   template = "https://search.nixos.org/options";
@@ -268,7 +266,7 @@ in
             "GitHub" = {
               icon = "https://github.com/favicon.ico";
               updateInterval = 24 * 60 * 60 * 1000;
-              definedAliases = [ "@gh" ];
+              definedAliases = ["@gh"];
 
               urls = [
                 {
@@ -285,7 +283,7 @@ in
 
             "Home Manager" = {
               icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-              definedAliases = [ "@hm" ];
+              definedAliases = ["@hm"];
 
               url = [
                 {
@@ -299,18 +297,22 @@ in
                 }
               ];
             };
+
+            "Crates.io" = {
+              urls = [{template = "https://crates.io/crates/{searchTerms}";}];
+              definedAliases = ["@cio"];
+            };
           };
         };
-        bookmarks = { };
-
+        bookmarks = {};
       };
     };
 
     xdg.mimeApps.defaultApplications = {
-      "text/html" = [ "firefox.desktop" ];
-      "text/xml" = [ "firefox.desktop" ];
-      "x-scheme-handler/http" = [ "firefox.desktop" ];
-      "x-scheme-handler/https" = [ "firefox.desktop" ];
+      "text/html" = ["firefox.desktop"];
+      "text/xml" = ["firefox.desktop"];
+      "x-scheme-handler/http" = ["firefox.desktop"];
+      "x-scheme-handler/https" = ["firefox.desktop"];
     };
   };
 }

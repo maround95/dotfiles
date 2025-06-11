@@ -17,6 +17,7 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       aria2
+      android-tools
       bash
       bat
       clac

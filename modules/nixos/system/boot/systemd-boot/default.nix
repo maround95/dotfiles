@@ -72,7 +72,7 @@ in
     };
 
     custom.system.boot.systemd-boot.settings = {
-      default = "@saved";
+      # default = "@saved";
     };
   };
 }

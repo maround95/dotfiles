@@ -19,6 +19,9 @@ in {
   };
 
   config = mkIf cfg.enable {
+    custom.desktop.swww.enable = true;
+    custom.desktop.dunst.enable = true;
+
     home.packages = with pkgs; [
       hyprpicker
       hypridle
@@ -75,10 +78,19 @@ in {
       };
       source = [monitorsConfPath];
       env = [];
-      windowrulev2 = ["float, class:^(Anydesk)$,title:^(anydesk)$"];
+      windowrule = [
+        "float, class:^(Anydesk)$,title:^(anydesk)$"
+        "opacity 1.0 override, class:^(jetbrains-idea-ce)$"
+        "noinitialfocus, class:jetbrains-toolbox, floating:0"
+        "noinitialfocus, class:(jetbrains-)(.*), floating:0"
+        "noinitialfocus, class:(jetbrains-)(.*), title:^$, initialTitle:^$, floating:0"
+        "center, class:(jetbrains-)(.*), initialTitle:(.+), floating:0"
+        "center, class:(jetbrains-)(.*), title:^$, initialTitle:^$, floating:0"
+        "noinitialfocus, class:(jetbrains-) (.*), title:^win(.*), initialTitle:win.*, floating:0"
+      ];
       decoration = {
         rounding = 10;
-        inactive_opacity = 0.8;
+        inactive_opacity = 0.90;
 
         blur = {
           enabled = true;
@@ -96,6 +108,10 @@ in {
           "$mod, W, exec, wezterm"
           "$mod, F, exec, firefox"
           "$mod, Q, killactive"
+
+          # Special workspace
+          "$mod, S, togglespecialworkspace"
+          "$mod SHIFT, S, movetoworkspace, special"
 
           # move between windows
           "$mod, h, movefocus, l"
@@ -115,6 +131,9 @@ in {
       bindm = [
         "$mod, mouse:272, movewindow"
         "$mod, mouse:273, resizewindow"
+      ];
+      animation = [
+        "specialWorkspace, 1, 1.5, default, fade"
       ];
     };
   };

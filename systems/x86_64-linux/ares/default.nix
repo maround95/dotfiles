@@ -1,19 +1,17 @@
 {
   inputs,
-  namespace,
   lib,
   pkgs,
   ...
 }:
-with lib.custom;
-{
+with lib;
+with lib.custom; {
   imports = [
     inputs.disko.nixosModules.disko
     ./disko_config.nix
 
     ./l5p-16ach6h
   ];
-
 
   custom = {
     archetypes.laptop = enabled;
@@ -33,10 +31,12 @@ with lib.custom;
     };
 
     system.time.timezone = "Europe/Berlin";
-
+    hardware.networking.wifi.backend = "wpa_supplicant";
   };
 
-  networking.firewall.enable = lib.mkForce false;
+  # networking.networkmanager.enable = mkForce false;
+
+  # networking.firewall.enable = lib.mkForce false;
 
   ## From generated hardware-configuration.nix
   boot.initrd.availableKernelModules = [
@@ -47,13 +47,20 @@ with lib.custom;
     "usb_storage"
     "sd_mod"
   ];
-  boot.kernelModules = [ "kvm-amd" ];
+  boot.kernelModules = ["kvm-amd"];
   ##
 
   hardware = {
     enableRedistributableFirmware = true;
     cpu.amd.updateMicrocode = true;
   };
+
+  services.usbmuxd.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    libimobiledevice
+    ifuse # optional, to mount using 'ifuse'
+  ];
 
   #boot.kernelPackages = lib.mkForce pkgs.linuxPackages_cachyos;
   #chaotic.scx.enable = true; # by default uses scx_rustland scheduler

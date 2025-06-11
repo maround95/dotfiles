@@ -3,12 +3,11 @@
   lib,
   pkgs,
   ...
-}:
-let
+}: let
   cfg = config.custom.wallust;
-in
-{
+in {
   imports = [
+    ./dunst.nix
     ./hyprland.nix
     ./kitty.nix
     ./nvim.nix
@@ -20,28 +19,26 @@ in
 
   options = {
     custom.wallust.settings = lib.mkOption {
-      type = (pkgs.formats.toml { }).type;
-      default = { };
+      type = (pkgs.formats.toml {}).type;
+      default = {};
     };
   };
 
   config = {
-    home.packages = with pkgs; [ wallust ];
+    home.packages = with pkgs; [wallust];
 
-    home.file.".config/wallust/wallust.toml".source = (
-      (pkgs.formats.toml { }).generate "wallust.toml" (
-        lib.attrsets.mergeAttrsList [
-          {
-            backend = "wal";
-            # color_space = "lch";
-            alpha = 85;
-            threshold = 1;
-            palette = "dark";
-            check_contrast = true;
-          }
-          cfg.settings
-        ]
-      )
+    home.file.".config/wallust/wallust.toml".source = (pkgs.formats.toml {}).generate "wallust.toml" (
+      lib.attrsets.mergeAttrsList [
+        {
+          backend = "wal";
+          # color_space = "lch";
+          alpha = 90;
+          threshold = 1;
+          palette = "dark";
+          check_contrast = true;
+        }
+        cfg.settings
+      ]
     );
   };
 }

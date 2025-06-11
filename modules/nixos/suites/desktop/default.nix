@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  namespace,
   ...
 }:
 with lib;
@@ -33,6 +32,7 @@ in
       };
 
       services = {
+        avahi = enabled;
         kdeconnect = enabled;
         flatpak = enabled;
       };

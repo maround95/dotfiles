@@ -52,7 +52,7 @@ in
       save = 100000;
     };
 
-    initExtra = ''
+    initContent = ''
       bindkey "^N" autosuggest-accept
 
       # Visual mode in zsh -> edit long commands in nvim
