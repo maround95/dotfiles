@@ -1,15 +1,14 @@
 {
   config,
   lib,
-  system,
-  inputs,
+  pkgs,
   ...
 }:
 with lib;
 with lib.custom;
 let
   cfg = config.custom.desktop.hyprland;
-  package = inputs.hyprland.packages.${system}.hyprland;
+  package = pkgs.hyprland-git; # overlay
   dePriority = mkOverride 1;
 in
 {

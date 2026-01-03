@@ -1,17 +1,13 @@
 {
-  options,
   pkgs,
   config,
   lib,
-  namespace,
   ...
 }:
 with lib;
-with lib.custom;
-let
+with lib.custom; let
   cfg = config.custom.nix;
-in
-{
+in {
   options.custom.nix = with types; {
     enable = mkBoolOpt false "Whether to manage nix configuration.";
   };
@@ -30,12 +26,20 @@ in
         "root"
         "@wheel"
       ];
+
+      substituters = [
+        "https://nix-community.cachix.org"
+      ];
+
+      trusted-public-keys = [
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      ];
+
     };
 
     environment.systemPackages = with pkgs; [
       nix-index
       nix-output-monitor
     ];
-
   };
 }

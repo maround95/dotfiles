@@ -8,8 +8,6 @@ mkShell {
     sops
 
     nixd
-    nil
     nixfmt-rfc-style
-    lua-language-server
   ];
 }

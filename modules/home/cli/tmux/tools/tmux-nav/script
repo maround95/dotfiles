@@ -1,0 +1,320 @@
+#!/bin/sh
+# tmux-nav: smart horizontal navigation across panes & windows.
+#
+# Behavior:
+#   - M-h (left), M-l (right) move between panes as usual.
+#   - At the left/right edge of a window, move to the previous/next window.
+#   - When entering a window:
+#       * Prefer tmux's last-active pane in that window.
+#       * If that pane is not on the relevant edge, fall back to the edge-most pane.
+#   - Windows with index >= 1000 are ignored (e.g. scrollback helpers).
+#   - Zoom semantics:
+#       * We never toggle zoom ourselves.
+#       * We use tmux's native -Z support on select-pane so that, if the window
+#         is zoomed, moving between panes keeps it zoomed.
+#       * When zoomed:
+#           - If there is another pane in the underlying layout in that
+#             direction, do an intra-window move (select-pane -L/-R -Z).
+#           - Only cross windows if there is no pane in that direction.
+#
+# Example bindings in .tmux.conf:
+#   bind -n M-h run-shell 'tmux-nav.sh left'
+#   bind -n M-l run-shell 'tmux-nav.sh right'
+#
+# Optional debug:
+#   set-environment -g TMUX_NAV_DEBUG 1
+#   tail -f /tmp/tmux-nav.log
+
+set -eu
+
+SCRIPT_NAME=${0##*/}
+
+log() {
+  [ "${TMUX_NAV_DEBUG:-}" = "" ] && return 0
+  printf '%s: %s\n' "$SCRIPT_NAME" "$*" >>"${TMPDIR:-/tmp}/tmux-nav.log"
+}
+
+usage() {
+  printf 'Usage: %s [pane|window] {left|right}\n' "$SCRIPT_NAME" >&2
+  exit 0
+}
+
+# --------------------------------------------------------------------------- #
+# Window navigation helpers
+# --------------------------------------------------------------------------- #
+
+# Pick the window we should move to, given direction and current window.
+# Uses window_index ordering, ignores index >= 1000, wraps around.
+next_window_for_direction() {
+  dir="$1" # "left" or "right"
+
+  cur_index=$(tmux display-message -p '#{window_index}')
+  cur_id=$(tmux display-message -p '#{window_id}')
+  log "Current window: index=$cur_index id=$cur_id"
+
+  windows=$(tmux list-windows -F '#{window_index} #{window_id}')
+
+  first_id=""
+  last_id=""
+  prev_id=""
+  target=""
+  found_cur=0
+  cur_in_list=0
+
+  # list-windows is already sorted by index
+  while read -r idx wid; do
+    [ "$idx" = "" ] && continue
+
+    # Ignore helper/scrollback windows
+    if [ "$idx" -ge 1000 ] 2>/dev/null; then
+      continue
+    fi
+
+    # Track first and last usable windows
+    [ "$first_id" = "" ] && first_id="$wid"
+    last_id="$wid"
+
+    if [ "$wid" = "$cur_id" ]; then
+      cur_in_list=1
+      if [ "$dir" = "right" ]; then
+        # Next valid window after this one
+        found_cur=1
+      else
+        # Moving left: previous valid window if any
+        [ "$prev_id" != "" ] && target="$prev_id"
+      fi
+    else
+      if [ "$dir" = "right" ] && [ "$found_cur" -eq 1 ] && [ "$target" = "" ]; then
+        target="$wid"
+      fi
+    fi
+
+    prev_id="$wid"
+  done <<EOF
+$windows
+EOF
+
+  # If current window is ignored (e.g. index >= 1000), go to first usable one.
+  if [ "$cur_in_list" -eq 0 ]; then
+    [ "$first_id" != "" ] && target="$first_id"
+  fi
+
+  # Wraparound if we didn't find a "next" or "prev".
+  if [ "$target" = "" ]; then
+    if [ "$dir" = "right" ] && [ "$first_id" != "" ]; then
+      target="$first_id"
+    else
+      target="$last_id"
+    fi
+  fi
+
+  [ "$target" != "" ] || return 1
+
+  log "Target window for dir=$dir: $target"
+  printf '%s\n' "$target"
+  return 0
+}
+
+# --------------------------------------------------------------------------- #
+# Zoom / layout helpers
+# --------------------------------------------------------------------------- #
+
+# Look at the real layout (even when zoomed) and answer:
+# "Is there any pane to the left/right of the current one?"
+zoom_has_neighbor() {
+  dir="$1" # "left" or "right"
+
+  cur_id=$(tmux display-message -p '#{pane_id}')
+  cur_left=$(tmux display-message -p '#{pane_left}')
+  cur_right=$(tmux display-message -p '#{pane_right}')
+
+  panes=$(tmux list-panes -F '#{pane_id} #{pane_left} #{pane_right}')
+
+  found=0
+  while read -r pid left right; do
+    [ "$pid" = "" ] && continue
+    [ "$pid" = "$cur_id" ] && continue
+
+    if [ "$dir" = "right" ]; then
+      # Any pane that starts to the right of us counts as "neighbor exists"
+      if [ "$left" -gt "$cur_left" ] 2>/dev/null; then
+        found=1
+        break
+      fi
+    else
+      # Any pane that ends to the left of us counts as "neighbor exists"
+      if [ "$right" -lt "$cur_right" ] 2>/dev/null; then
+        found=1
+        break
+      fi
+    fi
+  done <<EOF
+$panes
+EOF
+
+  [ "$found" -eq 1 ]
+}
+
+# --------------------------------------------------------------------------- #
+# Pane selection inside the current window
+# --------------------------------------------------------------------------- #
+
+# After we've selected the target window, we:
+#   1. Ask tmux which pane is active there (tmux's last-active).
+#   2. If that pane is on the correct edge, keep it.
+#   3. Otherwise, pick the edge-most pane by geometry as a fallback.
+choose_best_pane_in_current_window() {
+  dir="$1" # "left" or "right"
+
+  last_pane=$(tmux display-message -p '#{pane_id}')
+  log "Last-active pane in this window: $last_pane"
+
+  panes=$(tmux list-panes -F '#{pane_id} #{pane_left} #{pane_right} #{pane_at_left} #{pane_at_right}')
+
+  candidates=""      # pane_ids on the relevant edge
+  fallback_id=""     # geometric best (leftmost or rightmost)
+  fallback_metric="" # numeric metric for geometric comparison
+
+  while read -r pid left right at_left at_right; do
+    [ "$pid" = "" ] && continue
+
+    if [ "$dir" = "right" ]; then
+      # Coming from right edge → want panes that touch the *left* edge
+      if [ "$at_left" = "1" ]; then
+        candidates="$candidates $pid"
+        # Fallback: smallest pane_left (furthest to the left)
+        if [ "$fallback_id" = "" ] || [ "$left" -lt "$fallback_metric" ] 2>/dev/null; then
+          fallback_id="$pid"
+          fallback_metric="$left"
+        fi
+      fi
+    else
+      # dir = left; coming from left edge → want panes that touch the *right* edge
+      if [ "$at_right" = "1" ]; then
+        candidates="$candidates $pid"
+        # Fallback: largest pane_right (furthest to the right)
+        if [ "$fallback_id" = "" ] || [ "$right" -gt "$fallback_metric" ] 2>/dev/null; then
+          fallback_id="$pid"
+          fallback_metric="$right"
+        fi
+      fi
+    fi
+  done <<EOF
+$panes
+EOF
+
+  # No edge candidates – weird layout / single pane; keep whatever tmux chose.
+  if [ "$candidates" = "" ]; then
+    log "No edge candidates; staying on last-active pane"
+    return 0
+  fi
+
+  candidates=$(printf '%s\n' "$candidates" | sed 's/^ *//')
+  log "Edge candidates for dir=$dir: $candidates"
+
+  # If tmux’s last-active pane is already on the correct edge, we’re done.
+  for c in $candidates; do
+    if [ "$c" = "$last_pane" ]; then
+      log "Last-active pane is on the correct edge; keeping $last_pane"
+      return 0
+    fi
+  done
+
+  # Otherwise, fall back to the geometric edge-most candidate.
+  if [ "$fallback_id" != "" ] && [ "$fallback_id" != "$last_pane" ]; then
+    log "Last-active pane not on edge; geometric fallback: $fallback_id"
+    # Use -Z so zoomed windows stay zoomed when we change pane
+    tmux select-pane -t "$fallback_id" -Z
+  fi
+}
+
+# --------------------------------------------------------------------------- #
+# Main control flow
+# --------------------------------------------------------------------------- #
+
+main() {
+  [ $# -eq 2 ] || usage
+
+  MODE="$1"
+  DIR="$2"
+  case "$DIR" in
+  left | right) ;;
+  *) usage ;;
+  esac
+
+  case "$MODE" in
+  pane | window) ;;
+  *) usage ;;
+  esac
+
+  # Must be run inside tmux
+  [ "${TMUX:-}" != "" ] || exit 0
+
+  # Window-only mode: just move windows, keeping ignore logic.
+  if [ "$MODE" = "window" ]; then
+    target_win=$(next_window_for_direction "$DIR") || {
+      log "No target window in window-only mode"
+      exit 0
+    }
+    tmux select-window -t "$target_win"
+    exit 0
+  fi
+
+  zoom=$(tmux display-message -p '#{window_zoomed_flag}' 2>/dev/null || echo "0")
+  at_left=$(tmux display-message -p '#{pane_at_left}' 2>/dev/null || echo "0")
+  at_right=$(tmux display-message -p '#{pane_at_right}' 2>/dev/null || echo "0")
+
+  log "Edge flags: at_left=$at_left at_right=$at_right zoom=$zoom direction=$DIR"
+
+  # --- Zoom-aware behavior using native -Z ------------------------------- #
+  #
+  # When zoomed:
+  #   * If there is another pane in the underlying layout in that direction,
+  #     we do an intra-window move via select-pane -L/-R -Z.
+  #   * If there is no neighbor, we fall through to edge logic and may cross
+  #     windows. Zoom for each window is left to tmux.
+
+  if [ "$zoom" = "1" ]; then
+    if [ "$DIR" = "left" ] && zoom_has_neighbor left; then
+      log "Zoomed: intra-window move left (neighbor exists)"
+      tmux select-pane -L -Z
+      exit 0
+    fi
+
+    if [ "$DIR" = "right" ] && zoom_has_neighbor right; then
+      log "Zoomed: intra-window move right (neighbor exists)"
+      tmux select-pane -R -Z
+      exit 0
+    fi
+    # Otherwise: treat like being at an edge and consider cross-window move.
+  fi
+
+  # --- Normal intra-window movement (non-zoomed, or logical non-edge) --- #
+
+  if [ "$DIR" = "left" ] && [ "$at_left" = "0" ]; then
+    log "Intra-window move left"
+    tmux select-pane -L -Z
+    exit 0
+  fi
+
+  if [ "$DIR" = "right" ] && [ "$at_right" = "0" ]; then
+    log "Intra-window move right"
+    tmux select-pane -R -Z
+    exit 0
+  fi
+
+  # --- Cross-window movement ------------------------------------------- #
+
+  target_win=$(next_window_for_direction "$DIR") || {
+    log "No target window; aborting cross-window move"
+    exit 0
+  }
+
+  # 1) Let tmux switch to the target window and restore its last-active pane.
+  tmux select-window -t "$target_win"
+
+  # 2) Adjust pane only if needed.
+  choose_best_pane_in_current_window "$DIR"
+}
+
+main "$@"

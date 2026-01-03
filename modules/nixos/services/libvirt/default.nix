@@ -22,9 +22,11 @@ in
 
     virtualisation.libvirtd = {
       enable = true;
-      qemu.ovmf.packages = [
-        pkgs.OVMF.fd
-      ] ++ optional cfg.aarch64-ovmf pkgs.pkgsCross.aarch64-multiplatform.OVMF.fd;
+
+      # All OVMF images distributed with QEMU are now available by default.
+      # qemu.ovmf.packages = [
+      #   pkgs.OVMF.fd
+      # ] ++ optional cfg.aarch64-ovmf pkgs.pkgsCross.aarch64-multiplatform.OVMF.fd;
     };
 
     virtualisation.spiceUSBRedirection.enable = true;

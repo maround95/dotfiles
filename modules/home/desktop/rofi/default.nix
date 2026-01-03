@@ -51,7 +51,8 @@ let
 in
 {
   home.packages = with pkgs; [
-    rofi-wayland
+    # rofi-wayland
+    rofi # rofi-wayland was merged into rofi
     gojq
   ];
 

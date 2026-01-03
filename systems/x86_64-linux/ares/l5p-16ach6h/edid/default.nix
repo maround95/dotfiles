@@ -2,7 +2,7 @@
 
 let
   # This file was obtained from the display while "Discrete" mode was enabled.
-  l5p_edid = pkgs.runCommandNoCC "l5p_edid" {} ''
+  l5p_edid = pkgs.runCommand "l5p_edid" {} ''
     mkdir -p $out/lib/firmware/edid
     cp ${./16ach6h.bin} $out/lib/firmware/edid/16ach6h.bin
   '';

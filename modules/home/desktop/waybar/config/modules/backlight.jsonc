@@ -1,0 +1,24 @@
+{
+	"backlight": {
+		// "interval":
+		"format": "{icon} {percent}%",
+		"format-icons": [
+			"", "", "", "", "", "", "", "", ""
+		],
+		"min-length": 7,
+		"max-length": 7,
+		// "rotate":
+		// "states":
+		// "on-click":
+		// "on-click-middle":
+		// "on-click-right":
+		"on-scroll-up": "~/.config/waybar/scripts/backlight.sh up 3",
+		"on-scroll-down": "~/.config/waybar/scripts/backlight.sh down 3",
+		// "smooth-scrolling-threshold":
+		"reverse-scrolling": true, // Option to reverse the scroll direction for devices other than a mouse (touchpad, trackpad, etc)
+		// "reverse-mouse-scrolling":
+		// "scroll-step": 7.0,
+		"tooltip": false
+		// "tooltip-format":
+	}
+}

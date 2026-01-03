@@ -16,7 +16,8 @@ in
   };
 
   config = mkIf cfg.enable {
-    services.logind.lidSwitch = "ignore";
+    # services.logind.lidSwitch = "ignore";
+    services.logind.settings.Login.HandleLidSwitch = "ignore";
 
     services.tlp.enable = mkForce false;
 

@@ -1,9 +1,7 @@
 {
-  options,
   config,
   lib,
   pkgs,
-  namespace,
   ...
 }:
 with lib;
@@ -24,12 +22,14 @@ in
     services.greetd = {
       enable = true;
       restart = true;
-      vt = 6;
+      useTextGreeter = true;
+      # vt = 6; deprecated, always uses vt1 - https://github.com/NixOS/nixpkgs/pull/428972
 
       settings = rec {
         initial_session = mkIf cfg.autoLogin default_session;
         default_session = {
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --asterisks --time --time-format '%I:%M %p | %a • %h | %F' --cmd ${defaultSessionCmd}";
+          # command = "${pkgs.greetd.tuigreet}/bin/tuigreet --asterisks --time --time-format '%I:%M %p | %a • %h | %F' --cmd ${defaultSessionCmd}";
+          command = "${pkgs.tuigreet}/bin/tuigreet --asterisks --time --time-format '%I:%M %p | %a • %h | %F' --cmd ${defaultSessionCmd}";
           user = userName;
         };
       };

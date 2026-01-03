@@ -1,8 +1,7 @@
 {
-  options,
   config,
   lib,
-  namespace,
+  pkgs,
   ...
 }:
 with lib;
@@ -18,7 +17,7 @@ in
   config = mkIf cfg.enable {
     services.ollama = {
       enable = true;
-      acceleration = "cuda";
+      package = pkgs.ollama-cuda;
     };
   };
 }

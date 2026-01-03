@@ -21,8 +21,10 @@ in {
   config = mkIf cfg.enable {
     custom.desktop.swww.enable = true;
     custom.desktop.dunst.enable = true;
+    custom.desktop.waybar.enable = true;
 
     home.packages = with pkgs; [
+      playerctl
       hyprpicker
       hypridle
       wl-gammactl
@@ -62,6 +64,12 @@ in {
       );
     in {
       "$mod" = "SUPER";
+      exec-once = [
+        "waybar"
+      ];
+      general = {
+        gaps_out = 10;
+      };
       input = {
         touchpad = {
           natural_scroll = true;
@@ -89,7 +97,7 @@ in {
         "noinitialfocus, class:(jetbrains-) (.*), title:^win(.*), initialTitle:win.*, floating:0"
       ];
       decoration = {
-        rounding = 10;
+        rounding = 2;
         inactive_opacity = 0.90;
 
         blur = {
@@ -101,11 +109,14 @@ in {
           new_optimizations = true;
         };
       };
+      misc = {
+        disable_hyprland_logo = true;
+        disable_splash_rendering = true;
+      };
       bind =
         [
           "$mod, Return, exec, kitty"
           "$mod, a, exec, wofi -S drun"
-          "$mod, W, exec, wezterm"
           "$mod, F, exec, firefox"
           "$mod, Q, killactive"
 
@@ -126,6 +137,13 @@ in {
           "$mod SHIFT, l, movewindow, r"
 
           "ALT, Return, fullscreen, 0"
+
+          # Media keys 
+          ", XF86AudioPlay, exec, playerctl play-pause"
+          ", XF86AudioPlayPause, exec, playerctl play-pause"
+          ", XF86AudioPause, exec, playerctl pause"
+          ", XF86AudioNext, exec, playerctl next"
+          ", XF86AudioPrev, exec, playerctl previous"
         ]
         ++ workspaceBinds;
       bindm = [

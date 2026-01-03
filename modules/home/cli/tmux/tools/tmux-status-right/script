@@ -1,0 +1,226 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use utf8;
+use Encode qw(decode);
+binmode STDOUT, ':encoding(UTF-8)';
+
+###############################################################################
+# Config
+###############################################################################
+
+# Separator (visible and tmux-styled)
+my $SEP_VIS  = '|';
+my $SEP_TMUX = '#[fg=colour240]|#[default]';
+
+# Window indicators
+my $ZCHAR = 'Z';   # zoom flag
+my $LCHAR = '«';   # there are windows to the left
+my $RCHAR = '»';   # there are windows to the right
+
+# Styling for active / normal windows
+my $STYLE_ACTIVE_PREFIX = '#[bg=colour237]';
+my $STYLE_ACTIVE_SUFFIX = '#[default]';
+my $STYLE_NORMAL_PREFIX = '';                # e.g. '#[fg=colour250]' if you want
+my $STYLE_NORMAL_SUFFIX = '';
+
+###############################################################################
+# Get client width & session
+###############################################################################
+
+my $client_width = $ARGV[0] // '';
+my $session      = $ARGV[1] // '';
+
+$client_width = ($client_width =~ /^\d+$/) ? $client_width : 80;
+exit 0 unless length $session;
+
+###############################################################################
+# Mode config based on client_width
+###############################################################################
+
+my ($MODE, $MAX_WIDTH, $MAX_WINDOWS, $MULTI_NAME_MAX);
+
+if ($client_width <= 50) {
+    # Ultra-narrow compact
+    $MODE           = 'compact';
+    $MAX_WIDTH      = 10;  # visible chars for the whole block
+    $MAX_WINDOWS    = 1;   # unused in compact
+    $MULTI_NAME_MAX = 0;   # unused in compact
+} elsif ($client_width <= 60) {
+    # Narrow compact
+    $MODE           = 'compact';
+    $MAX_WIDTH      = 14;
+    $MAX_WINDOWS    = 1;
+    $MULTI_NAME_MAX = 0;
+} elsif ($client_width <= 70) {
+    # Slightly wider compact
+    $MODE           = 'compact';
+    $MAX_WIDTH      = 16;
+    $MAX_WINDOWS    = 1;
+    $MULTI_NAME_MAX = 0;
+} elsif ($client_width <= 100) {
+    # Mid-width: up to 2 windows around active
+    $MODE           = 'multi2';
+    $MAX_WIDTH      = 24;
+    $MAX_WINDOWS    = 2;
+    $MULTI_NAME_MAX = 4;   # soft cap per window name
+} else {
+    # Wide: up to 3 windows around active
+    $MODE           = 'multi3';
+    $MAX_WIDTH      = 35;
+    $MAX_WINDOWS    = 3;
+    $MULTI_NAME_MAX = 5;
+}
+
+###############################################################################
+# Collect windows (ignoring scrollback windows index >= 1000)
+###############################################################################
+
+my (@idx, @active, @zoom, @wname);
+my $active_i = -1;
+
+open my $fh, '-|',
+    'tmux', 'list-windows', '-t', $session,
+    '-F', '#{window_index} #{window_active} #{window_zoomed_flag} #{window_name}'
+    or exit 0;
+
+while (my $line = <$fh>) {
+    chomp $line;
+    $line = decode('UTF-8', $line);
+
+    my @f = split ' ', $line;
+    next if @f < 3;
+
+    my ($index, $is_active, $zoomed) = splice(@f, 0, 3);
+    my $name = join ' ', @f;
+
+    # Ignore scrollback windows
+    next if $index >= 1000;
+
+    push @idx,    $index;
+    push @active, $is_active;
+    push @zoom,   $zoomed;
+    push @wname,  $name;
+
+    $active_i = $#idx if $is_active;
+}
+close $fh;
+
+exit 0 unless @idx;
+$active_i = 0 if $active_i < 0;
+
+###############################################################################
+# Render
+###############################################################################
+
+my $windows             = '';
+my $visible_windows_len = 0;
+
+if ($MODE eq 'compact') {
+    ###########################################################################
+    # Compact: Zidx/total + as much name as fits into MAX_WIDTH
+    ###########################################################################
+    my $idx_cur  = $idx[$active_i];
+    my $zoomflag = $zoom[$active_i] ? $ZCHAR : ' ';
+    my $summary  = sprintf('%s%d/%d', $zoomflag, $idx_cur, scalar(@idx));
+
+    my $name_full = $wname[$active_i];
+
+    if (length $name_full) {
+        my $base_visible_len = length(' ' . $SEP_VIS . ' ');  # prefix " | "
+        my $budget = $MAX_WIDTH
+                   - $base_visible_len
+                   - length($summary)
+                   - 1;  # space before name
+
+        if ($budget > 0) {
+            my $name_visible = $name_full;
+
+            if (length($name_visible) > $budget) {
+                # Truncate to available space, use … if we can
+                if ($budget >= 2) {
+                    $name_visible = substr($name_full, 0, $budget - 1) . '…';
+                } else {
+                    $name_visible = substr($name_full, 0, $budget);
+                }
+            }
+
+            $summary .= ' ' . $name_visible if length $name_visible;
+        }
+    }
+
+    $windows             = $summary;
+    $visible_windows_len = length($summary);
+
+} else {
+    ###########################################################################
+    # Multi-window: up to MAX_WINDOWS around active, with indicators
+    ###########################################################################
+    my $first = $active_i;
+    my $last  = $active_i;
+
+    # Grow range by one window at a time, never exceeding MAX_WINDOWS
+    while ( ($last - $first + 1) < $MAX_WINDOWS &&
+            ($first > 0 || $last < $#idx) ) {
+
+        # Choose side to grow: try to keep it roughly balanced around active
+        if ($last < $#idx &&
+            ($first == 0 || $last - $active_i <= $active_i - $first)) {
+            $last++;
+        } elsif ($first > 0) {
+            $first--;
+        } else {
+            last;
+        }
+    }
+
+    # Left indicator if there are windows before the first shown
+    if ($first > 0) {
+        $windows             .= $LCHAR;
+        $visible_windows_len += length($LCHAR);
+    }
+
+    # Emit each window in [first..last]
+    for my $i ($first .. $last) {
+        my $name = $wname[$i];
+
+        if ($MULTI_NAME_MAX && length($name) > $MULTI_NAME_MAX) {
+            if ($MULTI_NAME_MAX >= 2) {
+                $name = substr($name, 0, $MULTI_NAME_MAX - 1) . '…';
+            } else {
+                $name = substr($name, 0, $MULTI_NAME_MAX);
+            }
+        }
+
+        my $seg = $idx[$i] . ($zoom[$i] ? $ZCHAR : '') . " $name";
+
+        if ($i == $active_i) {
+            # Visible: " " + seg; styles are zero-width
+            $windows .= ' ' . $STYLE_ACTIVE_PREFIX . $seg . $STYLE_ACTIVE_SUFFIX;
+        } else {
+            $windows .= ' ' . $STYLE_NORMAL_PREFIX . $seg . $STYLE_NORMAL_SUFFIX;
+        }
+
+        $visible_windows_len += 1 + length($seg);
+    }
+
+    # Right indicator if there are windows after the last shown
+    if ($last < $#idx) {
+        $windows             .= $RCHAR;
+        $visible_windows_len += length($RCHAR);
+    }
+}
+
+###############################################################################
+# Padding after separator, before windows
+###############################################################################
+
+my $base_visible_len = length(' ' . $SEP_VIS . ' '); # " | "
+my $total_visible    = $base_visible_len + $visible_windows_len;
+
+my $pad = '';
+if ($total_visible < $MAX_WIDTH) {
+    $pad = ' ' x ($MAX_WIDTH - $total_visible);
+}
+
+print ' ' . $SEP_TMUX . ' ' . $pad . $windows;

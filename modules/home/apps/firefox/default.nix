@@ -3,20 +3,11 @@
   lib,
   pkgs,
   inputs,
-  system,
   ...
 }:
 with lib;
 with lib.custom; let
   cfg = config.custom.apps.firefox;
-  firefox-addons = inputs.firefox-addons.packages.${system};
-
-  betterfox = pkgs.fetchFromGitHub {
-    owner = "yokoffing";
-    repo = "Betterfox";
-    rev = "133.0";
-    hash = "sha256-Uu/a5t74GGvMIJP5tptqbiFiA+x2hw98irPdl8ynGoE=";
-  };
 in {
   options.custom.apps.firefox = with types; {
     enable = mkBoolOpt true "Whether or not to enable Firefox.";
@@ -39,19 +30,19 @@ in {
         isDefault = true;
 
         extraConfig = builtins.concatStringsSep "\n" [
-          (builtins.readFile "${betterfox}/Securefox.js")
-          (builtins.readFile "${betterfox}/Fastfox.js")
-          (builtins.readFile "${betterfox}/Peskyfox.js")
+          (builtins.readFile "${pkgs.betterfox}/Securefox.js")
+          (builtins.readFile "${pkgs.betterfox}/Fastfox.js")
+          (builtins.readFile "${pkgs.betterfox}/Peskyfox.js")
         ];
 
-        extensions.packages = with firefox-addons; [
+        extensions.packages = with pkgs.firefox-addons; [
           old-reddit-redirect
           ublock-origin
           vimium-c
         ];
 
         userChrome = ''
-          @import url("${inputs.firefox-csshacks}/chrome/navbar_tabs_responsive_oneliner.css");
+          @import url("${pkgs.firefox-csshacks}/chrome/navbar_tabs_responsive_oneliner.css");
 
           :root
           {
@@ -70,7 +61,7 @@ in {
             }
 
             #alltabs-button,
-            #identity-box,
+            /* #identity-box, */
             #urlbar-background,
             #titlebar-buttonbox-container,
             .titlebar-spacer

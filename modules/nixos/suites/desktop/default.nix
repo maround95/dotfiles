@@ -15,6 +15,8 @@ in
 
   config = mkIf cfg.enable {
 
+    services.playerctld.enable = true;
+
     custom = {
 
       apps = {

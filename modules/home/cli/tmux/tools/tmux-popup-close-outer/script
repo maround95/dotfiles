@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Must run inside tmux
+role="$(tmux display-message -p '#{@role}' 2>/dev/null || true)"
+if [ "$role" != "floating" ]; then
+  # not floating; nothing to do
+  exit 0
+fi
+
+outer_id="$(tmux display-message -p '#{@outer_id}' 2>/dev/null || true)"
+if [ -z "$outer_id" ]; then
+  echo "tmux-popup-close-outer: missing @outer_id" >&2
+  exit 1
+fi
+
+# Find a client attached to the outer session id (like $3)
+cid="$(
+  tmux list-clients -F '#{client_session_id}:#{client_id}' \
+    | awk -F: -v s="$outer_id" '$1==s {print $2; exit}'
+)"
+
+if [ -z "$cid" ]; then
+  echo "tmux-popup-close-outer: can't find client for outer session $outer_id" >&2
+  exit 1
+fi
+
+# Close the popup on that *outer* client
+tmux display-popup -C -c "$cid"

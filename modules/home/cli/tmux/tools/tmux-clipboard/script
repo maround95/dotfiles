@@ -1,0 +1,36 @@
+#!/bin/sh
+set -eu
+data=$(cat)
+
+# Bail out on empty input
+[ -n "$data" ] || exit 0
+
+have() { command -v "$1" >/dev/null 2>&1; }
+
+# Wayland (native Linux or WSLg)
+if [ -n "${WAYLAND_DISPLAY:-}" ] && have wl-copy; then
+    printf %s "$data" | wl-copy
+    exit 0
+fi
+
+# X11
+if [ -n "${DISPLAY:-}" ] && have xclip; then
+    printf %s "$data" | xclip -selection clipboard
+    exit 0
+fi
+
+# macOS
+if have pbcopy; then
+    printf %s "$data" | pbcopy
+    exit 0
+fi
+
+# WSL → Windows clipboard via clip.exe
+# Detect WSL by /proc/version containing "Microsoft"
+if grep -qi microsoft /proc/version 2>/dev/null && have clip.exe; then
+    printf %s "$data" | clip.exe
+    exit 0
+fi
+
+# Fallback: do nothing (tmux buffer still gets saved)
+exit 0

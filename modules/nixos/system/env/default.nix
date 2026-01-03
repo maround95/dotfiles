@@ -41,6 +41,7 @@ in
         LESSHISTFILE = "$XDG_CACHE_HOME/less.history";
         WGETRC = "$XDG_CONFIG_HOME/wgetrc";
       };
+      pathsToLink = [ "/share/zsh" ]; # for completions
       extraInit = concatStringsSep "\n" (mapAttrsToList (n: v: ''export ${n}="${v}"'') cfg);
     };
   };

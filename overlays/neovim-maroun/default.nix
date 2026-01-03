@@ -1,3 +1,3 @@
-{inputs, ...}: _: prev: {
-  nvim-maroun = inputs.nvim-maroun.packages.${prev.system}.nvim;
-}
+{ inputs, ... }:
+
+inputs.nvim-maroun.overlays.namespaced "mvimPackages"

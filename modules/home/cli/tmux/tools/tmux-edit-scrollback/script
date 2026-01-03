@@ -1,0 +1,239 @@
+#!/usr/bin/env bash
+# tmux-edit-scrollback: edit full scrollback in $EDITOR at tmux copy-mode cursor.
+#
+# Modes:
+#   main   – called from tmux bindings
+#   helper – internal, spawned by main
+#
+# main usage:
+#   tmux-edit-scrollback main <pane_id> [cursor_y cursor_x scroll_pos pane_height]
+#
+# helper usage (internal):
+#   tmux-edit-scrollback helper <orig_pane> <tmp> [cursor_y cursor_x scroll_pos pane_height]
+
+set -e
+
+SCRIPT_NAME=${0##*/}
+
+###############################################################################
+# Debug logging
+###############################################################################
+
+# Enable with: TMUX_SCROLLBACK_DEBUG=1
+debug() {
+  [ "${TMUX_SCROLLBACK_DEBUG:-}" = "" ] && return 0
+  printf '%s: %s\n' "$SCRIPT_NAME" "$*" >>"${TMPDIR:-/tmp}/tmux-scrollback.log"
+}
+
+###############################################################################
+# Helpers
+###############################################################################
+
+# Compute viewport and cursor position and run the editor there, using:
+#   - tmux capture-pane -J (joined logical lines)
+#   - Vim wrap + screen-line scrolling
+#
+# Tmux semantics (from the manpage):
+#   scroll_position = how many grid rows we scrolled *up* from the bottom
+#   cursor_y        = 0-based cursor row from top of pane
+#
+# Viewport idea:
+#   - In tmux: "bottom, scrolled up scroll_position lines".
+#   - In Vim:
+#       1) Gzb              – bottom of file at bottom of window
+#       2) scroll_pos <C-y> – scroll up by scroll_pos screenlines
+#       3) H                – cursor to top of window
+#       4) cursor_y gj      – move cursor down cursor_y screenlines
+#       5) 0 col|           – move to correct screen column
+run_editor_at_position() {
+  tmp="$1"         # file with full scrollback (joined, -J)
+  cursor_y="$2"    # 0-based, from #{copy_cursor_y}
+  cursor_x="$3"    # 0-based, from #{copy_cursor_x}
+  scroll_pos="$4"  # from #{scroll_position}
+  pane_height="$5" # from #{pane_height} (unused, but kept for symmetry)
+  orig_pane="$6"   # pane id whose scrollback we captured (unused here)
+
+  editor="${EDITOR:-vim}"
+
+  # If we don't have enough info, just open normally.
+  if [ "$cursor_y" = "" ] || [ "$scroll_pos" = "" ]; then
+    debug "run_editor_at_position: missing cursor/scroll info, opening editor normally"
+    "$editor" "$tmp"
+    return
+  fi
+
+  # Normalize scroll_pos: it should be >= 0.
+  case "$scroll_pos" in
+  '') scroll_pos=0 ;;
+  *)
+    # best-effort integer clamp
+    if [ "$scroll_pos" -lt 0 ] 2>/dev/null; then
+      scroll_pos=0
+    fi
+    ;;
+  esac
+
+  debug "run_editor_at_position: scroll_pos=$scroll_pos cursor_y=$cursor_y cursor_x=$cursor_x pane_height=$pane_height"
+
+  cmds=()
+  cmds+=("+normal! G0")
+
+  # 1. Align from the bottom by scroll_pos *screen* rows.
+  if [ "$scroll_pos" -gt 0 ]; then
+    cmds+=("+execute \"normal! ${scroll_pos}\\<C-y>\"")
+  fi
+
+  if [ "$cursor_y" != "" ]; then
+    target_row=$((cursor_y + 1)) # winline() is 1-based
+
+    cmds+=("+let tmux_target = ${target_row} | let tmux_dy = tmux_target - winline() | if tmux_dy > 0 | execute 'normal! ' . tmux_dy . 'gj' | elseif tmux_dy < 0 | execute 'normal! ' . (-tmux_dy) . 'gk' | endif")
+  fi
+
+  # 3. Horizontal position on the current *screen* line.
+  if [ "$cursor_x" != "" ]; then
+    if [ "$cursor_x" -gt 0 ]; then
+      # Start of screen line, then cursor_x steps to the right.
+      cmds+=("+normal! g0${cursor_x}l")
+    else
+      cmds+=("+normal! g0")
+    fi
+  fi
+
+  "$editor" "${cmds[@]}" "$tmp"
+}
+
+###############################################################################
+# Modes
+###############################################################################
+
+# Runs inside the helper window/pane.
+# Args:
+#   $1: orig_pane
+#   $2: tmp
+#   $3: cursor_y (optional)
+#   $4: cursor_x (optional)
+#   $5: scroll_pos (optional)
+#   $6: pane_height (optional)
+helper_mode() {
+  orig_pane="$1"
+  tmp="$2"
+  cursor_y="${3:-}"
+  cursor_x="${4:-}"
+  scroll_pos="${5:-}"
+  pane_height="${6:-}"
+  self="$TMUX_PANE"
+
+  debug "helper_mode: orig=$orig_pane self=$self tmp=$tmp"
+
+  DID_SWAP=0
+  DID_RESTORE=0
+
+  cleanup() {
+    debug "helper_mode: cleanup start DID_SWAP=$DID_SWAP DID_RESTORE=$DID_RESTORE"
+
+    if [ "$DID_SWAP" -eq 1 ] && [ "$DID_RESTORE" -ne 1 ]; then
+      debug "helper_mode: attempting swap back in cleanup"
+      tmux swap-pane -s "$orig_pane" -t "$self" -Z 2>/dev/null || true
+      DID_RESTORE=1
+    fi
+
+    if [ "$tmp" != "" ]; then
+      debug "helper_mode: removing tmp=$tmp"
+      rm -f "$tmp" 2>/dev/null || true
+    fi
+
+    if [ "$DID_RESTORE" -eq 1 ]; then
+      wid=$(tmux display-message -p -t "$self" "#{window_id}" 2>/dev/null || echo "")
+      if [ "$wid" != "" ]; then
+        debug "helper_mode: killing helper window wid=$wid"
+        tmux kill-window -t "$wid" 2>/dev/null || true
+      fi
+    else
+      debug "helper_mode: skipping kill-window (original pane may still be in helper)"
+    fi
+
+    debug "helper_mode: cleanup end"
+  }
+
+  trap cleanup EXIT
+
+  # Move this helper pane into the original pane's slot.
+  tmux swap-pane -s "$self" -t "$orig_pane" -Z
+  DID_SWAP=1
+
+  # Open editor at the corresponding position, if we have enough info.
+  run_editor_at_position "$tmp" "$cursor_y" "$cursor_x" "$scroll_pos" "$pane_height" "$orig_pane"
+
+  # After editor exits, restore the original pane.
+  tmux swap-pane -s "$orig_pane" -t "$self" -Z
+  DID_RESTORE=1
+}
+
+next_helper_index() {
+  base=1000
+  tmux list-windows -F "#{window_index}" 2>/dev/null |
+    awk -v base="$base" '
+      {
+        idx=$1
+        if (idx>=base && idx>max) max=idx
+      }
+      END {
+        if (max=="") print base; else print max+1
+      }'
+}
+
+# Runs in the original pane when you hit the key binding.
+# Args:
+#   $1: orig_pane
+#   $2: cursor_y (optional)
+#   $3: cursor_x (optional)
+#   $4: scroll_pos (optional)
+#   $5: pane_height (optional)
+main_mode() {
+  orig_pane="$1"
+  cursor_y="${2:-}"
+  cursor_x="${3:-}"
+  scroll_pos="${4:-}"
+  pane_height="${5:-}"
+
+  debug "main_mode: pane=$orig_pane cursor_y=$cursor_y cursor_x=$cursor_x scroll_pos=$scroll_pos pane_height=$pane_height"
+
+  # Capture *entire* scrollback to a temp file (joined logical lines, -J)
+  tmp=$(mktemp "${TMPDIR:-/tmp}/tmux-scrollback.XXXXXX")
+  debug "main_mode: tmp=$tmp"
+
+  tmux capture-pane -J -S - -E - -p -t "$orig_pane" >"$tmp"
+
+  editor_env="${EDITOR:-}"
+  if [ "$editor_env" != "" ]; then
+    helper_cmd="EDITOR=$editor_env tmux-edit-scrollback-joined helper $orig_pane $tmp $cursor_y $cursor_x $scroll_pos $pane_height"
+  else
+    helper_cmd="tmux-edit-scrollback-joined helper $orig_pane $tmp $cursor_y $cursor_x $scroll_pos $pane_height"
+  fi
+
+  next=$(next_helper_index)
+  debug "main_mode: next=$next editor_env='$editor_env'"
+
+  tmux new-window -d -t "$next" -n '__scrollback__' "$helper_cmd"
+}
+
+###############################################################################
+# Dispatcher
+###############################################################################
+
+mode="${1:-}"
+
+case "$mode" in
+main)
+  shift
+  main_mode "$@"
+  ;;
+helper)
+  shift
+  helper_mode "$@"
+  ;;
+*)
+  echo "$SCRIPT_NAME: expected first argument to be 'main' or 'helper', got '$mode'" >&2
+  exit 1
+  ;;
+esac

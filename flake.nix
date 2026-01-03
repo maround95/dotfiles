@@ -7,7 +7,14 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     # nixpkgs.url = "github:nixos/nixpkgs/release-24.05";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    unstable-small.url = "github:nixos/nixpkgs/nixos-unstable-small";
     ###
+
+    nvim-maroun = {
+      url = "github:maround95/nvim-flake";
+      # inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     snowfall-lib = {
       url = "github:snowfallorg/lib";
@@ -47,7 +54,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    wezterm.url = "github:wez/wezterm?dir=nix";
+    # wezterm.url = "github:wez/wezterm?dir=nix";
 
     hyprland = {
       url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
@@ -60,17 +67,7 @@
     };
 
     firefox-addons = {
-      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    firefox-csshacks = {
-      url = "github:MrOtherGuy/firefox-csshacks";
-      flake = false;
-    };
-
-    nvim-maroun = {
-      url = "github:maround95/nvim-flake";
+      url = "gitlab:rycee/nur-expressions/09deac38ec607361200ed0d88e77b50b00426f0f?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

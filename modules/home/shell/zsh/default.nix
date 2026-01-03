@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, pkgs, ... }:
 let
   # Nix escaping: ${ inside '' strings with ''${
   selectBracketedQuoted = ''
@@ -17,9 +17,10 @@ let
   '';
 in
 {
+  home.packages = [ pkgs.nix-zsh-completions ];
   programs.zsh = {
     enable = true;
-    dotDir = ".config/zsh";
+    dotDir = "${config.xdg.configHome}/zsh";
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
@@ -27,11 +28,10 @@ in
     autocd = true;
 
     shellAliases = {
-      ll = "ls -l";
+      ll = "ls -la";
       nixs = "sudo nixos-rebuild switch --flake $FLAKE'?submodules=1'";
       rm = "rm -I";
       info = "info --vi-keys";
-      v = "nvim";
 
       # Git aliases
       gs = "git status";

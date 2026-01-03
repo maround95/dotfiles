@@ -1,0 +1,11 @@
+pane_tty=$1
+pattern=$2
+
+ps -t "$pane_tty" -o pid= -o state= |
+  while read -r pid state; do
+    [ -r /proc/"$pid"/cmdline ] || continue
+    argv0=$(awk -v RS='\0' 'NR==1{print; exit}' /proc/"$pid"/cmdline 2>/dev/null) || continue
+    base=$(basename -- "$argv0")
+    printf '%s %s\n' "$state" "$base"
+  done |
+  grep -iqE "^[^TXZ ]+ +${pattern}$"

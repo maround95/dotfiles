@@ -22,6 +22,7 @@ in
       bat
       clac
       cntr
+      e2fsprogs
       fastfetch
       file
       fzf
@@ -31,6 +32,7 @@ in
       hwinfo
       jq
       killall
+      inotify-tools
       libnotify
       lshw
       lsof
@@ -48,6 +50,7 @@ in
       usbutils
       wget
       yt-dlp
+      zip
     ];
   };
 }

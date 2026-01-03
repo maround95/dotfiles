@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -uo pipefail
+
+# Filter floating sessions
+FILTER="awk '\$2 !~ /^_float/'"
+
+ALL="sesh list --icons | $FILTER"
+TMUX_ONLY="sesh list -t --icons | $FILTER"
+CONFIGS="sesh list -c --icons | $FILTER"
+ZOX="sesh list -z --icons | $FILTER"
+FIND="fd -H -d 2 -t d -E .Trash . ~"
+
+eval "$ALL" | fzf --height 80% --reverse \
+  --no-sort --ansi --border --border-label " sesh " --prompt "⚡  " \
+  --header "  ^a all ^t tmux ^g configs ^x zoxide ^d tmux kill ^f find" \
+  --bind "tab:down,btab:up" \
+  --bind "ctrl-a:change-prompt(⚡  )+reload($ALL)" \
+  --bind "ctrl-t:change-prompt(🪟  )+reload($TMUX_ONLY)" \
+  --bind "ctrl-g:change-prompt(⚙️  )+reload($CONFIGS)" \
+  --bind "ctrl-x:change-prompt(📁  )+reload($ZOX)" \
+  --bind "ctrl-f:change-prompt(🔎  )+reload($FIND)" \
+  --bind "ctrl-d:execute(tmux kill-session -t {2..})+change-prompt(⚡  )+reload($ALL)" \
+  --preview-window "right:55%" \
+  --preview "sesh preview {}" ||
+  true

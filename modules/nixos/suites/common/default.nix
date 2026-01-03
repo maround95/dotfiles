@@ -21,6 +21,7 @@ in
 
       cli-apps = {
         flake = enabled;
+        # zsh = enabled;
       };
 
       hardware = {

@@ -21,7 +21,6 @@
       sessionVariables = {
         FLAKE = "${config.dotfiles}";
         SHELL = "zsh";
-        EDITOR = "nvim";
       };
     };
 
