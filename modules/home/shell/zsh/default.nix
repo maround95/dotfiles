@@ -67,6 +67,19 @@ in
 
       ${selectBracketedQuoted}
 
+      nsh() {
+        local args=()
+        local arg
+        for arg in "$@"; do
+          if [[ "$arg" == *"#"* ]]; then
+            args+=("$arg")
+          else
+            args+=("nixpkgs#$arg")
+          fi
+        done
+        nix shell "''${args[@]}"
+      }
+
       setopt incappendhistory
       setopt histfindnodups
       setopt histreduceblanks

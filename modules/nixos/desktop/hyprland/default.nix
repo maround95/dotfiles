@@ -40,7 +40,7 @@ in
 
         display-manager = {
           defaultSession = dePriority "hyprland";
-          defaultSessionCmd = dePriority "Hyprland";
+          defaultSessionCmd = dePriority "start-hyprland";
         };
       };
     };

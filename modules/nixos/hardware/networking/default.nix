@@ -34,7 +34,7 @@ in {
         iwd.enable = cfg.wifi.backend == "iwd";
 
         # Allow wpa_cli to control wpa_supplicant
-        userControlled.enable = cfg.wifi.backend == "wpa_supplicant";
+        userControlled = cfg.wifi.backend == "wpa_supplicant";
         allowAuxiliaryImperativeNetworks = true;
       };
 

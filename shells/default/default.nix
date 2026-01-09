@@ -8,6 +8,6 @@ mkShell {
     sops
 
     nixd
-    nixfmt-rfc-style
+    nixfmt
   ];
 }
