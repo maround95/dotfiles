@@ -78,6 +78,8 @@ in
           touchpad = {
             natural_scroll = true;
           };
+          kb_layout = "us,ara,de";
+          kb_options = "grp:win_space_toggle";
         };
         binds = {
           movefocus_cycles_fullscreen = true;
