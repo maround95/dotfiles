@@ -64,7 +64,7 @@ in {
     home.packages = [cfg.package];
 
     # Build templates on activation, mostly useful on first boot.
-    home.activation.ensureColorscheme = lib.home-manager.hm.dag.entryAfter ["writeBoundary"] ''
+    home.activation.ensureColorscheme = lib.home-manager.hm.dag.entryAfter ["linkGeneration"] ''
       if [ ! -d "${cachePath}" ]; then
         ${lib.getExe cfg.package} cs ${wallustColorscheme}
       fi

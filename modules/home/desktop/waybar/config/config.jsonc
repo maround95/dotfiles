@@ -1,17 +1,38 @@
 {
   "include": [
-    "~/.config/waybar/modules/*.jsonc",
-    "~/.config/waybar/modules/custom/*.jsonc",
-    "~/.config/waybar/modules/hyprland/*.jsonc"
+    // "~/.config/waybar/modules/*.jsonc",
+    // "~/.config/waybar/modules/custom/*.jsonc",
+    // "~/.config/waybar/modules/hyprland/*.jsonc"
+
+    "~/.config/waybar/modules/battery.jsonc",
+    "~/.config/waybar/modules/bluetooth.jsonc",
+    "~/.config/waybar/modules/idle_inhibitor.jsonc",
+    "~/.config/waybar/modules/network.jsonc",
+    "~/.config/waybar/modules/temperature.jsonc",
+    "~/.config/waybar/modules/custom/dividers.jsonc",
+    "~/.config/waybar/modules/custom/distro.jsonc",
+    "~/.config/waybar/modules/custom/power_menu.jsonc",
+    "~/.config/waybar/modules/hyprland/window.jsonc",
+    "~/.config/waybar/modules/hyprland/windowcount.jsonc",
+    "~/.config/waybar/modules/hyprland/workspaces.jsonc",
+    "~/.config/waybar/modules/hyprland/language.jsonc",
+    "~/.config/waybar/modules/backlight.jsonc",
+    "~/.config/waybar/modules/pulseaudio.jsonc",
+    "~/.config/waybar/modules/mpris.jsonc",
+    "~/.config/waybar/modules/clock.jsonc",
+    "~/.config/waybar/modules/cpu.jsonc",
+    "~/.config/waybar/modules/memory.jsonc"
 
     // modules that are not included by default:
     // "~/.config/waybar/modules/extras/*.jsonc"
-  ],
 
+    // "~/.config/waybar/modules/extras/taskbar.jsonc",
+    // "~/.config/waybar/modules/extras/tray.jsonc",
+    // "~/.config/waybar/modules/extras/wireplumber.jsonc",
+  ],
   /*------------
     layout
   ------------*/
-
   "modules-left": [
     "hyprland/workspaces",
     "custom/right_div#1",
@@ -47,11 +68,9 @@
     "custom/left_inv#2",
     "custom/power_menu"
   ],
-
   /*-------------
     options
   -------------*/
-
   "layer": "top",
   // "output":
   // "position":

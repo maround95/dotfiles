@@ -1,0 +1,21 @@
+Firefox min/max remove, betterfox, update css scripts
+dismiss dunst keybind
+check hw acceleration on both specilisations
+idle
+greetd: autologin, polkit
+yazi plugins, copy f to clip
+wallust/tinct extend, rose pine mvim
+waybar: system tray
+waybar: blueman, nmtui, pavucontrol - make floating too
+
+mvim: nix indentation, nix ' pairs - vim sleuth??
+mvim: tab listchar not visible, probably because of indendation guides
+mvim: lazygit edit
+mvim: cf that works even w/o lsp
+mvim: mini.ai, mini...
+mvim: autopairs sucks
+mvim: diff (no git), diff dirs, wait for 0.12
+mvim: filename in lualine relative to root
+mvim: pin buffers
+mvim: Use new Undotree, wait for 0.12
+mvim: dap session indicator

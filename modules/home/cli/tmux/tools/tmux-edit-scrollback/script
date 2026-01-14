@@ -13,7 +13,8 @@
 
 set -e
 
-SCRIPT_NAME=${0##*/}
+SELF="$(command -v -- "$0" 2>/dev/null || printf '%s' "$0")"
+SCRIPT_NAME="${SELF##*/}"
 
 ###############################################################################
 # Debug logging
@@ -205,10 +206,10 @@ main_mode() {
   tmux capture-pane -J -S - -E - -p -t "$orig_pane" >"$tmp"
 
   editor_env="${EDITOR:-}"
-  if [ "$editor_env" != "" ]; then
-    helper_cmd="EDITOR=$editor_env tmux-edit-scrollback-joined helper $orig_pane $tmp $cursor_y $cursor_x $scroll_pos $pane_height"
+  if [ -n "$editor_env" ]; then
+    helper_cmd="EDITOR=$editor_env $SELF helper $orig_pane $tmp $cursor_y $cursor_x $scroll_pos $pane_height"
   else
-    helper_cmd="tmux-edit-scrollback-joined helper $orig_pane $tmp $cursor_y $cursor_x $scroll_pos $pane_height"
+    helper_cmd="$SELF helper $orig_pane $tmp $cursor_y $cursor_x $scroll_pos $pane_height"
   fi
 
   next=$(next_helper_index)
