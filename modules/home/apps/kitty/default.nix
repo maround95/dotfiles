@@ -15,6 +15,9 @@
       cursor_trail = 0;
 
       disable_ligatures = "cursor";
+
+      mouse_hide_wait = -2.0;
+      macos_option_as_alt = true;
     };
 
   };

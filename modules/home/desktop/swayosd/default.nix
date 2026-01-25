@@ -1,5 +1,21 @@
-{pkgs, ... }:
 {
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+with lib;
+with lib.custom;
+let
+  cfg = config.custom.desktop.swayosd;
+in
+{
+  options.custom.desktop.swayosd = with types; {
+    enable = mkBoolOpt true "Whether or not to enable swayosd.";
+  };
+
+  config = mkIf cfg.enable {
+
     home.packages = with pkgs; [ swayosd ];
 
     wayland.windowManager.hyprland.settings = {
@@ -23,4 +39,5 @@
         ", XF86MonBrightnessDown, exec, swayosd-client --brightness -10"
       ];
     };
+  };
 }

@@ -1,11 +1,27 @@
+#!/bin/sh
 pane_tty=$1
 pattern=$2
+   
+# NOTE: This WILL break if the path of the command has spaces in it.
+ps -t "$pane_tty" -o state= -o command= |
+  awk -v pattern="$pattern" '
+  $1 !~ /^[TXZ]/ {
+    cmd=$2
+    sub(/^-/, "", cmd)
+    sub(".*/", "", cmd)
+    if (cmd ~ "^" pattern "$") found=1
+  }
+  END { exit !found }
+'
 
-ps -t "$pane_tty" -o pid= -o state= |
-  while read -r pid state; do
-    [ -r /proc/"$pid"/cmdline ] || continue
-    argv0=$(awk -v RS='\0' 'NR==1{print; exit}' /proc/"$pid"/cmdline 2>/dev/null) || continue
-    base=$(basename -- "$argv0")
-    printf '%s %s\n' "$state" "$base"
-  done |
-  grep -iqE "^[^TXZ ]+ +${pattern}$"
+# NOTE: Linux-only solution that handles whitespace
+# Darwin: use a wrapper around proc_pidinfo?
+
+# ps -t "$pane_tty" -o pid= -o state= |
+#   while read -r pid state; do
+#     [ -r /proc/"$pid"/cmdline ] || continue
+#     argv0=$(awk -v RS='\0' 'NR==1{print; exit}' /proc/"$pid"/cmdline 2>/dev/null) || continue
+#     base=$(basename -- "$argv0")
+#     printf '%s %s\n' "$state" "$base"
+#   done |
+#   grep -iqE "^[^TXZ ]+ +${pattern}$"

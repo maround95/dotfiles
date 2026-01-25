@@ -1,4 +1,10 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  osConfig ? null,
+  ...
+}:
 let
   # Nix escaping: ${ inside '' strings with ''${
   selectBracketedQuoted = ''
@@ -15,6 +21,19 @@ let
       done
     done
   '';
+
+  isSystemHomeManager = osConfig != null;
+  isDarwin = pkgs.stdenv.isDarwin;
+  rebuildCmd = if isDarwin then "darwin-rebuild" else "nixos-rebuild";
+  rebuildAlias = lib.optionalAttrs isSystemHomeManager {
+    nixs = ''
+      if [[ -f ~/.secrets/flake.nix ]]; then
+        sudo ${rebuildCmd} switch --flake "$FLAKE" --override-input secrets ~/.secrets
+      else
+        sudo ${rebuildCmd} switch --flake "$FLAKE"
+      fi
+    '';
+  };
 in
 {
   home.packages = [ pkgs.nix-zsh-completions ];
@@ -27,17 +46,10 @@ in
     defaultKeymap = "viins"; # Vi mode
     autocd = true;
 
-    shellAliases = {
+    shellAliases = rebuildAlias // {
       ll = "ls -la";
       rm = "rm -I";
       info = "info --vi-keys";
-      nixs = ''
-        if [[ -f ~/.secrets/flake.nix ]]; then \
-          sudo nixos-rebuild switch --flake "$FLAKE" --override-input secrets ~/.secrets; \
-        else \
-          sudo nixos-rebuild switch --flake "$FLAKE"; \
-        fi
-      '';
 
       # Git aliases
       gs = "git status";

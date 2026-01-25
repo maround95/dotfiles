@@ -4,7 +4,11 @@
   lib,
   ...
 }:
+with lib;
+with lib.custom;
 let
+  cfg = config.custom.desktop.rofi;
+
   inherit (lib.meta) getExe;
   selectWindowScript =
     pkgs.writeShellScriptBin ''select-window.sh'' # sh
@@ -50,17 +54,23 @@ let
       '';
 in
 {
-  home.packages = with pkgs; [
-    # rofi-wayland
-    rofi # rofi-wayland was merged into rofi
-    gojq
-  ];
+  options.custom.desktop.rofi = with types; {
+    enable = mkBoolOpt true "Whether or not to enable rofi.";
+  };
 
-  xdg.configFile."rofi/config.rasi".source = ./config.rasi;
+  config = mkIf cfg.enable {
 
-  wayland.windowManager.hyprland.settings.bind = [
-    "$mod, D, exec, rofi -show drun -replace -i"
-    # "$mod, F, exec, ${getExe selectWindowScript}"
-    "$mod, P, exec, ${getExe openProjectScript}"
-  ];
+    home.packages = with pkgs; [
+      rofi # rofi-wayland was merged into rofi
+      gojq
+    ];
+
+    xdg.configFile."rofi/config.rasi".source = ./config.rasi;
+
+    wayland.windowManager.hyprland.settings.bind = [
+      "$mod, D, exec, rofi -show drun -replace -i"
+      # "$mod, F, exec, ${getExe selectWindowScript}"
+      "$mod, P, exec, ${getExe openProjectScript}"
+    ];
+  };
 }

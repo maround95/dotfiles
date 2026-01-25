@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
-  home.packages = with pkgs; [ discord-canary betterdiscordctl ];
+  home.packages = [
+    pkgs.discord-canary
+  ]
+  ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
+    pkgs.betterdiscordctl
+  ];
 }

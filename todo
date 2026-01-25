@@ -19,3 +19,6 @@ mvim: filename in lualine relative to root
 mvim: pin buffers
 mvim: Use new Undotree, wait for 0.12
 mvim: dap session indicator
+
+darwin: iterm2 vs ghostty
+darwin: investigate why nix is slower on darwin

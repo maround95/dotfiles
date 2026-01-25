@@ -67,6 +67,11 @@
       url = "github:maround95/secrets-stub";
     };
 
+    darwin = {
+      url = "github:nix-darwin/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
   };
 

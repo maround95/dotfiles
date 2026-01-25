@@ -25,7 +25,8 @@
     };
 
     nix = {
-      package = lib.mkDefault pkgs.nix;
+      # TODO: Revert to stable once nix checks pass for darwin.
+      package = lib.mkForce (if pkgs.stdenv.hostPlatform.isLinux then pkgs.nix else pkgs.nix-unstable-latest);
       settings = {
         experimental-features = [ "nix-command" "flakes" ];
         warn-dirty = false;

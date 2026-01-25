@@ -3,18 +3,19 @@
   pkgs,
   lib,
   ...
-}: {
+}:
+{
   options = {
     custom.theme = {
       colorscheme = lib.mkOption {
-        type = lib.types.enum ["nightfox"];
+        type = lib.types.enum [ "nightfox" ];
         default = "nightfox";
         description = "Colorscheme to use.";
       };
     };
   };
 
-  config = {
+  config = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     home.pointerCursor = {
       gtk.enable = true;
       x11.enable = true;
