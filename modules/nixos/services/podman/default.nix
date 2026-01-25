@@ -26,6 +26,8 @@ in
       };
     };
 
+    custom.user.extraGroups = [ "podman" ];
+
     environment.systemPackages = with pkgs; [
       dive
       podman-tui

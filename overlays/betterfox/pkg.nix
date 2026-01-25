@@ -29,6 +29,6 @@ stdenv.mkDerivation {
     description = "Firefox user.js for speed, privacy, and security.";
     homepage = "https://github.com/yokoffing/BetterFox";
     license = lib.licenses.mit;
-    platforms = lib.platforms.all;
+    platforms = lib.platforms.unix;
   };
 }

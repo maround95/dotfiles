@@ -15,7 +15,10 @@ in
   };
 
   config = mkIf cfg.enable {
+    virtualisation.containers.enable = true;
     virtualisation.docker.enable = true;
+
+    custom.user.extraGroups = [ "docker" ];
 
     environment.systemPackages = with pkgs; [ docker-compose ];
   };
