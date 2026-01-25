@@ -48,14 +48,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Snowfall Flake
-    snowfallorg-flake = {
-      url = "github:snowfallorg/flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # wezterm.url = "github:wez/wezterm?dir=nix";
-
     hyprland = {
       url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -71,11 +63,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    secrets = {
+      url = "github:maround95/secrets-stub";
+    };
+
     # chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
   };
 
   outputs =
     inputs:
+    let
+      secrets-hook = import ./modules/secrets-hook.nix;
+    in
     inputs.snowfall-lib.mkFlake {
       inherit inputs;
       src = ./.;
@@ -86,11 +85,22 @@
         allowUnfree = true;
       };
 
-      # Add modules to all NixOS systems.
-      systems.modules.nixos = with inputs; [
+      systems.modules.nixos = [
         # chaotic.nixosModules.default
+        inputs.sops-nix.nixosModules.default
+        secrets-hook.nixos
       ];
 
-      overlays = with inputs; [ snowfallorg-flake.overlays."package/flake" ];
+      systems.modules.darwin = [
+        inputs.sops-nix.darwinModules.default
+        secrets-hook.darwin
+      ];
+
+      homes.modules = [
+        inputs.sops-nix.homeModules.default
+        secrets-hook.home
+      ];
+
+      # overlays = with inputs; [];
     };
 }

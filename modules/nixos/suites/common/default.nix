@@ -20,7 +20,6 @@ in
     custom = {
 
       cli-apps = {
-        flake = enabled;
         # zsh = enabled;
       };
 

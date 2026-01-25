@@ -29,9 +29,15 @@ in
 
     shellAliases = {
       ll = "ls -la";
-      nixs = "sudo nixos-rebuild switch --flake $FLAKE'?submodules=1'";
       rm = "rm -I";
       info = "info --vi-keys";
+      nixs = ''
+        if [[ -f ~/.secrets/flake.nix ]]; then \
+          sudo nixos-rebuild switch --flake "$FLAKE" --override-input secrets ~/.secrets; \
+        else \
+          sudo nixos-rebuild switch --flake "$FLAKE"; \
+        fi
+      '';
 
       # Git aliases
       gs = "git status";
