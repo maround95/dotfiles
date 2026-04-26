@@ -7,6 +7,9 @@ yazi plugins, copy f to clip
 wallust/tinct extend, rose pine mvim
 waybar: system tray
 waybar: blueman, nmtui, pavucontrol - make floating too
+enable zram
+ripgrep
+ideavimrc
 
 mvim: nix indentation, nix ' pairs - vim sleuth??
 mvim: tab listchar not visible, probably because of indendation guides

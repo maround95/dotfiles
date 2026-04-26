@@ -4,9 +4,11 @@
   ...
 }:
 with lib;
-with lib.custom; let
+with lib.custom;
+let
   cfg = config.custom.hardware.networking;
-in {
+in
+{
   imports = [
     ./utilities.nix
   ];
@@ -27,7 +29,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    custom.user.extraGroups = ["networkmanager"];
+    custom.user.extraGroups = [ "networkmanager" ];
 
     networking = {
       wireless = {
@@ -39,7 +41,7 @@ in {
       };
 
       hosts = {
-        "127.0.0.1" = ["local.test"];
+        "127.0.0.1" = [ "local.test" ];
       };
 
       networkmanager = {
@@ -48,7 +50,21 @@ in {
         dhcp = "internal";
       };
 
-      firewall.enable = true;
+      firewall.enable = true; # backend is defined as shown below
+      # backend = lib.mkOption {
+      #   type = lib.types.enum [
+      #     "iptables"
+      #     "nftables"
+      #     "firewalld"
+      #   ];
+      #   default =
+      #     if config.services.firewalld.enable then
+      #       "firewalld"
+      #     else if config.networking.nftables.enable then
+      #       "nftables"
+      #     else
+      #       "iptables";
+      # };
     };
   };
 }

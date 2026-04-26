@@ -1,7 +1,9 @@
 {
+  inputs,
   pkgs,
   config,
   lib,
+  system,
   ...
 }:
 with lib;
@@ -16,9 +18,12 @@ let
     tmux = tmuxPackage;
     sesh = seshPackage;
   };
+  mvimScrollbackExe = lib.getExe (inputs.nvim-maroun.lib.mkMvimScrollback { inherit system; });
 
   mvimPackagesWithTmuxSupport = attrNames (
-    filterAttrs (_: drv: attrByPath [ "passthru" "tmux-support" ] false drv) pkgs.mvimPackages
+    filterAttrs (
+      _: drv: attrByPath [ "passthru" "tmux-support" ] false drv
+    ) inputs.nvim-maroun.packages.${system}
   );
   mvimPattern = "(${concatStringsSep "|" (map escapeRegex mvimPackagesWithTmuxSupport)})";
   zshSeshPick = ''
@@ -98,13 +103,19 @@ in
       bind Left  split-window -h -b -c "#{pane_current_path}"
       bind Right split-window -h -c "#{pane_current_path}"
 
-      bind -T copy-mode-vi e \
-        run-shell "sh -c 'EDITOR=mvim-scrollback ${tmuxTools}/bin/tmux-edit-scrollback main #{pane_id} #{copy_cursor_y} #{copy_cursor_x} #{scroll_position} #{pane_height}; tmux send-keys -t #{pane_id} -X cancel'"
+      bind -T copy-mode-vi C-e \
+        run-shell "sh -c 'EDITOR=${mvimScrollbackExe} ${tmuxTools}/bin/tmux-edit-scrollback main #{pane_id} #{copy_cursor_y} #{copy_cursor_x} #{scroll_position} #{pane_height}; tmux send-keys -t #{pane_id} -X cancel'"
+
+      # tmux handles OSC 52 clipboard sync.
+      set -s set-clipboard external
+
+      # Fallback command used by copy-pipe/copy-pipe-and-cancel when no explicit command is given.
+      set -s copy-command '${tmuxTools}/bin/tmux-clipboard'
 
       # v as space alias, y as enter alias + copy into system clipboard
       bind -T copy-mode-vi v send -X begin-selection
-      bind -T copy-mode-vi y send -X copy-pipe-and-cancel '${tmuxTools}/bin/tmux-clipboard'
-      bind -T copy-mode-vi enter send -X copy-pipe-and-cancel '${tmuxTools}/bin/tmux-clipboard'
+      bind -T copy-mode-vi y send -X copy-pipe-and-cancel
+      bind -T copy-mode-vi Enter send -X copy-pipe-and-cancel
 
       bind h run-shell '${tmuxTools}/bin/tmux-nav window left'
       bind l run-shell '${tmuxTools}/bin/tmux-nav window right'

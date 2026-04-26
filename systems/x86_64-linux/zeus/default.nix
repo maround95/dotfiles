@@ -1,7 +1,6 @@
 {
   inputs,
   lib,
-  pkgs,
   ...
 }:
 with lib;
@@ -37,7 +36,6 @@ with lib.custom;
 
     system.time.timezone = "Europe/Berlin";
     hardware.networking.wifi.backend = "wpa_supplicant";
-    security.sops.enable = mkForce false;
   };
 
   ## From generated hardware-configuration.nix

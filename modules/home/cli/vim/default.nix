@@ -1,6 +1,8 @@
 {
+  inputs,
   config,
   pkgs,
+  system,
   ...
 }:
 let
@@ -10,16 +12,10 @@ let
   };
   nvimColorscheme = themeToNvim.${config.custom.theme.colorscheme} or "nightfox";
 
-  nixCatsUtils = pkgs.mvimPackages.mvim.utils;
-  mvim = pkgs.mvimPackages.mvim.override (prev: {
-    packageDefinitions = prev.packageDefinitions // {
-      mvim = nixCatsUtils.mergeCatDefs prev.packageDefinitions.mvim (_: {
-        categories = {
-          colorscheme = nvimColorscheme;
-        };
-      });
-    };
-  });
+  mvim = inputs.nvim-maroun.lib.mkMvim {
+    inherit system;
+    categories.colorscheme = nvimColorscheme;
+  };
 in
 {
   home.packages = [
