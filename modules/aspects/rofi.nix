@@ -1,0 +1,59 @@
+{ ... }:
+{
+  flake.modules.homeManager.rofi = { lib, pkgs, ... }:
+    let
+      selectWindowScript = pkgs.writeShellScriptBin "select-window.sh" ''
+        state="$(hyprctl -j clients)"
+        active_window="$(hyprctl -j activewindow)"
+
+        current_addr="$(echo "$active_window" | gojq -r '.address')"
+
+        window="$(echo "$state" |
+            gojq -r '.[] | select(.monitor != -1 ) | "\(.address)    \(.workspace.name)    \(.title)"' |
+            grep -v "scratch_term" |
+            sed "s|$current_addr|focused ->|" |
+            sort -r |
+            rofi -dmenu -i -matching fuzzy)"
+
+        addr="$(echo "$window" | awk '{print $1}')"
+        ws="$(echo "$window" | awk '{print $2}')"
+
+        if [[ "$addr" =~ focused* ]]; then
+            echo 'already focused, exiting'
+            exit 0
+        fi
+
+        fullscreen_on_same_ws="$(echo "$state" | gojq -r ".[] | select(.fullscreen == true) | select(.workspace.name == \"$ws\") | .address")"
+
+        if [[ "$window" != "" ]]; then
+            if [[ "$fullscreen_on_same_ws" == "" ]]; then
+                hyprctl dispatch focuswindow address:''${addr}
+            else
+                notify-send 'Complex switch' "$window"
+                hyprctl --batch "dispatch focuswindow address:''${fullscreen_on_same_ws}; dispatch fullscreen 1;"
+            fi
+        fi
+      '';
+
+      openProjectScript = pkgs.writeShellScriptBin "select-project.sh" ''
+        dir=$(zoxide query --list | rofi -dmenu -i -matching fuzzy)
+        if [[ "$dir" != "" ]]; then
+            foot --title="Project: $dir" --working-directory="$dir"
+        fi
+      '';
+    in
+    {
+      home.packages = with pkgs; [
+        rofi
+        gojq
+      ];
+
+      xdg.configFile."rofi/config.rasi".source = ./rofi/config.rasi;
+
+      wayland.windowManager.hyprland.settings.bind = [
+        "$mod, D, exec, rofi -show drun -replace -i"
+        # "$mod, F, exec, ${lib.getExe selectWindowScript}"
+        "$mod, P, exec, ${lib.getExe openProjectScript}"
+      ];
+    };
+}

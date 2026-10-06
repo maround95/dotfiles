@@ -6,11 +6,20 @@ greetd: autologin, polkit
 yazi plugins, copy f to clip
 wallust/tinct extend, rose pine mvim
 waybar: system tray
+waybar: asusctl profile
 waybar: blueman, nmtui, pavucontrol - make floating too
+misc: poppler-utils
 enable zram
 ripgrep
 ideavimrc
+no watch on darwin
+ssh-agent
 
+tmux: set-clipboard on
+
+mvim: Pin unnamed buffer
+mvim: yazi recent/cwd memory
+mvim: treesitter select
 mvim: nix indentation, nix ' pairs - vim sleuth??
 mvim: tab listchar not visible, probably because of indendation guides
 mvim: lazygit edit

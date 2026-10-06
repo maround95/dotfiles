@@ -1,0 +1,73 @@
+{ ... }:
+{
+  flake.modules.nixos.misc-tools = { pkgs, ... }: {
+    environment.systemPackages = with pkgs; [
+      android-tools
+      aria2
+      bash
+      bat
+      btop
+      clac
+      cntr
+      e2fsprogs
+      fastfetch
+      file
+      fd
+      fzf
+      glances
+      glibc
+      htop
+      hwinfo
+      inotify-tools
+      jq
+      killall
+      libnotify
+      lm_sensors
+      lshw
+      lsof
+      multipath-tools
+      nmap
+      ntfs3g
+      parallel
+      pciutils
+      psmisc
+      ripgrep
+      rsync
+      tldr
+      tmux
+      traceroute
+      unzip
+      usbutils
+      wget
+      yt-dlp
+      zip
+    ];
+  };
+
+  flake.modules.homeManager.misc-tools = { pkgs, ... }: {
+    home.packages = with pkgs; [
+      android-tools
+      aria2
+      bash
+      bat
+      btop
+      fastfetch
+      file
+      fd
+      fzf
+      glances
+      jq
+      nmap
+      parallel
+      ripgrep
+      rsync
+      tldr
+      tmux
+      traceroute
+      unzip
+      wget
+      yt-dlp
+      zip
+    ];
+  };
+}
