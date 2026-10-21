@@ -2,7 +2,7 @@
 {
   flake.modules.homeManager.wlogout = { config, ... }: {
     xdg.configFile."wlogout/icons" = {
-      source = ./wlogout/wlogout-icons;
+      source = ./wlogout-icons;
       recursive = true;
     };
 

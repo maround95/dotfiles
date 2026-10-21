@@ -4,7 +4,7 @@
     home.packages = [ pkgs.waybar ];
 
     xdg.configFile."waybar" = {
-      source = ./waybar/config;
+      source = ./config;
       recursive = true;
     };
 

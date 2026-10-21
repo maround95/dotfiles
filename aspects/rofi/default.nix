@@ -48,7 +48,7 @@
         gojq
       ];
 
-      xdg.configFile."rofi/config.rasi".source = ./rofi/config.rasi;
+      xdg.configFile."rofi/config.rasi".source = ./config.rasi;
 
       wayland.windowManager.hyprland.settings.bind = [
         "$mod, D, exec, rofi -show drun -replace -i"

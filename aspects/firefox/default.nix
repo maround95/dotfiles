@@ -9,7 +9,7 @@
       firefox-addons = inputs.firefox-addons.packages.${system};
     in
     {
-      xdg.configFile."custom/vimium-c.json".source = ./firefox/vimium-c.json;
+      xdg.configFile."custom/vimium-c.json".source = ./vimium-c.json;
 
       programs.firefox = {
         enable = true;

@@ -5,7 +5,7 @@
       cfg = config.custom.wallust;
       cachePath = "${config.home.homeDirectory}/.cache/wallust";
 
-      colorschemeDir = ./wallust/colorschemes;
+      colorschemeDir = ./colorschemes;
       colorschemeFiles = builtins.attrNames (builtins.readDir colorschemeDir);
       colorschemeMappings = lib.genAttrs colorschemeFiles (name: {
         source = colorschemeDir + "/${name}";

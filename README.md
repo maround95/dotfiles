@@ -1,9 +1,10 @@
 # target-first starter
 
-This starter uses three top-level concepts:
+This starter uses four top-level concepts:
 
 - `core/` for flake infrastructure
-- `modules/` for shared reusable logic
+- `aspects/` for shared reusable capabilities
+- `profiles/` for curated combinations of aspects
 - `outputs/` for the explicit flake output graph
 
 ## Minimal model
@@ -11,15 +12,12 @@ This starter uses three top-level concepts:
 The starter keeps the architecture intentionally small:
 
 - `outputs/` is primary: it defines the concrete graph the flake exposes
-- `modules/` is a shared library: reusable platforms, profiles, and other shared modules
+- `aspects/` is a shared library: reusable features, platform guards, and integrations
+- `profiles/` composes aspects into reusable configurations
 - `core/` provides infrastructure: package-set constructors, overlays, constructors, target facts, and the base `custom.lib`
 
-Inside `modules/`, the only strongly distinguished shared families are:
-
-- `platforms/`
-- `profiles/`
-
-Other shared reusable modules can live directly under `modules/` when that keeps the graph clearer.
+Aspects with companion files live in their own directory with a `default.nix` entry point.
+Standalone aspects remain single `.nix` files. Profiles live alongside aspects, grouped by module family.
 
 ## Package and channel model
 
@@ -61,7 +59,7 @@ Ares is the first concrete output and embeds Home Manager explicitly under:
 
 ## Desktop default-session policy
 
-The starter now includes a shared NixOS desktop session contract at `modules/desktop/default-session.nix`.
+The starter now includes a shared NixOS desktop session contract at `aspects/desktop-default-session.nix`.
 Desktop environment modules can contribute session definitions under `custom.desktop.sessions.<name>`, and if more than one session is enabled, `custom.desktop.preferred` must be set to one of those names.
 
 Derived values are exposed at:
@@ -166,7 +164,7 @@ These are intentionally host-local files, not reusable aspects.
 
 ## Current migration slice: greetd
 
-- Added `modules/aspects/greetd.nix`.
+- Added `aspects/greetd.nix`.
 - `profile-desktop-hyprland` now imports `nixos.greetd`.
 - greetd consumes `custom.desktop.displayManager.defaultSessionCmd` from the session collector.
 - Ares sets `custom.desktop.displayManager.greetd.user = "maroun"`.
@@ -178,7 +176,7 @@ Added HM desktop support daemons: dunst, swww, and swayosd.
 
 ## Latest slice: Kitty HM aspect
 
-- Added `modules/aspects/kitty.nix`.
+- Added `aspects/kitty.nix`.
 - Added `flake.modules.homeManager.kitty`.
 - Imported Kitty into `profile-desktop-hyprland`.
 - Kept the settings close to the old Snowfall Kitty module.
@@ -227,7 +225,7 @@ Heavier old modules remain next:
 
 ## Port slice: HM nvim/mvim
 
-- Added `modules/aspects/nvim.nix`.
+- Added `aspects/nvim.nix`.
 - Added `nvim-maroun` input.
 - Uses the input's `mvimPackages` overlay locally via `pkgs.extend`, not globally.
 - Wires `mvim` into Maroun's shell profile and sets EDITOR/VISUAL.

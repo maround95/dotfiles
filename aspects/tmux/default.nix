@@ -23,7 +23,7 @@
       seshExe = "${seshPackage}/bin/sesh";
       tmuxRel = "tmux";
       tmuxDir = "${config.xdg.configHome}/${tmuxRel}";
-      tmuxTools = import ./tmux-tools/tools.nix {
+      tmuxTools = import ./tools/tools.nix {
         inherit pkgs tmuxDir;
         tmux = tmuxPackage;
         sesh = seshPackage;

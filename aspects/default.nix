@@ -1,5 +1,8 @@
 {
   imports = [
+    ./platform-linux.nix
+    ./platform-darwin.nix
+    ./platform-wsl.nix
     ./primary-user.nix
     ./boot.nix
     ./nix.nix
@@ -25,10 +28,10 @@
     ./zoxide.nix
     ./lazygit.nix
     ./yazi.nix
-    ./tmux.nix
-    ./zellij.nix
+    ./tmux
+    ./zellij
     ./nvim.nix
-    ./kanata.nix
+    ./kanata
     ./aerospace.nix
     ./networking.nix
     ./udev.nix
@@ -42,24 +45,27 @@
     ./dunst.nix
     ./awww.nix
     ./swayosd.nix
-    ./rofi.nix
-    ./waybar.nix
-    ./wlogout.nix
+    ./rofi
+    ./waybar
+    ./wlogout
     ./greetd.nix
     ./avahi.nix
     ./flatpak.nix
     ./kdeconnect.nix
     ./playerctld.nix
     ./kitty.nix
-    ./firefox.nix
+    ./firefox
     ./brave.nix
     ./discord.nix
     ./xdg-desktop.nix
     ./theme.nix
-    ./wallust.nix
+    ./wallust
     ./desktop-tools.nix
     ./steam.nix
     ./ollama.nix
     ./sshd.nix
+    ./desktop-default-session.nix
+    ./misc.nix
+    ./home-manager.nix
   ];
 }

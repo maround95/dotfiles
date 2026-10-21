@@ -11,8 +11,8 @@
       };
     };
 
-    xdg.configFile."zellij/config.kdl".source = ./zellij/config.kdl;
-    xdg.configFile."zellij/layouts/default.kdl".source = ./zellij/layouts/default.kdl;
-    xdg.configFile."zellij/layouts/default.swap.kdl".source = ./zellij/layouts/default.swap.kdl;
+    xdg.configFile."zellij/config.kdl".source = ./config.kdl;
+    xdg.configFile."zellij/layouts/default.kdl".source = ./layouts/default.kdl;
+    xdg.configFile."zellij/layouts/default.swap.kdl".source = ./layouts/default.swap.kdl;
   };
 }

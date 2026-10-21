@@ -65,7 +65,8 @@
 
       imports = [
         ./core
-        ./modules
+        ./aspects
+        ./profiles
         ./outputs
       ];
     }
