@@ -29,6 +29,7 @@
     ./lazygit.nix
     ./yazi.nix
     ./tmux
+    ./workmux
     ./zellij
     ./nvim.nix
     ./kanata

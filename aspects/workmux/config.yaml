@@ -1,0 +1,15 @@
+nerdfont: true # Enable nerdfont icons (prompted on first run)
+merge_strategy: rebase # Make workmux merge do rebase by default
+merge_keep: true # Keep worktree, window, and branch after merge by default
+mode: session
+agent: opencode
+window_prefix: "wm-"
+worktree_dir: "~/wm-worktrees/{project}__worktrees/"
+
+windows:
+  - name: shell
+    panes:
+      - focus: true
+  - name: agent
+    panes:
+      - command: <agent> # Start the configured agent (e.g., claude)

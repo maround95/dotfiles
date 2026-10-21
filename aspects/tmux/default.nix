@@ -21,6 +21,7 @@
       tmuxPackage = pkgs.tmux;
       seshPackage = pkgs.sesh;
       seshExe = "${seshPackage}/bin/sesh";
+      workmuxExe = lib.getExe' inputs.workmux.packages.${system}.default "workmux";
       tmuxRel = "tmux";
       tmuxDir = "${config.xdg.configHome}/${tmuxRel}";
       tmuxTools = import ./tools/tools.nix {
@@ -199,7 +200,28 @@
             fi \
           '
 
+          bind w run-shell ' \
+            if [ "$(tmux show-options -qv @is_floating)" = "1" ]; then \
+              oc=$(tmux show-options -qv @outer_client); \
+              cwd=$(tmux display-message -p "#{pane_current_path}"); \
+              tmux detach-client; \
+              tmux display-popup -c "$oc" -d "$cwd" -E -w 90% -h 85% "${workmuxExe} dashboard"; \
+            else \
+              tmux display-popup -d "#{pane_current_path}" -E -w 90% -h 85% "${workmuxExe} dashboard"; \
+            fi \
+          '
+
           bind -N "last-window " W last-window
+          bind q run-shell ' \
+            if [ "$(tmux show-options -qv @is_floating)" = "1" ]; then \
+              oc=$(tmux show-options -qv @outer_client); \
+              cwd=$(tmux display-message -p "#{session_path}"); \
+              tmux detach-client; \
+              tmux display-popup -c "$oc" -d "$cwd" -E -w 90% -h 85% "${workmuxExe} dashboard"; \
+            else \
+              tmux display-popup -d "#{session_path}" -E -w 90% -h 85% "${workmuxExe} dashboard"; \
+            fi \
+          '
           bind -N "last-session " L run-shell ' \
             if [ "$(tmux show-options -qv @is_floating)" = "1" ]; then \
               outer="$(tmux show-options -qv @outer_name)"; \

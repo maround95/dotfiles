@@ -34,6 +34,7 @@
       url = "github:maround95/nvim-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    workmux.url = "github:raine/workmux/16c9ecb5da576d68d93946a430dd471b7405a60d";
 
     # Optional private/secrets flake.
     # If present, core will import layered modules from:

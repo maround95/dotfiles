@@ -11,6 +11,7 @@
     flakeModules.homeManager.lazygit
     flakeModules.homeManager.yazi
     flakeModules.homeManager.tmux
+    flakeModules.homeManager.workmux
     flakeModules.homeManager.zellij
     flakeModules.homeManager.nvim
   ];
